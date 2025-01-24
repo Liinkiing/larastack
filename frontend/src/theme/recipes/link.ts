@@ -10,7 +10,7 @@ export const linkRecipe = deepmerge(
       _focusVisible: {
         borderRadius: 'sm',
         ring: '2px solid {colors.gray.500}',
-        ringOffset: '4',
+        ringOffset: 1,
       },
       color: {
         _disabled: {

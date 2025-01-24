@@ -5,6 +5,10 @@ export const buttonRecipe = defineRecipe({
   className: 'button',
   description: 'The styles for the Button component',
   base: {
+    _focusVisible: {
+      ring: '2px solid {colors.gray.500}',
+      ringOffset: 1,
+    },
     display: 'flex',
     fontFamily: 'geistSans',
     color: 'white',

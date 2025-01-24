@@ -7,6 +7,7 @@ import type { ReactNode } from 'react'
 import { AppNavigation } from '~/shared/components/AppNavigation'
 import { AppProviders } from '~/shared/providers/AppProviders'
 import { CsrfProvider } from '~/shared/providers/CsrfProvider'
+import { TransitionsProvider } from '~/shared/providers/TransitionsProvider'
 
 const geistSans = Geist({
   subsets: ['latin'],
@@ -45,7 +46,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <CsrfProvider>
           <AppProviders>
             <AppNavigation />
-            {children}
+            <TransitionsProvider>{children}</TransitionsProvider>
           </AppProviders>
         </CsrfProvider>
       </body>
