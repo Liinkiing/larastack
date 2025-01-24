@@ -7,7 +7,7 @@ const INTERNAL_ERRORS_MESSAGES = new Set(['Internal server error', 'Internal ser
 
 const DENIED_MESSAGE = 'Unauthenticated.'
 
-export default new ErrorLink(({ graphQLErrors, networkError }) => {
+export default new ErrorLink(({ graphQLErrors }) => {
   if (
     graphQLErrors &&
     graphQLErrors
