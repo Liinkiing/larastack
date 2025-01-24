@@ -1,0 +1,31 @@
+{
+  "root": false,
+  "plugins": [
+    "sort-keys-fix"
+  ],
+  "extends": ["@liinkiing/eslint-config/next"],
+  "rules": {
+    "import/order": "off",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "import/no-extraneous-dependencies" : "off",
+    "unicorn/no-await-expression-member": "off",
+    "unicorn/no-array-callback-reference": "off",
+    "no-restricted-syntax": "off",
+    "unicorn/no-new-array": "off",
+    "sort-keys-fix/sort-keys-fix": "error",
+    "no-use-before-define": "off"
+  },
+  "overrides": [
+    {
+      "files": ["src/theme/**/*.ts"],
+      "rules": {
+        "sort-keys-fix/sort-keys-fix": "off"
+      }
+    }
+  ]
+
+}

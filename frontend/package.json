@@ -1,0 +1,30 @@
+{
+  "name": "@larastack/frontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint --no-error-on-unmatched-pattern --cache --fix --report-unused-disable-directives \"src/**/*.{js,ts,jsx,tsx}\" \"app/**/*.{js,ts,jsx,tsx}\"",
+    "prepare": "panda codegen",
+    "panda:codegen:watch": "panda codegen --watch",
+    "panda:codegen": "panda codegen",
+    "ts:check": "tsc --pretty --skipLibCheck --noEmit"
+  },
+  "dependencies": {
+    "@ark-ui/react": "^4.9.1",
+    "next": "15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^0.51.1",
+    "@pandacss/shared": "^0.51.1",
+    "@pandacss/studio": "^0.51.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}

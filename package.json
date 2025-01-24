@@ -1,0 +1,26 @@
+{
+  "name": "@larastack/workspace",
+  "version": "0.0.0",
+  "private": true,
+  "repository": "git@github.com:liinkiing/larastack.git",
+  "author": "Omar Jbara <omar.jbara2@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/config-conventional": "^19.6.0",
+    "@liinkiing/eslint-config": "^2.0.0",
+    "@liinkiing/prettier-config": "^1.3.0",
+    "commitlint": "^19.6.1",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.2",
+    "prettier": "^3.4.2"
+  },
+  "prettier": "@liinkiing/prettier-config",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
+}
