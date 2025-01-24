@@ -47,3 +47,4 @@ styled-system
 styled-system-studio
 
 src/__generated__/
+.eslintcache
