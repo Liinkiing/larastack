@@ -1,0 +1,34 @@
+"Abilities of the user."
+type UserAbilities {
+    viewApp: Boolean!
+}
+
+"Account of a person who utilizes this application."
+type User implements Timestampable {
+    "The unique identifier of the user."
+    id: ID! @globalId
+
+    "Non-unique name."
+    name: String!
+
+    "Unique email address."
+    email: String! @private
+
+    "Avatar URL."
+    avatarUrl: URI @rename(attribute: "avatar_url")
+
+    "When the account was created."
+    createdAt: DateTime! @rename(attribute: "created_at")
+
+    "When the account was last updated."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+
+    "Abilities of the user."
+    abilities: UserAbilities! @private @field(resolver: "App\\GraphQL\\Resolvers\\User\\UserAbilitiesResolver")
+
+}
+
+extend type Query {
+    "Get the current user."
+    viewer: User @guard @auth
+}

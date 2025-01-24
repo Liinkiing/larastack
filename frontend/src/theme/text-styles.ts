@@ -5,19 +5,16 @@ export const textStyles = defineTextStyles({
     lg: {
       value: {
         fontSize: 'body.lg',
-        lineHeight: 'normal',
       },
     },
     md: {
       value: {
         fontSize: 'body.md',
-        lineHeight: 'normal',
       },
     },
     sm: {
       value: {
         fontSize: 'body.sm',
-        lineHeight: 'normal',
       },
     },
   },
@@ -29,7 +26,6 @@ export const textStyles = defineTextStyles({
           sm: 'heading.desktop.2xl',
         },
         fontWeight: 'bold',
-        lineHeight: 'normal',
       },
     },
     h2: {
@@ -39,7 +35,6 @@ export const textStyles = defineTextStyles({
           sm: 'heading.desktop.lg',
         },
         fontWeight: 'bold',
-        lineHeight: 'normal',
       },
     },
     h3: {
@@ -49,7 +44,6 @@ export const textStyles = defineTextStyles({
           sm: 'heading.desktop.md',
         },
         fontWeight: 'bold',
-        lineHeight: 'normal',
       },
     },
     h4: {
@@ -59,7 +53,6 @@ export const textStyles = defineTextStyles({
           sm: 'heading.desktop.sm',
         },
         fontWeight: 'bold',
-        lineHeight: 'normal',
       },
     },
     h5: {
@@ -69,7 +62,6 @@ export const textStyles = defineTextStyles({
           sm: 'heading.desktop.xs',
         },
         fontWeight: 'black',
-        lineHeight: 'normal',
       },
     },
     h6: {
@@ -79,7 +71,6 @@ export const textStyles = defineTextStyles({
           sm: 'heading.desktop.xs',
         },
         fontWeight: 'bold',
-        lineHeight: 'normal',
       },
     },
   },

@@ -4,6 +4,8 @@ use Illuminate\Support\Str;
 
 return [
 
+    'logged_in_cookie_key' => 'larastack_logged_in',
+
     /*
     |--------------------------------------------------------------------------
     | Default Session Driver

@@ -1,0 +1,6 @@
+#import enums/*.graphql
+#import scalars/*.graphql
+#import interfaces/*.graphql
+#import types/*.graphql
+
+type Query

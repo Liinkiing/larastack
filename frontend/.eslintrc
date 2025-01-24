@@ -25,7 +25,23 @@
       "rules": {
         "sort-keys-fix/sort-keys-fix": "off"
       }
+    },
+    {
+      "files": ["*.graphql"],
+      "extends": "plugin:@graphql-eslint/operations-recommended",
+      "parserOptions": {
+        "operations": [
+          "./app/**/*.graphql",
+          "./app/**/*.ts",
+          "./app/**/*.tsx",
+          "./src/**/*.graphql",
+          "./src/**/*.ts",
+          "./src/**/*.tsx"
+        ],
+        "schema": ["./client.schema.graphql", "./schema.graphql"]
+      }
     }
+
   ]
 
 }

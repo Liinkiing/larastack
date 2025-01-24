@@ -1,0 +1,6 @@
+interface Timestampable {
+    "When the node was created."
+    createdAt: DateTime! @rename(attribute: "created_at")
+    "When the node was updated."
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}

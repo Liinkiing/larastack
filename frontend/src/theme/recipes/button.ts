@@ -6,27 +6,22 @@ export const buttonRecipe = defineRecipe({
   description: 'The styles for the Button component',
   base: {
     display: 'flex',
+    fontFamily: 'geistSans',
+    color: 'white',
+    background: 'black',
+    textBox: 'trim-both cap alphabetic',
     _hover: {
       cursor: 'pointer',
     },
   },
   variants: {
-    variant: {
-      funky: { bg: 'red.200', color: 'white' },
-      edgy: { border: '1px solid {colors.red.200}' },
-    },
     size: {
-      sm: { padding: '4', fontSize: '12px' },
-      lg: { padding: '8', fontSize: '40px' },
-    },
-    shape: {
-      square: { borderRadius: '0' },
-      circle: { borderRadius: 'full' },
+      sm: { padding: '2', fontSize: 'body.sm', borderRadius: 'lg' },
+      md: { padding: '3', fontSize: 'body.md', borderRadius: '2xl' },
+      lg: { padding: '4', fontSize: 'body.lg', borderRadius: 'xl' },
     },
   },
   defaultVariants: {
-    variant: 'funky',
-    size: 'sm',
-    shape: 'circle',
+    size: 'md',
   },
 })
