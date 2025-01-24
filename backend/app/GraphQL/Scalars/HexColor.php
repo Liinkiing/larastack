@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\GraphQL\Scalars;
 
@@ -9,7 +11,7 @@ class HexColor extends ScalarType
 {
     public string $name = 'HexColor';
 
-    public ?string $description = "Hexadecimal color (e.g: #FF0000)";
+    public ?string $description = 'Hexadecimal color (e.g: #FF0000)';
 
     public function serialize($value)
     {
@@ -28,9 +30,10 @@ class HexColor extends ScalarType
 
     private function validate($value)
     {
-        if (!preg_match('/^#[0-9A-Fa-f]{6}$/', $value)) {
+        if (! preg_match('/^#[0-9A-Fa-f]{6}$/', $value)) {
             throw new \Exception('Invalid hexadecimal color');
         }
+
         return $value;
     }
 }

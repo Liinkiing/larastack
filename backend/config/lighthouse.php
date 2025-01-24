@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 return [
     /*
@@ -30,7 +32,7 @@ return [
         'middleware' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             // Ensures the request is not vulnerable to cross-site request forgery.
-             Nuwave\Lighthouse\Http\Middleware\EnsureXHR::class,
+            Nuwave\Lighthouse\Http\Middleware\EnsureXHR::class,
 
             // Always set the `Accept: application/json` header.
             Nuwave\Lighthouse\Http\Middleware\AcceptJson::class,
@@ -439,17 +441,17 @@ return [
             'echo' => [
                 'driver' => 'echo',
                 'connection' => env('LIGHTHOUSE_SUBSCRIPTION_REDIS_CONNECTION', 'default'),
-                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@echoRoutes',
+                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class.'@echoRoutes',
             ],
             'pusher' => [
                 'driver' => 'pusher',
                 'connection' => 'pusher',
-                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@pusher',
+                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class.'@pusher',
             ],
             'reverb' => [
                 'driver' => 'pusher',
                 'connection' => 'reverb',
-                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class . '@reverb',
+                'routes' => Nuwave\Lighthouse\Subscriptions\SubscriptionRouter::class.'@reverb',
             ],
         ],
 

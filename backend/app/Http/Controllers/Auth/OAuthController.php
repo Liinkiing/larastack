@@ -26,7 +26,7 @@ class OAuthController extends Controller
             /** @var \Laravel\Socialite\Two\User $oauthUser */
             $oauthUser = Socialite::driver('google')->user();
             $avatarUrl = $oauthUser->avatar;
-            if (!$oauthUser->email) {
+            if (! $oauthUser->email) {
                 logger()->alert('User has no email', [
                     'provider' => 'google',
                     'user' => $oauthUser,
@@ -35,7 +35,7 @@ class OAuthController extends Controller
                 return redirect(frontend_url('/auth/login'));
             }
 
-            $user = User::where("google_id", $oauthUser->id)->orWhere('email', $oauthUser->email)->first();
+            $user = User::where('google_id', $oauthUser->id)->orWhere('email', $oauthUser->email)->first();
             if ($user) {
                 $user->update([
                     'google_id' => $oauthUser->id,
@@ -67,13 +67,13 @@ class OAuthController extends Controller
 
                 return redirect(frontend_url('/auth/login'));
             }
-            logger()->error("An error occurred while trying to login via Google", [
+            logger()->error('An error occurred while trying to login via Google', [
                 'exception' => $e,
             ]);
 
             return redirect(frontend_url('/auth/login'));
         } catch (\Exception $e) {
-            logger()->error("An error occurred while trying to login via Google", [
+            logger()->error('An error occurred while trying to login via Google', [
                 'exception' => $e,
             ]);
 

@@ -28,7 +28,7 @@ GRAPHQL;
             fn (callable $resolver) => function (mixed $root, array $args, GraphQLContext $context, ResolveInfo $info) use ($resolver) {
                 /** @var ?User $user */
                 $user = $context->user();
-                if (!$user || $user->is_admin === false) {
+                if (! $user || $user->is_admin === false) {
                     throw new AuthorizationException('You are not authorized to access this field.');
                 }
 

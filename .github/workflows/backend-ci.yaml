@@ -1,0 +1,53 @@
+name: "backend-ci"
+on: [push]
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    working-directory: backend
+jobs:
+  install-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, curl, redis
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        id: cache-dependencies
+        with:
+          path: backend/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}-${{ hashFiles('.github/.ci-cache') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Install Dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: |
+          composer install --prefer-dist --no-interaction --ignore-platform-reqs
+  lint:
+    runs-on: ubuntu-latest
+    needs: install-cache
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, curl, redis
+      - name: Restore composer dependencies
+        uses: actions/cache@v3
+        id: cache-dependencies
+        with:
+          path: backend/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}-${{ hashFiles('.github/.ci-cache') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Run Pint
+        run: |
+          ./vendor/bin/pint --test

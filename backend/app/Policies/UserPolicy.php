@@ -13,5 +13,4 @@ class UserPolicy
     {
         return true;
     }
-
 }

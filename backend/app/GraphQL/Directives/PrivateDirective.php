@@ -27,13 +27,13 @@ GRAPHQL;
         $fieldValue->wrapResolver(
             fn (callable $resolver) => function (mixed $root, array $args, GraphQLContext $context, ResolveInfo $info) use ($resolver) {
 
-                if (!$root instanceof User) {
+                if (! $root instanceof User) {
                     return $resolver($root, $args, $context, $info);
                 }
 
                 /** @var User $user */
                 $user = $context->user();
-                if (!$user || $root->id !== $user->id) {
+                if (! $user || $root->id !== $user->id) {
                     throw new AuthorizationException('You are not authorized to access this field.');
                 }
 

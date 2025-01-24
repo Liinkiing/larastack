@@ -19,15 +19,9 @@ class AppSeeder extends Seeder
         }
     }
 
-    protected function loadLocalSeeds(): void
-    {
-    }
+    protected function loadLocalSeeds(): void {}
 
-    protected function loadPreviewSeeds(): void
-    {
-    }
+    protected function loadPreviewSeeds(): void {}
 
-    protected function loadProductionSeeds(): void
-    {
-    }
+    protected function loadProductionSeeds(): void {}
 }
