@@ -14,6 +14,7 @@
     "gen:panda": "panda codegen",
     "gen:gql": "graphql-codegen --config codegen.ts",
     "gen:gql:watch": "graphql-codegen --config codegen.ts --watch",
+    "prets:check": "panda codegen && pnpm run gen:gql",
     "ts:check": "tsc --pretty --skipLibCheck --noEmit"
   },
   "dependencies": {
