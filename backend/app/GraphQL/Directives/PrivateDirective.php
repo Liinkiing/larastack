@@ -3,8 +3,8 @@
 namespace App\GraphQL\Directives;
 
 use App\Models\User;
-use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Exceptions\AuthorizationException;
+use Nuwave\Lighthouse\Execution\ResolveInfo;
 use Nuwave\Lighthouse\Schema\Directives\BaseDirective;
 use Nuwave\Lighthouse\Schema\Values\FieldValue;
 use Nuwave\Lighthouse\Support\Contracts\FieldMiddleware;
@@ -31,7 +31,7 @@ GRAPHQL;
                     return $resolver($root, $args, $context, $info);
                 }
 
-                /** @var User $user */
+                /** @var ?User $user */
                 $user = $context->user();
                 if (! $user || $root->id !== $user->id) {
                     throw new AuthorizationException('You are not authorized to access this field.');

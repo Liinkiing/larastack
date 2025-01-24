@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Auth;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 use Session;
 
 class OAuthController extends Controller
 {
-    public function redirect()
+    public function redirect(): \Symfony\Component\HttpFoundation\RedirectResponse|RedirectResponse
     {
         if (request()->has('return_to')) {
             Session::put('return_to', request()->get('return_to'));
@@ -20,7 +21,7 @@ class OAuthController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback()
+    public function callback(): RedirectResponse
     {
         try {
             /** @var \Laravel\Socialite\Two\User $oauthUser */

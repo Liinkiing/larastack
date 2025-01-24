@@ -25,10 +25,11 @@ class HexColor extends ScalarType
 
     public function parseLiteral(Node $valueNode, ?array $variables = null)
     {
+        /** @phpstan-ignore property.notFound */
         return $this->validate($valueNode->value);
     }
 
-    private function validate($value)
+    private function validate(string $value): string
     {
         if (! preg_match('/^#[0-9A-Fa-f]{6}$/', $value)) {
             throw new \Exception('Invalid hexadecimal color');
