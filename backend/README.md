@@ -1,47 +1,59 @@
-# Backend
+# Larastack Backend 🚀
 
 Welcome to the backend directory of your fullstack application template! This is where you'll be working on the server-side of your application using Laravel, Lighthouse GraphQL, and Laravel Socialite for user authentication.
 
-## Technologies Used
+## Technologies Used 🛠️
 
 ### Laravel
-- Laravel is a powerful PHP framework known for its elegant syntax and robust features. It's used to build the backend of your application, handle routes, database interactions, and more.
+- **Laravel**: A powerful PHP framework known for its elegant syntax and robust features. It's used to build the backend of your application, handle routes, database interactions, and more.
 
 ### Lighthouse GraphQL
-- Lighthouse is a GraphQL server package for Laravel that simplifies the implementation of GraphQL APIs. It's used to create and manage GraphQL endpoints for your application.
+- **Lighthouse GraphQL**: A GraphQL server package for Laravel that simplifies the implementation of GraphQL APIs. It's used to create and manage GraphQL endpoints for your application.
 
 ### Laravel Socialite
-- Laravel Socialite is a Laravel package that facilitates easy integration with social authentication providers, making it simple to set up user authentication using popular social platforms.
+- **Laravel Socialite**: A Laravel package that facilitates easy integration with social authentication providers, making it simple to set up user authentication using popular social platforms.
 
-## Installation
+## Installation ⚙️
 
-```shell
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php83-composer:latest \
-    composer install --ignore-platform-reqs
-```
+1. Clone the repository:
+    ```shell
+    git clone https://github.com/Liinkiing/larastack.git
+    cd larastack/backend
+    ```
 
-Then if you want to use the `sail` command, you need to add an
-alias to your shell configuration file (e.g. `~/.bashrc` or
-`~/.zshrc`):
+2. Install dependencies using Docker:
+    ```shell
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/var/www/html" \
+        -w /var/www/html \
+        laravelsail/php84-composer:latest \
+        composer install --ignore-platform-reqs
+    ```
 
-```shell
-alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
-```
+3. Add an alias for the `sail` command to your shell configuration file (e.g. `~/.bashrc` or `~/.zshrc`):
+    ```shell
+    alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+    ```
 
-Then, you can `cp .env.example .env` and update your variables.
+4. Copy the example environment file and update your variables:
+    ```shell
+    cp .env.example .env
+    ```
 
-After that, you can start the containers with:
+5. Start the containers:
+    ```shell
+    sail up -d
+    ```
 
-```shell
-sail up -d
-```
+6. Generate a valid `APP_KEY`:
+    ```shell
+    sail artisan key:generate
+    ```
 
-Don't forget to run the Artisan command to generate a valid `APP_KEY`
+## Learn More 📚
 
-```shell
-sail artisan key:generate
-```
+To learn more about the technologies used in this project, take a look at the following resources:
+- [Laravel Documentation](https://laravel.com/docs)
+- [Lighthouse GraphQL Documentation](https://lighthouse-php.com)
+- [Laravel Socialite Documentation](https://laravel.com/docs/socialite)
