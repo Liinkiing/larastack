@@ -61,7 +61,7 @@ export const textStyles = defineTextStyles({
           base: 'heading.mobile.xs',
           sm: 'heading.desktop.xs',
         },
-        fontWeight: 'black',
+        fontWeight: 'bold',
       },
     },
     h6: {

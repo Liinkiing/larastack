@@ -17,6 +17,11 @@ export const textRecipe = defineRecipe({
         fontWeight: 'bold',
       },
     },
+    italic: {
+      true: {
+        fontStyle: 'italic',
+      },
+    },
     medium: {
       true: {
         fontWeight: 'medium',
@@ -25,6 +30,11 @@ export const textRecipe = defineRecipe({
     normal: {
       true: {
         fontWeight: 'normal',
+      },
+    },
+    underline: {
+      true: {
+        textDecoration: 'underline',
       },
     },
     semibold: {
@@ -36,8 +46,6 @@ export const textRecipe = defineRecipe({
       lg: { textStyle: 'body.lg' },
       md: { textStyle: 'body.md' },
       sm: { textStyle: 'body.sm' },
-      xl: { textStyle: 'body.xl' },
-      xs: { textStyle: 'body.xs' },
     },
     uppercase: {
       true: {
