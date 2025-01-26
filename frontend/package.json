@@ -54,7 +54,6 @@
     "@pandacss/studio": "^0.51.1",
     "@storybook/addon-essentials": "^8.5.1",
     "@storybook/addon-interactions": "^8.5.1",
-    "@storybook/addon-onboarding": "^8.5.1",
     "@storybook/blocks": "^8.5.1",
     "@storybook/experimental-nextjs-vite": "^8.5.1",
     "@storybook/nextjs": "^8.5.1",
