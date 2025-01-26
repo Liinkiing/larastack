@@ -20,9 +20,9 @@ export const buttonRecipe = defineRecipe({
   },
   variants: {
     size: {
-      sm: { padding: '2', fontSize: 'body.sm', borderRadius: 'lg' },
-      md: { padding: '3', fontSize: 'body.md', borderRadius: '2xl' },
-      lg: { padding: '4', fontSize: 'body.lg', borderRadius: 'xl' },
+      sm: { padding: 2, fontSize: 'body.sm', borderRadius: 'lg' },
+      md: { padding: 3, fontSize: 'body.md', borderRadius: '2xl' },
+      lg: { padding: 4, fontSize: 'body.lg', borderRadius: 'xl' },
     },
   },
   defaultVariants: {

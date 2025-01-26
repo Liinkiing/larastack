@@ -6,6 +6,7 @@ This is the frontend part of the Larastack project, a fullstack starter template
 
 - **Next.js**: A powerful React framework for building server-side rendered and statically generated web applications.
 - **Panda CSS**: A styling engine used for writing CSS-in-JS, providing flexibility and ease of use in styling components.
+- **Storybook**: A tool for developing UI components in isolation, making it easier to build and test components.
 
 ## Features ✨
 
@@ -38,9 +39,11 @@ Here's a brief overview of the project structure:
 ## Learn More 📚
 
 To learn more about the technologies used in this project, take a look at the following resources:
+
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Panda CSS Documentation](https://panda-css.com)
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Storybook Documentation](https://storybook.js.org/docs/get-started/install)
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 

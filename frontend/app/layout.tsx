@@ -1,7 +1,6 @@
 import './index.css'
 
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 import type { ReactNode } from 'react'
 
 import { AppNavigation } from '~/shared/components/AppNavigation'
@@ -9,15 +8,7 @@ import { AppProviders } from '~/shared/providers/AppProviders'
 import { CsrfProvider } from '~/shared/providers/CsrfProvider'
 import { TransitionsProvider } from '~/shared/providers/TransitionsProvider'
 
-const geistSans = Geist({
-  subsets: ['latin'],
-  variable: '--font-geist-sans',
-})
-
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-geist-mono',
-})
+import { fonts } from './fonts'
 
 export const viewport: Viewport = {
   initialScale: 1,
@@ -41,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html className={`${geistSans.variable} ${geistMono.variable}`} lang="en">
+    <html className={`${fonts.geistSans.variable} ${fonts.geistMono.variable}`} lang="en">
       <body>
         <CsrfProvider>
           <AppProviders>
