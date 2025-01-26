@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from '@pandacss/dev'
 
+import { animationStyles } from '~/theme/animation-styles'
 import { conditions } from '~/theme/conditions'
 import { keyframes } from '~/theme/keyframes'
 import { recipes, slotRecipes } from '~/theme/recipes'
@@ -22,6 +23,7 @@ export default defineConfig({
   preflight: true,
   theme: {
     extend: {
+      animationStyles,
       keyframes,
       recipes,
       semanticTokens: {
