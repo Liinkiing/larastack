@@ -33,6 +33,7 @@ export const apolloClient = new ApolloClient({
     possibleTypes: introspection.possibleTypes,
     typePolicies,
   }),
+  dataMasking: true,
   defaultOptions: {
     query: {
       fetchPolicy: 'cache-first',
