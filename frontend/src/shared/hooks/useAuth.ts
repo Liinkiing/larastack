@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo } from 'react'
+import { use, useCallback, useMemo } from 'react'
 
 import { graphql } from '~/__generated__/gql'
 import type { AuthProvider } from '~/services/auth'
@@ -15,7 +15,7 @@ type Return<T = Viewer> = {
 }
 
 export const useAuth = (): Return => {
-  const context = useContext(AuthContext)
+  const context = use(AuthContext)
 
   const logout = useCallback(() => {
     return AuthService.logout()

@@ -5,7 +5,7 @@ import {
   type ForwardRefExoticComponent,
   type PropsWithoutRef,
   type RefAttributes,
-  useContext,
+  use,
 } from 'react'
 
 import { cx } from '~/styled-system/css'
@@ -74,7 +74,7 @@ export const createStyleContext = <R extends Recipe>(recipe: R) => {
   ): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>> => {
     const StyledComponent = styled(Component)
     const StyledSlotComponent = forwardRef<T, P>((props, ref) => {
-      const slotStyles = useContext(StyleContext)
+      const slotStyles = use(StyleContext)
       return <StyledComponent {...props} ref={ref} className={cx(slotStyles?.[slot], props.className)} />
     })
     // @ts-expect-error
