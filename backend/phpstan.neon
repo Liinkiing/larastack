@@ -10,8 +10,9 @@ parameters:
     # Level 10 is the highest level
     level: 6
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
+    ignoreErrors:
+        -
+            identifier: property.notFound
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
