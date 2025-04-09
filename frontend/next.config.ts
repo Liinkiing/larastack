@@ -85,15 +85,13 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
   onDemandEntries: {
     // Make sure entries are not getting disposed.
     maxInactiveAge: 1000 * 60 * 60,
   },
+
   reactStrictMode: true,
+
   async rewrites() {
     if (NEXT_PUBLIC_MAINTENANCE_MODE === '1') return []
     if (!USE_BACKEND_PROXY) return []

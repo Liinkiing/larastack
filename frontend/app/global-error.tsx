@@ -8,7 +8,17 @@ const GlobalError: ErrorComponent = ({ reset }) => (
   <html lang="en">
     <body>
       <h2>Something went wrong!</h2>
-      <Button onClick={() => reset()}>Try again</Button>
+      <Button
+        onClick={() => {
+          if (reset) {
+            reset()
+          } else {
+            window.location.reload()
+          }
+        }}
+      >
+        Try again
+      </Button>
     </body>
   </html>
 )

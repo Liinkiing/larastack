@@ -29,6 +29,8 @@ export const AppLink: FC<AppLinkProps> = ({
   keepSearchParams,
   children,
   _hover,
+
+  onNavigate,
   ...props
 }) => {
   const params = useSearchParams()
@@ -59,6 +61,7 @@ export const AppLink: FC<AppLinkProps> = ({
         shallow={shallow}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
+        onNavigate={onNavigate}
         onTouchStart={onTouchStart}
       >
         {children}
