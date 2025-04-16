@@ -19,6 +19,7 @@ export default defineConfig({
   exclude: [],
   include: ['./src/**/*.{js,jsx,ts,tsx}', './app/**/*.{js,jsx,ts,tsx}'],
   jsxFramework: 'react',
+  lightningcss: true,
   outdir: './src/styled-system',
   preflight: true,
   theme: {
