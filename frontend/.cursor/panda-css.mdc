@@ -1,0 +1,459 @@
+---
+alwaysApply: true
+---
+<panda-css-guidelines>
+=== foundation rules ===
+
+# Panda CSS Styling Guidelines
+
+These guidelines apply to all TypeScript and TSX files in the `frontend` directory. **Always use Panda CSS for styling** - never use inline styles, CSS modules, or other styling solutions.
+
+## Foundational Context
+
+This application uses Panda CSS as the exclusive styling solution. You are an expert with Panda CSS and should use MCP tools to discover available tokens, recipes, patterns, and variants before writing styles.
+
+## Core Principles
+
+- **Always use Panda CSS** - Never use inline styles, CSS modules, styled-components, or other styling solutions
+- **Prefer Config Recipes** - When a recipe exists for a component pattern, use it instead of manual styling
+- **Use Semantic Tokens** - Prefer semantic tokens over raw color values for maintainability
+- **Check Available Resources** - Use MCP tools to discover available tokens, recipes, patterns, and variants before writing styles
+
+
+=== styling priority ===
+
+## Styling Priority Order
+
+When styling components, follow this priority order:
+
+1. **Config Recipes** (highest priority)
+   - Use existing recipes when available (check with `mcp_panda_get_recipes`)
+   - Create new recipes for reusable component patterns
+
+2. **Patterns**
+   - Use Panda patterns: `Box`, `Flex`, `Stack`, `VStack`, `HStack`, `Grid`, etc.
+   - Patterns provide semantic layout components
+
+3. **CSS Function**
+   - Use `css()` function for one-off styles or when recipes/patterns don't fit
+   - Prefer tokens over raw values
+
+4. **Styled Components**
+   - Use `styled()` function for creating reusable styled components
+   - Always use recipes when available
+
+
+=== recipes ===
+
+## Config Recipes
+
+### Discovering Available Recipes
+
+Before using recipes, always check what's available using `mcp_panda_get_recipes`. This tool will show you all available recipes, their variants, and usage examples.
+
+### Using Recipes
+
+#### Creating Styled Components with Recipes
+
+<code-snippet name="Styled Component with Recipe" lang="tsx">
+import { styled } from '~/styled-system/jsx'
+import { button } from '~/styled-system/recipes'
+import type { ComponentProps } from '~/styled-system/types'
+
+export type ButtonProps = ComponentProps<typeof Button>
+export const Button = styled('button', button)
+
+// Usage
+<Button size="md">Click me</Button>
+</code-snippet>
+
+#### Using Recipe Variants
+
+<code-snippet name="Recipe Variants" lang="tsx">
+// Check available recipes with mcp_panda_get_recipes first
+// Then use the recipe variants as shown in the MCP tool results
+
+// Example: Using a recipe component with variants
+<RecipeComponent size="lg" variant="primary">Content</RecipeComponent>
+</code-snippet>
+
+#### Creating New Recipes
+
+When creating a new reusable component pattern, define a recipe:
+
+<code-snippet name="Define New Recipe" lang="tsx">
+// src/theme/recipes/card.ts
+import { defineRecipe } from '@pandacss/dev'
+
+export const cardRecipe = defineRecipe({
+  className: 'card',
+  jsx: ['Card'],
+  base: {
+    padding: 4,
+    borderRadius: 'lg',
+    backgroundColor: 'white',
+    boxShadow: 'md',
+  },
+  variants: {
+    size: {
+      sm: { padding: 2 },
+      md: { padding: 4 },
+      lg: { padding: 6 },
+    },
+    variant: {
+      outlined: {
+        border: '1px solid',
+        borderColor: 'gray.200',
+        boxShadow: 'none',
+      },
+      elevated: {
+        boxShadow: 'lg',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    variant: 'elevated',
+  },
+})
+</code-snippet>
+
+Then export it in `src/theme/recipes/index.ts`:
+
+<code-snippet name="Export Recipe" lang="tsx">
+import { cardRecipe } from '~/theme/recipes/card'
+
+export const recipes = {
+  // ... existing recipes
+  card: cardRecipe,
+}
+</code-snippet>
+
+
+=== patterns ===
+
+## Patterns
+
+### Discovering Available Patterns
+
+Use `mcp_panda_get_patterns` to discover all available Panda patterns and their props. Common patterns include `Box`, `Flex`, `Stack`, `VStack`, `HStack`, `Grid`, `GridItem`, `Center`, `Spacer`, and `Divider`, but always check the MCP tool for the complete list and their specific properties.
+
+### Using Patterns
+
+<code-snippet name="Pattern Usage" lang="tsx">
+import { VStack, HStack, Box, Grid } from '~/styled-system/jsx'
+
+// Vertical stack
+<VStack gap={4} align="stretch">
+  <Box>Item 1</Box>
+  <Box>Item 2</Box>
+</VStack>
+
+// Horizontal stack
+<HStack gap={2} justify="space-between">
+  <Button>Cancel</Button>
+  <Button>Save</Button>
+</HStack>
+
+// Grid layout
+<Grid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
+  <Box>Card 1</Box>
+  <Box>Card 2</Box>
+  <Box>Card 3</Box>
+</Grid>
+</code-snippet>
+
+
+=== css function ===
+
+## CSS Function
+
+Use the `css()` function for one-off styles or when recipes/patterns don't fit:
+
+<code-snippet name="CSS Function" lang="tsx">
+import { css } from '~/styled-system/css'
+
+const containerStyles = css({
+  padding: 4,
+  backgroundColor: 'gray.50',
+  borderRadius: 'lg',
+  _hover: {
+    backgroundColor: 'gray.100',
+  },
+})
+
+<div className={containerStyles}>Content</div>
+</code-snippet>
+
+### Using with Styled Components
+
+<code-snippet name="CSS with Styled" lang="tsx">
+import { styled } from '~/styled-system/jsx'
+import { css } from '~/styled-system/css'
+
+const StyledCard = styled('div', css({
+  padding: 4,
+  borderRadius: 'lg',
+  boxShadow: 'md',
+}))
+</code-snippet>
+
+
+=== tokens ===
+
+## Tokens and Semantic Tokens
+
+### Using Design Tokens
+
+Always prefer tokens over raw values:
+
+<code-snippet name="Tokens vs Raw Values" lang="tsx">
+// ✅ Good - Using tokens
+<Box padding={4} color="text" fontSize="body.md" />
+
+// ❌ Bad - Using raw values
+<Box padding="16px" color="#000" fontSize="14px" />
+</code-snippet>
+
+### Semantic Tokens
+
+Use semantic tokens for theme-aware values:
+
+<code-snippet name="Semantic Tokens" lang="tsx">
+// ✅ Good - Using semantic tokens
+<Text color="text">Content</Text>
+<Text color="text.disabled">Disabled content</Text>
+
+// ❌ Bad - Using raw colors
+<Text color="black">Content</Text>
+<Text color="gray.500">Disabled content</Text>
+</code-snippet>
+
+### Discovering Available Tokens
+
+Use `mcp_panda_get_semantic_tokens` to discover all available tokens. Common token categories include colors (semantic and palette), spacing, font sizes, font weights, border radius, shadows, z-index, durations, and easings. Always check the MCP tool for the complete list of available tokens and their values.
+
+
+=== best practices ===
+
+## Best Practices
+
+### 1. Always Check Available Resources First
+
+Before writing styles, use MCP tools to check:
+- Available recipes and their variants
+- Available patterns and their props
+- Available tokens (colors, spacing, etc.)
+- Available semantic tokens
+
+### 2. Use Responsive Values
+
+<code-snippet name="Responsive Values" lang="tsx">
+// ✅ Good - Responsive values
+<Box
+  padding={{ base: 2, md: 4, lg: 6 }}
+  fontSize={{ base: 'body.sm', md: 'body.md' }}
+/>
+
+// ❌ Bad - Fixed values
+<Box padding={4} fontSize="body.md" />
+</code-snippet>
+
+### 3. Use Conditions for Interactive States
+
+<code-snippet name="Interactive States" lang="tsx">
+// ✅ Good - Using conditions
+<Box
+  backgroundColor="gray.100"
+  _hover={{ backgroundColor: 'gray.200' }}
+  _focus={{ ring: '2px solid', ringColor: 'blue.500' }}
+  _disabled={{ opacity: 0.5, cursor: 'not-allowed' }}
+/>
+</code-snippet>
+
+### 4. Prefer Composition Over Duplication
+
+<code-snippet name="Composition" lang="tsx">
+// ✅ Good - Composing recipes
+import { linkRecipe } from '~/theme/recipes/link'
+import { textRecipe } from '~/theme/recipes/text'
+import deepmerge from 'deepmerge'
+
+export const linkRecipe = deepmerge(
+  textRecipe,
+  defineRecipe({
+    // Additional link-specific styles
+  })
+)
+
+// ❌ Bad - Duplicating styles
+</code-snippet>
+
+### 5. Use Text Styles for Typography
+
+<code-snippet name="Text Styles" lang="tsx">
+// ✅ Good - Using text styles (check mcp_panda_get_text_styles for available styles)
+<Box textStyle="body.lg">Content</Box>
+<Box textStyle="heading.h1">Title</Box>
+
+// ❌ Bad - Manual typography
+<Box fontSize="1rem" lineHeight="1.5">Content</Box>
+</code-snippet>
+
+### 6. Use Animation Tokens
+
+<code-snippet name="Animation Tokens" lang="tsx">
+// ✅ Good - Using animation tokens
+<Box
+  animation="fade-in"
+  animationDuration="normal"
+  animationTimingFunction="emphasized-in"
+/>
+
+// ❌ Bad - Raw animation values
+<Box animation="fadeIn 200ms ease-in" />
+</code-snippet>
+
+### 7. Type Safety
+
+Always use TypeScript types from Panda:
+
+<code-snippet name="Type Safety" lang="tsx">
+import type { ComponentProps } from '~/styled-system/types'
+import type { ButtonVariantProps } from '~/styled-system/recipes'
+
+// Component props
+type ButtonProps = ComponentProps<typeof Button>
+
+// Variant props
+type Props = ButtonVariantProps & { customProp?: string }
+</code-snippet>
+
+
+=== mcp tools ===
+
+## Using MCP Tools
+
+When unsure about available tokens, recipes, or patterns, use the MCP tools:
+
+### Check Available Recipes
+
+Use `mcp_panda_get_recipes` to check what recipes are available and what variants they have.
+
+### Check Available Patterns
+
+Use `mcp_panda_get_patterns` to check what patterns are available and what props they accept.
+
+### Check Available Tokens
+
+Use `mcp_panda_get_semantic_tokens` to check what tokens are available for colors/spacing/fontSizes/etc.
+
+### Check Available Conditions
+
+Use `mcp_panda_get_conditions` to check what conditions are available for responsive/state styling.
+
+### Example Workflow
+
+1. **Need to style a component?** → Check `mcp_panda_get_recipes` → Use available recipe if it exists
+2. **Need layout?** → Check `mcp_panda_get_patterns` → Use appropriate pattern (e.g., `VStack`, `HStack`, `Grid`)
+3. **Need colors or tokens?** → Check `mcp_panda_get_semantic_tokens` → Use semantic tokens when available
+4. **Need responsive/state styling?** → Check `mcp_panda_get_conditions` → Use appropriate conditions
+
+
+=== examples ===
+
+## Examples
+
+### Complete Component Example
+
+<code-snippet name="Complete Component" lang="tsx">
+import type { FC } from 'react'
+import { VStack, HStack, Box } from '~/styled-system/jsx'
+// Import recipe-based components (check mcp_panda_get_recipes for available ones)
+
+export const Card: FC<{ title: string; description: string }> = ({ title, description }) => {
+  return (
+    <Box
+      padding={4}
+      borderRadius="lg"
+      backgroundColor="white"
+      boxShadow="md"
+      _hover={{ boxShadow: 'lg' }}
+    >
+      <VStack gap={2} align="stretch">
+        {/* Use recipe components when available, otherwise use patterns */}
+        <Box fontSize="heading.desktop.md" fontWeight="bold">{title}</Box>
+        <Box fontSize="body.md" color="text.disabled">{description}</Box>
+        <HStack gap={2} justify="flex-end" mt={4}>
+          {/* Use recipe-based button component if available */}
+          <Box as="button" padding={2} borderRadius="lg">Cancel</Box>
+          <Box as="button" padding={2} borderRadius="lg">Save</Box>
+        </HStack>
+      </VStack>
+    </Box>
+  )
+}
+</code-snippet>
+
+### Creating a New Recipe-Based Component
+
+<code-snippet name="New Recipe Component" lang="tsx">
+// 1. Define the recipe (src/theme/recipes/card.ts)
+import { defineRecipe } from '@pandacss/dev'
+
+export const cardRecipe = defineRecipe({
+  className: 'card',
+  jsx: ['Card'],
+  base: {
+    padding: 4,
+    borderRadius: 'lg',
+    backgroundColor: 'white',
+    boxShadow: 'md',
+  },
+  variants: {
+    size: {
+      sm: { padding: 2 },
+      md: { padding: 4 },
+      lg: { padding: 6 },
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+})
+
+// 2. Export it (src/theme/recipes/index.ts)
+import { cardRecipe } from '~/theme/recipes/card'
+export const recipes = {
+  // ... existing
+  card: cardRecipe,
+}
+
+// 3. Create the component (src/ui/card/styled.ts)
+import { styled } from '~/styled-system/jsx'
+import { card } from '~/styled-system/recipes'
+import type { ComponentProps } from '~/styled-system/types'
+
+export type CardProps = ComponentProps<typeof Card>
+export const Card = styled('div', card)
+
+// 4. Use it
+<Card size="lg">Content</Card>
+</code-snippet>
+
+
+=== summary ===
+
+## Summary
+
+- ✅ **Always use Panda CSS** for all styling
+- ✅ **Prioritize Config Recipes** when available
+- ✅ **Use Patterns** for layout
+- ✅ **Use Semantic Tokens** for theme-aware values
+- ✅ **Check MCP tools** before writing styles
+- ✅ **Use TypeScript types** from Panda
+- ❌ **Never use inline styles** or other CSS solutions
+- ❌ **Never use raw values** when tokens exist
+- ❌ **Never duplicate styles** - create recipes instead
+
+</panda-css-guidelines>
