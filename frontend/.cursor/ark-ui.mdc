@@ -6,362 +6,232 @@ alwaysApply: true
 
 # Ark UI Component Guidelines
 
-These guidelines apply to all TypeScript and TSX files in the `frontend` directory when implementing UI components. **Always use Ark UI for headless component logic** and pair it with **Panda CSS Recipes** for styling.
-
-## Foundational Context
-
-This application uses Ark UI as the headless component library and Panda CSS for styling. You are an expert with both and should use MCP tools to discover available Ark UI components, their composition, examples, and props before implementing.
+**Always use Ark UI for headless component logic** paired with **Panda CSS Recipes** for styling. Use MCP tools to discover components, composition, examples, and props before implementing.
 
 ## Core Principles
 
-- **Always use Ark UI MCP tools first** - Check component composition, examples, and props before implementing
-- **Pair with Panda CSS Recipes** - Use Panda CSS slot recipes for styling compound components, regular recipes for simple components
-- **Clear Separation of Concerns** - Ark UI handles logic/behavior, Panda CSS handles styling
-- **Use createContext for compound components** - When components have subcomponents (e.g., Avatar.Root, Avatar.Fallback), use `createContext` to expose styles
-- **Follow file structure conventions** - Use the established folder structure with `styled.tsx` and `index.ts`
+- **Use Ark UI MCP tools first** - Check component composition, examples, and props
+- **Pair with Panda CSS Recipes** - Slot recipes for compound components, regular recipes for simple components
+- **Use `createStyleContext`** for compound components (with subcomponents), `styled()` for simple components
+- **Use `Root` by default** - `RootProvider` only for hook-based control (rare)
+- **Use `asChild`** for trigger components with semantic components (Button, Link, etc.)
 
 
 === component discovery ===
 
-## Discovering Ark UI Components
+## MCP Tools Workflow
 
-Before implementing a component, always use Ark UI MCP tools:
-
-### Check Available Components
-
-Use `mcp_ark-ui_list_components` to see all available Ark UI components.
-
-### Check Component Composition
-
-Use `mcp_ark-ui_get_component_props` to understand:
-- What subcomponents exist (e.g., Root, Fallback, Image for Avatar)
-- What props each subcomponent accepts
-- The HTML element types used
-
-### Get Implementation Examples
-
-Use `mcp_ark-ui_list_examples` to see available examples for a component, then use `mcp_ark-ui_get_example` to get the actual implementation code.
-
-### Check Styling Data Attributes
-
-Use `mcp_ark-ui_styling_guide` to get data attributes available for styling each component part.
+1. `mcp_ark-ui_list_components` - Check available components
+2. `mcp_ark-ui_get_component_props` - Get exact subcomponent names and props
+3. `mcp_ark-ui_list_examples` + `mcp_ark-ui_get_example` - Get implementation examples
+4. `mcp_ark-ui_styling_guide` - Get data attributes for styling
 
 
 === file structure ===
 
-## File Structure for Compound Components
-
-For components with subcomponents (like Avatar, Dialog, Menu, etc.), use this structure:
-
-### Directory Structure
+## Component Structure
 
 ```
 component-name/
-  ├── styled.tsx    # Ark UI components wrapped with Panda CSS recipes
-  └── index.ts      # Exports with namespace pattern
+  ├── styled.tsx    # Ark UI + Panda CSS recipes
+  └── index.ts      # Namespace exports
 ```
 
-### styled.tsx Pattern
+### Compound Component Pattern
 
-**IMPORTANT**: Before writing this file, use `mcp_ark-ui_get_component_props` to discover the exact subcomponent names available for your component. Each Ark UI component has specific subcomponents - use those exact names, not generic placeholders.
-
-<code-snippet name="Compound Component with createContext" lang="tsx">
+<code-snippet name="Compound Component" lang="tsx">
 'use client'
 
 import { ComponentName as ArkComponentName } from '@ark-ui/react/component-name'
-import { createContext } from '@ark-ui/react'
 import type { ComponentProps } from 'react'
 
-import { styled } from '~/styled-system/jsx'
+import { createStyleContext } from '~/styled-system/jsx'
 import { componentName } from '~/styled-system/recipes'
 
-// Use mcp_ark-ui_get_component_props to discover the actual subcomponent names
-// Replace SubComponent1, SubComponent2, etc. with the actual names from Ark UI
-const { withProvider, withContext } = createContext(componentName)
+const { withProvider, withContext } = createStyleContext(componentName)
 
 export const Root = withProvider(ArkComponentName.Root, 'root')
-// Export each subcomponent using its exact name from Ark UI
-// Example: export const Fallback = withContext(ArkComponentName.Fallback, 'fallback')
-// Example: export const Image = withContext(ArkComponentName.Image, 'image')
-export const ActualSubComponent1 = withContext(ArkComponentName.ActualSubComponent1, 'actualSubComponent1')
-export const ActualSubComponent2 = withContext(ArkComponentName.ActualSubComponent2, 'actualSubComponent2')
+export const RootProvider = withContext(ArkComponentName.RootProvider, 'rootProvider')
+export const SubComponent = withContext(ArkComponentName.SubComponent, 'subComponent')
 
-export interface ComponentNameProps extends ComponentProps<typeof Root> {}
-export interface ComponentNameActualSubComponent1Props extends ComponentProps<typeof ActualSubComponent1> {}
-export interface ComponentNameActualSubComponent2Props extends ComponentProps<typeof ActualSubComponent2> {}
-</code-snippet>
+export type ComponentNameProps = ComponentProps<typeof Root>
+export type ComponentNameSubComponentProps = ComponentProps<typeof SubComponent>
 
-### index.ts Pattern
-
-<code-snippet name="Index Export Pattern" lang="tsx">
-export type {
-  ComponentNameProps,
-  ComponentNameActualSubComponent1Props,
-  ComponentNameActualSubComponent2Props,
-} from './styled'
-
+// index.ts
+export type { ComponentNameProps, ComponentNameSubComponentProps } from './styled'
 export * as ComponentName from './styled'
 </code-snippet>
 
-### Usage Pattern
-
-<code-snippet name="Component Usage" lang="tsx">
-import { ComponentName } from '~/ui/component-name'
-
-// Use the actual subcomponent names discovered from mcp_ark-ui_get_component_props
-<ComponentName.Root>
-  <ComponentName.ActualSubComponent1>Content</ComponentName.ActualSubComponent1>
-  <ComponentName.ActualSubComponent2>More content</ComponentName.ActualSubComponent2>
-</ComponentName.Root>
-</code-snippet>
-
-
-=== simple components ===
-
-## File Structure for Simple Components
-
-For components without subcomponents (like Button, Input, etc.), you don't need `createContext`. **Note**: Simple components use `ark.button`, `ark.input`, etc. from the factory - they don't have a `.Root` property.
-
-### styled.tsx Pattern (Simple Component)
+### Simple Component Pattern
 
 <code-snippet name="Simple Component" lang="tsx">
 'use client'
 
 import { ark } from '@ark-ui/react/factory'
-
 import { styled } from '~/styled-system/jsx'
 import { componentName } from '~/styled-system/recipes'
 import type { ComponentProps } from '~/styled-system/types'
 
 export type ComponentNameProps = ComponentProps<typeof ComponentName>
 export const ComponentName = styled(ark.button, componentName)
-</code-snippet>
 
-**Important**: Use `ark.button`, `ark.input`, `ark.div`, etc. from `@ark-ui/react/factory` - not a component import with `.Root`. Check `mcp_ark-ui_list_components` to see if a component has a full structure or should use the factory.
-
-### index.ts Pattern (Simple Component)
-
-<code-snippet name="Simple Component Export" lang="tsx">
+// index.ts
 export type { ComponentNameProps } from './styled'
 export { ComponentName } from './styled'
 </code-snippet>
 
-### Usage Pattern (Simple Component)
-
-<code-snippet name="Simple Component Usage" lang="tsx">
-import { ComponentName } from '~/ui/component-name'
-
-<ComponentName>Content</ComponentName>
-</code-snippet>
+**Note**: Simple components use `ark.button`, `ark.input`, etc. from `@ark-ui/react/factory` - they don't have `.Root`.
 
 
 === panda css integration ===
 
-## Integrating with Panda CSS
+## Recipe Patterns
 
-### Slot Recipes for Compound Components
+**Always use theme tokens** - Check `mcp_panda_get_semantic_tokens` for available tokens.
 
-When creating a Panda CSS recipe for a compound component, use slot recipes. **Always use theme tokens** instead of hardcoded values. Check `mcp_panda_get_semantic_tokens` and `mcp_panda_get_config` to discover available tokens.
+### Slot Recipe (Compound Components)
 
-<code-snippet name="Slot Recipe Definition" lang="tsx">
-// src/theme/recipes/avatar.ts
+<code-snippet name="Slot Recipe" lang="tsx">
 import { defineSlotRecipe } from '@pandacss/dev'
 
-export const avatarRecipe = defineSlotRecipe({
-  className: 'avatar',
-  slots: ['root', 'fallback', 'image'],
+export const componentRecipe = defineSlotRecipe({
+  className: 'component',
+  slots: ['root', 'subComponent'],
   base: {
-    root: {
-      // Root styles - use tokens instead of hardcoded values
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    fallback: {
-      // Fallback styles
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    image: {
-      // Image styles - use 'full' token instead of '100%'
-      width: 'full',
-      height: 'full',
-    },
+    root: { display: 'flex', padding: 4 },
+    subComponent: { color: 'text' },
   },
   variants: {
     size: {
-      sm: {
-        // Use spacing tokens (8 = 2rem) instead of hardcoded numbers
-        root: { width: 8, height: 8 },
-      },
-      md: {
-        // Use spacing tokens (10 = 2.5rem)
-        root: { width: 10, height: 10 },
-      },
-      lg: {
-        // Use spacing tokens (12 = 3rem)
-        root: { width: 12, height: 12 },
-      },
+      sm: { root: { padding: 2 } },
+      md: { root: { padding: 4 } },
     },
   },
-  defaultVariants: {
-    size: 'md',
-  },
+  defaultVariants: { size: 'md' },
 })
-</code-snippet>
 
-### Regular Recipes for Simple Components
-
-For simple components, use regular recipes. **Always use theme tokens** instead of hardcoded values. Check `mcp_panda_get_semantic_tokens` to discover available tokens.
-
-<code-snippet name="Regular Recipe" lang="tsx">
-// src/theme/recipes/button.ts
-import { defineRecipe } from '@pandacss/dev'
-
-export const buttonRecipe = defineRecipe({
-  className: 'button',
-  jsx: ['Button'],
-  base: {
-    display: 'flex',
-    // Use spacing tokens instead of hardcoded values
-    padding: 3, // Instead of '0.75rem' or '12px'
-    borderRadius: 'lg', // Use radius tokens
-    fontSize: 'body.md', // Use semantic font size tokens
-    fontWeight: 'medium', // Use font weight tokens
-    color: 'white', // Use color tokens
-    backgroundColor: 'black', // Use color tokens
-  },
-  variants: {
-    size: {
-      sm: {
-        padding: 2, // Use spacing tokens
-        fontSize: 'body.sm',
-      },
-      md: {
-        padding: 3,
-        fontSize: 'body.md',
-      },
-      lg: {
-        padding: 4,
-        fontSize: 'body.lg',
-      },
-    },
-  },
-})
-</code-snippet>
-
-### Export Slot Recipes
-
-Don't forget to export slot recipes in `src/theme/recipes/index.ts`:
-
-<code-snippet name="Export Slot Recipe" lang="tsx">
-import { avatarRecipe } from '~/theme/recipes/avatar'
-
+// Export in src/theme/recipes/index.ts
 export const slotRecipes = {
-  avatar: avatarRecipe,
-  // ... other slot recipes
+  component: componentRecipe,
 }
 </code-snippet>
 
+### Regular Recipe (Simple Components)
 
-=== implementation workflow ===
+<code-snippet name="Regular Recipe" lang="tsx">
+import { defineRecipe } from '@pandacss/dev'
 
-## Implementation Workflow
+export const componentRecipe = defineRecipe({
+  className: 'component',
+  jsx: ['Component'],
+  base: {
+    display: 'flex',
+    padding: 3,
+    fontSize: 'body.md',
+    color: 'text',
+  },
+  variants: {
+    size: {
+      sm: { padding: 2 },
+      md: { padding: 3 },
+    },
+  },
+})
+</code-snippet>
 
-When implementing a new Ark UI component:
 
-1. **Check Component Availability**
-   - Use `mcp_ark-ui_list_components` to verify the component exists
+=== best practices ===
 
-2. **Understand Component Composition**
-   - Use `mcp_ark-ui_get_component_props` to see all subcomponents
-   - **Note the exact subcomponent names** - you must use these precise names in your implementation
-   - Check if it's a compound component (has subcomponents) or simple component
-   - **For simple components**: They use `ark.button`, `ark.input`, etc. from `@ark-ui/react/factory` - not `.Root`
+## Critical Rules
 
-3. **Get Implementation Examples**
-   - Use `mcp_ark-ui_list_examples` to see available examples
-   - Use `mcp_ark-ui_get_example` to get actual code examples
+### 1. Use Exact Subcomponent Names
+Always use exact names from `mcp_ark-ui_get_component_props`. Match slot names exactly (camelCase).
 
-4. **Check Styling Attributes**
-   - Use `mcp_ark-ui_styling_guide` to see data attributes for styling
-   - These help with conditional styling based on component state
+### 2. Root vs RootProvider
+- **Use `Root`** (99% of cases) - Standard prop-based state management
+- **Use `RootProvider`** (rare) - Only when using hooks like `useDialog`, `useMenu` for fine-grained control
+- Always export both, but default to `Root`
 
-5. **Create Panda CSS Recipe**
-   - For compound components: Create a slot recipe with slots matching subcomponent names
-   - For simple components: Create a regular recipe
-   - Check `mcp_panda_get_recipes` to see if a recipe already exists
-   - **Use theme tokens** instead of hardcoded values:
-     - Spacing tokens for padding, margin, width, height
-     - Color tokens for colors
-     - Size tokens for dimensions
-     - Semantic tokens when available
+### 3. Use `asChild` for Triggers
+Always use `asChild` with semantic components (Button, Link) for trigger components:
 
-6. **Create Component Files**
-   - Create `component-name/styled.tsx` following the appropriate pattern
-   - **Use the exact subcomponent names** from step 2 - do not use generic placeholders
-   - Use `createContext` for compound components, simple export for simple components
-   - Create `component-name/index.ts` with proper exports
+<code-snippet name="asChild Pattern" lang="tsx">
+// ✅ Good
+<Dialog.Trigger asChild>
+  <Button>Open</Button>
+</Dialog.Trigger>
 
-7. **Test and Verify**
-   - Ensure the component works with all variants
-   - Verify styling is applied correctly to all parts
+// ❌ Bad
+<Dialog.Trigger>
+  <Box as="button">Open</Box>
+</Dialog.Trigger>
+</code-snippet>
+
+### 4. Always Export Types
+Export TypeScript types for all component props.
+
+### 5. Use 'use client' Directive
+Always include `'use client'` in `styled.tsx` files.
+
+### 6. Use Theme Tokens
+- Spacing: `0`, `1`, `2`, `4`, `8`, etc. (not `'16px'`)
+- Sizes: `'full'` (not `'100%'`)
+- Colors: token names (not hex/rgb)
+- Check `mcp_panda_get_recipes` before creating new recipes
 
 
 === examples ===
 
 ## Complete Examples
 
-### Avatar Component (Compound Component)
+### Dialog (Compound Component)
 
-<code-snippet name="Avatar styled.tsx" lang="tsx">
+<code-snippet name="Dialog styled.tsx" lang="tsx">
 'use client'
 
-import { Avatar as ArkAvatar } from '@ark-ui/react/avatar'
-import { createContext } from '@ark-ui/react'
+import { Dialog as ArkDialog } from '@ark-ui/react/dialog'
 import type { ComponentProps } from 'react'
+import { createStyleContext } from '~/styled-system/jsx'
+import { dialog } from '~/styled-system/recipes'
 
-import { styled } from '~/styled-system/jsx'
-import { avatar } from '~/styled-system/recipes'
+const { withProvider, withContext } = createStyleContext(dialog)
 
-const { withProvider, withContext } = createContext(avatar)
+export const Root = withProvider(ArkDialog.Root, 'root')
+export const RootProvider = withContext(ArkDialog.RootProvider, 'rootProvider')
+export const Trigger = withContext(ArkDialog.Trigger, 'trigger')
+export const Content = withContext(ArkDialog.Content, 'content')
+export const Title = withContext(ArkDialog.Title, 'title')
+export const Description = withContext(ArkDialog.Description, 'description')
+export const CloseTrigger = withContext(ArkDialog.CloseTrigger, 'closeTrigger')
 
-export const Root = withProvider(ArkAvatar.Root, 'root')
-export const Fallback = withContext(ArkAvatar.Fallback, 'fallback')
-export const Image = withContext(ArkAvatar.Image, 'image')
-
-export interface AvatarProps extends ComponentProps<typeof Root> {}
-export interface AvatarFallbackProps extends ComponentProps<typeof Fallback> {}
-export interface AvatarImageProps extends ComponentProps<typeof Image> {}
+export type DialogProps = ComponentProps<typeof Root>
+// ... other types
 </code-snippet>
 
-<code-snippet name="Avatar index.ts" lang="tsx">
-export type {
-  AvatarProps,
-  AvatarFallbackProps,
-  AvatarImageProps,
-} from './styled'
+<code-snippet name="Dialog Usage" lang="tsx">
+import { Dialog } from '~/ui/dialog'
+import { Button } from '~/ui/button'
 
-export * as Avatar from './styled'
+<Dialog.Root>
+  <Dialog.Trigger asChild>
+    <Button>Open</Button>
+  </Dialog.Trigger>
+  <Dialog.Content>
+    <Dialog.Title>Title</Dialog.Title>
+    <Dialog.Description>Description</Dialog.Description>
+    <Dialog.CloseTrigger asChild>
+      <Button>Close</Button>
+    </Dialog.CloseTrigger>
+  </Dialog.Content>
+</Dialog.Root>
 </code-snippet>
 
-<code-snippet name="Avatar Usage" lang="tsx">
-import { Avatar } from '~/ui/avatar'
-
-<Avatar.Root size="md">
-  <Avatar.Fallback>PA</Avatar.Fallback>
-  <Avatar.Image src="https://example.com/avatar.jpg" alt="User avatar" />
-</Avatar.Root>
-</code-snippet>
-
-### Button Component (Simple Component)
+### Button (Simple Component)
 
 <code-snippet name="Button styled.tsx" lang="tsx">
 'use client'
 
 import { ark } from '@ark-ui/react/factory'
-
 import { styled } from '~/styled-system/jsx'
 import { button } from '~/styled-system/recipes'
 import type { ComponentProps } from '~/styled-system/types'
@@ -370,160 +240,26 @@ export type ButtonProps = ComponentProps<typeof Button>
 export const Button = styled(ark.button, button)
 </code-snippet>
 
-<code-snippet name="Button index.ts" lang="tsx">
-export type { ButtonProps } from './styled'
-export { Button } from './styled'
-</code-snippet>
-
-<code-snippet name="Button Usage" lang="tsx">
-import { Button } from '~/ui/button'
-
-<Button size="md">Click me</Button>
-</code-snippet>
-
-
-=== best practices ===
-
-## Best Practices
-
-### 1. Always Check MCP Tools First
-
-Before implementing any component:
-- Check if it exists in Ark UI
-- Understand its composition
-- Review examples
-- Check styling attributes
-
-### 2. Use createContext Only for Compound Components
-
-- **Use `createContext`**: When component has subcomponents (Avatar, Dialog, Menu, etc.)
-- **Don't use `createContext`**: When component is simple (Button, Input, etc.)
-- **Simple components**: Use `ark.button`, `ark.input`, etc. from `@ark-ui/react/factory` - they don't have `.Root`
-
-### 3. Use Exact Subcomponent Names
-
-**Critical**: Always use the exact subcomponent names from Ark UI. Check `mcp_ark-ui_get_component_props` to see the actual names:
-- For Avatar: `Root`, `Fallback`, `Image` (not generic names)
-- For Dialog: `Root`, `Trigger`, `Content`, `Title`, `Description`, `CloseTrigger`
-- Each component has its own specific subcomponents - use those exact names
-
-When creating slot recipes, ensure slot names match the subcomponent names exactly (lowercase, camelCase):
-- `Avatar.Root` → slot: `'root'`
-- `Avatar.Fallback` → slot: `'fallback'`
-- `Avatar.Image` → slot: `'image'`
-
-### 4. Always Export Types
-
-Export TypeScript interfaces for all component props to maintain type safety. Use the actual subcomponent names:
-
-<code-snippet name="Export Types" lang="tsx">
-export interface ComponentNameProps extends ComponentProps<typeof Root> {}
-// Use the actual subcomponent name, e.g.:
-export interface ComponentNameFallbackProps extends ComponentProps<typeof Fallback> {}
-export interface ComponentNameImageProps extends ComponentProps<typeof Image> {}
-</code-snippet>
-
-### 5. Use Namespace Pattern for Compound Components
-
-For compound components, use the namespace export pattern:
-
-<code-snippet name="Namespace Export" lang="tsx">
-export * as ComponentName from './styled'
-</code-snippet>
-
-This allows usage like `<ComponentName.Root>` instead of importing each part separately.
-
-### 6. Keep 'use client' Directive
-
-Always include `'use client'` at the top of `styled.tsx` files since Ark UI components are client components.
-
-### 7. Pair with Panda CSS Recipes
-
-- Use slot recipes for compound components
-- Use regular recipes for simple components
-- Always check if a recipe exists before creating a new one
-- **Always use theme tokens** instead of hardcoded values:
-  - Use spacing tokens (`0`, `1`, `2`, `4`, `8`, `10`, `12`, etc.) instead of `'16px'`, `'2rem'`
-  - Use `'full'` token instead of `'100%'`
-  - Use size tokens for dimensions
-  - Use color tokens instead of hex/rgb values
-  - Use semantic tokens when available (check `mcp_panda_get_semantic_tokens`)
-
-### 8. Follow Ark UI Patterns
-
-When Ark UI provides a specific pattern (like `RootProvider`), follow it. Check examples to see how to use it correctly.
-
-
-=== common patterns ===
-
-## Common Patterns
-
-### Dialog Component Pattern
-
-<code-snippet name="Dialog Pattern" lang="tsx">
-'use client'
-
-import { Dialog as ArkDialog } from '@ark-ui/react/dialog'
-import { createContext } from '@ark-ui/react'
-import type { ComponentProps } from 'react'
-
-import { styled } from '~/styled-system/jsx'
-import { dialog } from '~/styled-system/recipes'
-
-const { withProvider, withContext } = createContext(dialog)
-
-export const Root = withProvider(ArkDialog.Root, 'root')
-export const Trigger = withContext(ArkDialog.Trigger, 'trigger')
-export const Content = withContext(ArkDialog.Content, 'content')
-export const Title = withContext(ArkDialog.Title, 'title')
-export const Description = withContext(ArkDialog.Description, 'description')
-export const CloseTrigger = withContext(ArkDialog.CloseTrigger, 'closeTrigger')
-
-export interface DialogProps extends ComponentProps<typeof Root> {}
-// ... other prop interfaces
-</code-snippet>
-
-### Menu Component Pattern
-
-<code-snippet name="Menu Pattern" lang="tsx">
-'use client'
-
-import { Menu as ArkMenu } from '@ark-ui/react/menu'
-import { createContext } from '@ark-ui/react'
-import type { ComponentProps } from 'react'
-
-import { styled } from '~/styled-system/jsx'
-import { menu } from '~/styled-system/recipes'
-
-const { withProvider, withContext } = createContext(menu)
-
-export const Root = withProvider(ArkMenu.Root, 'root')
-export const Trigger = withContext(ArkMenu.Trigger, 'trigger')
-export const Content = withContext(ArkMenu.Content, 'content')
-export const Item = withContext(ArkMenu.Item, 'item')
-export const ItemGroup = withContext(ArkMenu.ItemGroup, 'itemGroup')
-export const ItemGroupLabel = withContext(ArkMenu.ItemGroupLabel, 'itemGroupLabel')
-
-export interface MenuProps extends ComponentProps<typeof Root> {}
-// ... other prop interfaces
-</code-snippet>
-
 
 === summary ===
 
-## Summary
+## Quick Reference
 
-- ✅ **Always use Ark UI MCP tools** to discover components, examples, and props
-- ✅ **Pair with Panda CSS Recipes** - slot recipes for compound components, regular recipes for simple components
-- ✅ **Use createContext** for compound components with subcomponents
-- ✅ **Follow file structure** - `styled.tsx` with Ark UI + Panda CSS, `index.ts` with namespace exports
-- ✅ **Export types** for all component props
-- ✅ **Use 'use client'** directive in styled.tsx files
-- ✅ **Match slot names** exactly with subcomponent names
-- ✅ **Use exact subcomponent names** from Ark UI (check with `mcp_ark-ui_get_component_props`)
-- ❌ **Don't use generic placeholders** like SubComponent1, SubComponent2 - use actual names
-- ❌ **Don't use createContext** for simple components
-- ❌ **Don't skip MCP tools** - always check component composition first
-- ❌ **Don't create recipes** without checking if they already exist
+**Do:**
+- ✅ Use MCP tools to discover components first
+- ✅ Use `Root` for standard usage (99% of cases)
+- ✅ Use `asChild` with Button/Link for triggers
+- ✅ Use exact subcomponent names from Ark UI
+- ✅ Use theme tokens (spacing, colors, sizes)
+- ✅ Export types for all props
+- ✅ Use `'use client'` in styled.tsx
+
+**Don't:**
+- ❌ Use `RootProvider` unless you need hook-based control
+- ❌ Use generic placeholders - use exact names
+- ❌ Use `Box as="button"` - use `asChild` with Button
+- ❌ Use `createStyleContext` for simple components
+- ❌ Skip MCP tools - always check composition first
+- ❌ Create recipes without checking if they exist
 
 </ark-ui-guidelines>

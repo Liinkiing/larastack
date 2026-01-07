@@ -129,6 +129,25 @@ export const recipes = {
 }
 </code-snippet>
 
+### Regenerating Panda CSS After Recipe Changes
+
+**IMPORTANT**: After creating, updating, or removing a recipe, you must run the Panda CSS codegen command to regenerate the styled-system:
+
+```bash
+pnpm --filter="frontend" run gen:panda
+```
+
+This ensures that:
+- New recipes are available in `~/styled-system/recipes`
+- TypeScript types are updated
+- The styled-system is in sync with your recipe definitions
+
+**Always run `gen:panda` after:**
+- Creating a new recipe file
+- Modifying an existing recipe (variants, base styles, etc.)
+- Removing a recipe
+- Updating recipe exports in `src/theme/recipes/index.ts`
+
 
 === patterns ===
 
@@ -358,6 +377,15 @@ Use `mcp_panda_get_conditions` to check what conditions are available for respon
 2. **Need layout?** → Check `mcp_panda_get_patterns` → Use appropriate pattern (e.g., `VStack`, `HStack`, `Grid`)
 3. **Need colors or tokens?** → Check `mcp_panda_get_semantic_tokens` → Use semantic tokens when available
 4. **Need responsive/state styling?** → Check `mcp_panda_get_conditions` → Use appropriate conditions
+
+### Recipe Creation Workflow
+
+When creating or modifying recipes:
+
+1. **Create/Update Recipe** → Define recipe in `src/theme/recipes/[name].ts`
+2. **Export Recipe** → Add to `src/theme/recipes/index.ts` (in `recipes` or `slotRecipes`)
+3. **Run Codegen** → Execute `pnpm --filter="frontend" run gen:panda` to regenerate styled-system
+4. **Use Recipe** → Import from `~/styled-system/recipes` in your components
 
 
 === examples ===
