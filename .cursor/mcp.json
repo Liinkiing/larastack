@@ -9,7 +9,6 @@
       "args": ["-y", "@ark-ui/mcp"]
     },
     "panda": {
-      "cwd": "${workspaceFolder}/frontend",
       "command": "pnpm",
       "args": ["--filter", "frontend", "exec", "panda", "mcp"]
     }
