@@ -37,7 +37,6 @@ export const apolloClient = new ApolloClient({
   defaultOptions: {
     query: {
       fetchPolicy: 'cache-first',
-      notifyOnNetworkStatusChange: true,
     },
   },
   devtools: {

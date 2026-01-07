@@ -21,7 +21,7 @@ export const GenericErrorLayout: FC<Props> = ({ message, ...props }) => {
             <Text as="pre">{message}</Text>
           </code>
         ) : null}
-        <Button onClick={() => window.location.reload()}>Recharger</Button>
+        <Button onClick={() => globalThis.location.reload()}>Recharger</Button>
       </VStack>
     </FullPageCenterLayout>
   )

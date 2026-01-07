@@ -90,6 +90,8 @@ const nextConfig: NextConfig = {
     maxInactiveAge: 1000 * 60 * 60,
   },
 
+  reactCompiler: true,
+
   reactStrictMode: true,
 
   async rewrites() {

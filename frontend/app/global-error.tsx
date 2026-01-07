@@ -13,7 +13,7 @@ const GlobalError: ErrorComponent = ({ reset }) => (
           if (reset) {
             reset()
           } else {
-            window.location.reload()
+            globalThis.location.reload()
           }
         }}
       >

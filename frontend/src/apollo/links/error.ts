@@ -17,7 +17,6 @@ export default new ErrorLink(({ graphQLErrors }) => {
       .includes(DENIED_MESSAGE) &&
     compilerEnv.__DEV__
   ) {
-    // eslint-disable-next-line no-console
     console.warn('Tried to access to a ressource which does not seems to belong to the logged in user. Forbid it.')
   }
   if (graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].message) {
@@ -49,7 +48,6 @@ ${JSON.stringify(relevantMessages, null, 2)}
       throw new Error(message)
     }
 
-    // eslint-disable-next-line no-alert
     window.alert(message)
   }
 })

@@ -1,6 +1,6 @@
 'use client'
 
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client/react'
 import { runIfFn } from '@zag-js/utils'
 import type { FC, ReactNode } from 'react'
 import { createContext, useMemo } from 'react'
@@ -46,7 +46,7 @@ export const AuthProvider: FC<Props> = ({ children, mode }) => {
   }
 
   if (!AuthService.isLoggedIn && mode === 'authenticated') {
-    const redirectUrl = `${LOGIN_URL}?return_to=${encodeURIComponent(window.location.pathname)}`
+    const redirectUrl = `${LOGIN_URL}?return_to=${encodeURIComponent(globalThis.location.pathname)}`
     return <Redirect to={redirectUrl} />
   }
 
