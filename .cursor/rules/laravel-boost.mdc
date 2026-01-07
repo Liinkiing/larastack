@@ -1,5 +1,7 @@
 ---
-alwaysApply: true
+description: Guidelines for using Laravel Boost and Laravel best practices
+alwaysApply: false
+globs: ["backend/**"]
 ---
 <laravel-boost-guidelines>
 === foundation rules ===
