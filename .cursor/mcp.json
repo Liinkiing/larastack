@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "laravel-boost": {
+      "command": "docker",
+      "args": ["exec", "-i", "larastack-app-1", "php", "/var/www/html/artisan", "boost:mcp"]
+    },
+    "ark-ui": {
+      "command": "npx",
+      "args": ["-y", "@ark-ui/mcp"]
+    }
+  }
+}
