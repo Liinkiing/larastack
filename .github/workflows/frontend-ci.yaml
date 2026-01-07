@@ -95,5 +95,5 @@ jobs:
 
       - name: Run build
         run: |
-          pnpm --filter "./frontend" build --no-lint
+          pnpm --filter "./frontend" build
 
