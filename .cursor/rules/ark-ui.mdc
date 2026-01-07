@@ -1,5 +1,7 @@
 ---
-alwaysApply: true
+description: Guidelines for using Ark UI components with Panda CSS
+alwaysApply: false
+globs: ["frontend/**"]
 ---
 <ark-ui-guidelines>
 === foundation rules ===

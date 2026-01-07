@@ -1,5 +1,7 @@
 ---
-alwaysApply: true
+description: Guidelines for using Panda CSS styling
+alwaysApply: false
+globs: ["frontend/**"]
 ---
 <panda-css-guidelines>
 === foundation rules ===
