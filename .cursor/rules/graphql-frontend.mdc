@@ -1,0 +1,178 @@
+---
+description: GraphQL conventions for Apollo Client with colocated fragments
+alwaysApply: false
+globs: ["frontend/**"]
+---
+<graphql-frontend-guidelines>
+=== foundation rules ===
+
+# GraphQL Frontend Guidelines
+
+These guidelines apply to all GraphQL usage in the `frontend` directory. This project uses Apollo Client with GraphQL Codegen and colocated fragments (Relay-style conventions).
+
+## Core Principles
+
+- **Colocate fragments** - Every component that renders GraphQL data declares its own fragment in the same file
+- **One query per page** - NextJS pages have ONE query spreading all child fragments
+- **Use useSuspenseQuery** - Loading states handled by `loading.tsx`, not inline
+- **Data masking enforced** - Components only access data declared in their fragment
+- **Custom useFragment hook** - Always use `~/shared/hooks` version
+
+
+=== colocated fragments ===
+
+## Colocated Fragments (Relay Convention)
+
+Components should only access data declared in their fragment—never receive fields beyond what the fragment specifies.
+
+**Fragment Naming:** `{ComponentName}_{typeName}`
+
+<code-snippet name="Colocated Fragment Component" lang="tsx">
+import type { FC } from 'react'
+import type { FragmentType } from '~/__generated__/gql'
+import { graphql } from '~/__generated__/gql'
+import { useFragment } from '~/shared/hooks'
+
+const fragment = graphql(`
+  fragment ActiveQuizCard_quiz on Quiz {
+    id
+    title
+    description
+  }
+`)
+
+interface Props {
+  quiz: FragmentType<typeof fragment>
+}
+
+export const ActiveQuizCard: FC<Props> = ({ quiz: quizFragment }) => {
+  const quiz = useFragment({ fragment, from: quizFragment })
+  return <div>{quiz.title}</div>
+}
+</code-snippet>
+
+### Key Rules
+
+- Fragment names must be globally unique and prefixed with component name
+- Use `FragmentType<typeof fragment>` for prop typing (enforces data masking)
+- Always use custom `useFragment` hook from `~/shared/hooks`
+- Every field in a fragment must be used by the component (no ghost fields)
+- Do NOT share fragments between components—each component owns its data requirements
+
+
+=== page queries ===
+
+## Page-Level Queries
+
+Each NextJS page should have ONE query that spreads all child fragments. Parent queries compose child fragments—never duplicate field selections.
+
+<code-snippet name="Page Query with Fragment Spreads" lang="tsx">
+'use client'
+
+import { useSuspenseQuery } from '@apollo/client'
+import { graphql } from '~/__generated__/gql'
+import { HomeQueryDocument } from '~/__generated__/gql/graphql'
+
+graphql(`
+  query HomeQuery {
+    activeQuizzes {
+      id
+      ...ActiveQuizCard_quiz
+    }
+  }
+`)
+
+export default function Home() {
+  const { data } = useSuspenseQuery(HomeQueryDocument)
+  return data.activeQuizzes.map(quiz => <ActiveQuizCard key={quiz.id} quiz={quiz} />)
+}
+</code-snippet>
+
+### Key Rules
+
+- Use `useSuspenseQuery` (NOT `useQuery`)—loading handled by `loading.tsx`
+- Always include `'use client'` directive
+- Always include `id` field on entities with fragment spreads
+- Import generated document types from `~/__generated__/gql/graphql`
+
+
+=== loading states ===
+
+## Loading States
+
+Handle loading via NextJS `loading.tsx` file—no inline loading states.
+
+<code-snippet name="Loading File" lang="tsx">
+// app/(public)/loading.tsx
+export default function Loading() {
+  return <LoadingSpinner />
+}
+</code-snippet>
+
+<code-snippet name="Bad: Inline Loading" lang="tsx">
+// ❌ Never do this
+const { data, loading } = useQuery(...)
+if (loading) return <LoadingSpinner />
+</code-snippet>
+
+
+=== imports ===
+
+## Import Patterns
+
+<code-snippet name="Standard GraphQL Imports" lang="tsx">
+import { graphql } from '~/__generated__/gql'
+import type { FragmentType } from '~/__generated__/gql'
+import { SomeQueryDocument } from '~/__generated__/gql/graphql'
+import { useSuspenseQuery, useMutation } from '@apollo/client'
+import { useFragment } from '~/shared/hooks'  // Always use this custom hook
+</code-snippet>
+
+
+=== mutations ===
+
+## Mutations
+
+Return minimal fields; use fragment spreads for cache updates:
+
+<code-snippet name="Mutation with Fragment" lang="tsx">
+import { useMutation } from '@apollo/client'
+import { graphql } from '~/__generated__/gql'
+import { CreateQuizDocument } from '~/__generated__/gql/graphql'
+
+graphql(`
+  mutation CreateQuiz($input: CreateQuizInput!) {
+    createQuiz(input: $input) {
+      id
+      ...ActiveQuizCard_quiz
+    }
+  }
+`)
+
+const [createQuiz] = useMutation(CreateQuizDocument)
+</code-snippet>
+
+
+=== codegen ===
+
+## Code Generation
+
+Run after any GraphQL changes:
+
+```bash
+cd frontend && pnpm run gen:gql
+```
+
+
+=== checklist ===
+
+## Checklist
+
+- ✅ Fragment colocated with component (naming: `ComponentName_typeName`)
+- ✅ Every fragment field is used by the component
+- ✅ Page query spreads all child fragments
+- ✅ Using `useSuspenseQuery` + `loading.tsx` for loading states
+- ✅ Using custom `useFragment` from `~/shared/hooks`
+- ✅ Ran `pnpm run gen:gql` after changes
+
+</graphql-frontend-guidelines>
