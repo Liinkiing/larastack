@@ -1,4 +1,5 @@
-import { ErrorLink } from 'apollo-link-error'
+import { CombinedGraphQLErrors } from '@apollo/client/errors'
+import { ErrorLink } from '@apollo/client/link/error'
 
 import { compilerEnv } from '~/shared/env'
 
@@ -7,47 +8,58 @@ const INTERNAL_ERRORS_MESSAGES = new Set(['Internal server error', 'Internal ser
 
 const DENIED_MESSAGE = 'Unauthenticated.'
 
-export default new ErrorLink(({ graphQLErrors }) => {
-  if (
-    graphQLErrors &&
-    graphQLErrors
-      .filter(gqlError => !gqlError.path?.includes('viewer'))
-      .map(gqlError => gqlError.message)
-      .join(', ')
-      .includes(DENIED_MESSAGE) &&
-    compilerEnv.__DEV__
-  ) {
-    console.warn('Tried to access to a ressource which does not seems to belong to the logged in user. Forbid it.')
-  }
-  if (graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].message) {
-    const error = graphQLErrors[0]
-    let message = 'debugMessage' in error ? (error as any).debugMessage : error.message
-    if (INTERNAL_ERRORS_MESSAGES.has(message.toLowerCase())) {
-      message = INTERNAL_ERROR_FALLBACK_MESSAGE
-    }
+export default new ErrorLink(({ error }) => {
+  if (CombinedGraphQLErrors.is(error)) {
+    const graphQLErrors = error.errors
 
     if (
-      error.extensions &&
-      error.extensions.category === 'validation' &&
-      'validation' in error.extensions &&
-      typeof error.extensions.validation === 'object'
+      graphQLErrors
+        .filter(gqlError => !gqlError.path?.includes('viewer'))
+        .map(gqlError => gqlError.message)
+        .join(', ')
+        .includes(DENIED_MESSAGE) &&
+      compilerEnv.__DEV__
     ) {
-      message = Object.entries(error.extensions.validation as Record<string, string>)
-        .flatMap(([, value]) => value)
-        .map(v => v.replace('input.', ''))
-        .join('\r\n')
+      console.warn('Tried to access to a ressource which does not seems to belong to the logged in user. Forbid it.')
     }
 
-    if (compilerEnv.__DEV__ && error.extensions && 'debugMessage' in error.extensions && 'trace' in error.extensions) {
-      const relevantMessages = (error.extensions as any).trace.filter((t: any) => t.call && t.call.startsWith('App'))
+    if (graphQLErrors.length > 0 && graphQLErrors[0].message) {
+      const gqlError = graphQLErrors[0]
+      let message = 'debugMessage' in gqlError ? (gqlError as any).debugMessage : gqlError.message
+      if (INTERNAL_ERRORS_MESSAGES.has(message.toLowerCase())) {
+        message = INTERNAL_ERROR_FALLBACK_MESSAGE
+      }
 
-      message = `
-${error.extensions.debugMessage}
+      if (
+        gqlError.extensions &&
+        gqlError.extensions.category === 'validation' &&
+        'validation' in gqlError.extensions &&
+        typeof gqlError.extensions.validation === 'object'
+      ) {
+        message = Object.entries(gqlError.extensions.validation as Record<string, string>)
+          .flatMap(([, value]) => value)
+          .map(v => v.replace('input.', ''))
+          .join('\r\n')
+      }
+
+      if (
+        compilerEnv.__DEV__ &&
+        gqlError.extensions &&
+        'debugMessage' in gqlError.extensions &&
+        'trace' in gqlError.extensions
+      ) {
+        const relevantMessages = (gqlError.extensions as any).trace.filter(
+          (t: any) => t.call && t.call.startsWith('App'),
+        )
+
+        message = `
+${gqlError.extensions.debugMessage}
 ${JSON.stringify(relevantMessages, null, 2)}
 `
-      throw new Error(message)
-    }
+        throw new Error(message)
+      }
 
-    window.alert(message)
+      window.alert(message)
+    }
   }
 })

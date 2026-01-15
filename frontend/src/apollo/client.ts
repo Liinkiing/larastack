@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/prefer-node-protocol */
-import { ApolloClient, from, InMemoryCache } from '@apollo/client'
-import { createUploadLink } from 'apollo-upload-client'
+import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client'
+import UploadHttpLink from 'apollo-upload-client/UploadHttpLink.mjs'
 import * as http from 'http'
 import * as https from 'https'
 import Cookies from 'js-cookie'
@@ -19,12 +19,12 @@ const customFetch: typeof fetch = (uri, options) => {
   return fetch(uri, options)
 }
 
-const httpLink = createUploadLink({
+const httpLink = new UploadHttpLink({
   credentials: 'include',
   fetch: customFetch,
   fetchOptions: {
     agent: compilerEnv.__DEV__ ? new http.Agent() : new https.Agent({ rejectUnauthorized: !compilerEnv.__DEV__ }),
-  },
+  } as RequestInit,
   uri: compilerEnv.__USE_BACKEND_PROXY__ ? '/api/graphql' : process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
 })
 
@@ -43,6 +43,6 @@ export const apolloClient = new ApolloClient({
     enabled: compilerEnv.__DEV__,
     name: process.env.NEXT_PUBLIC_APP_NAME,
   },
-  link: from([errorLink as any, httpLink]),
+  link: ApolloLink.from([errorLink, httpLink]),
   ssrMode: typeof window === 'undefined',
 })
