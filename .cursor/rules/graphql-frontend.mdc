@@ -69,7 +69,7 @@ Each NextJS page should have ONE query that spreads all child fragments. Parent 
 <code-snippet name="Page Query with Fragment Spreads" lang="tsx">
 'use client'
 
-import { useSuspenseQuery } from '@apollo/client'
+import { useSuspenseQuery } from '@apollo/client/react'
 import { graphql } from '~/__generated__/gql'
 import { HomeQueryDocument } from '~/__generated__/gql/graphql'
 
@@ -124,7 +124,7 @@ if (loading) return <LoadingSpinner />
 import { graphql } from '~/__generated__/gql'
 import type { FragmentType } from '~/__generated__/gql'
 import { SomeQueryDocument } from '~/__generated__/gql/graphql'
-import { useSuspenseQuery, useMutation } from '@apollo/client'
+import { useSuspenseQuery, useMutation } from '@apollo/client/react'
 import { useFragment } from '~/shared/hooks'  // Always use this custom hook
 </code-snippet>
 
@@ -136,7 +136,7 @@ import { useFragment } from '~/shared/hooks'  // Always use this custom hook
 Return minimal fields; use fragment spreads for cache updates:
 
 <code-snippet name="Mutation with Fragment" lang="tsx">
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client/react'
 import { graphql } from '~/__generated__/gql'
 import { CreateQuizDocument } from '~/__generated__/gql/graphql'
 
