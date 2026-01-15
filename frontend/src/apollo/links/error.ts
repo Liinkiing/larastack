@@ -8,7 +8,7 @@ const INTERNAL_ERRORS_MESSAGES = new Set(['Internal server error', 'Internal ser
 
 const DENIED_MESSAGE = 'Unauthenticated.'
 
-export default new ErrorLink(({ error }) => {
+export default new ErrorLink(({ error, forward, operation }) => {
   if (CombinedGraphQLErrors.is(error)) {
     const graphQLErrors = error.errors
 
@@ -51,15 +51,15 @@ export default new ErrorLink(({ error }) => {
         const relevantMessages = (gqlError.extensions as any).trace.filter(
           (t: any) => t.call && t.call.startsWith('App'),
         )
-
-        message = `
+        console.error(`GraphQL Error:
 ${gqlError.extensions.debugMessage}
 ${JSON.stringify(relevantMessages, null, 2)}
-`
-        throw new Error(message)
+`)
+      } else {
+        window.alert(message)
       }
-
-      window.alert(message)
     }
   }
+
+  return forward(operation)
 })
