@@ -26,7 +26,7 @@ jobs:
         uses: actions/cache@v4
         id: cache-dependencies
         with:
-          path: ~/.composer/cache/files
+          path: ~/.cache/composer/files
           key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}-${{ hashFiles('.github/.ci-cache') }}
           restore-keys: |
             ${{ runner.os }}-composer-
@@ -51,7 +51,7 @@ jobs:
         uses: actions/cache@v4
         id: cache-dependencies
         with:
-          path: ~/.composer/cache/files
+          path: ~/.cache/composer/files
           key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}-${{ hashFiles('.github/.ci-cache') }}
           restore-keys: |
             ${{ runner.os }}-composer-
