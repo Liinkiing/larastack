@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { FlatCompat } from '@eslint/eslintrc'
 import liinkiingConfig from '@liinkiing/eslint-config/next.js'
 import sortKeysFix from 'eslint-plugin-sort-keys-fix'
+import storybook from 'eslint-plugin-storybook'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -96,4 +97,5 @@ export default [
       },
     },
   })),
+  ...storybook.configs['flat/recommended'],
 ]

@@ -1,12 +1,17 @@
 import '../app/index.css'
 
-import type { Preview } from '@storybook/react'
+// @ts-ignore
+import type { Preview } from '@storybook/nextjs-vite'
+
 import { fonts } from '../app/fonts'
 
 const preview: Preview = {
   decorators: [
     Story => (
-      <div className={`${fonts.geistSans.variable} ${fonts.geistMono.variable}`} style={{ display: 'contents' }}>
+      <div
+        className={`${fonts.body.variable} ${fonts.display.variable} ${fonts.mono.variable}`}
+        style={{ display: 'contents' }}
+      >
         <Story />
       </div>
     ),
@@ -19,6 +24,7 @@ const preview: Preview = {
       },
     },
   },
+  tags: ['autodocs'],
 }
 
 export default preview
