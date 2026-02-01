@@ -7,7 +7,7 @@ export const textRecipe = defineRecipe({
   },
   jsx: ['Text'],
   base: {
-    fontFamily: 'geistSans',
+    fontFamily: 'body',
     color: 'current',
   },
   staticCss: ['*'],

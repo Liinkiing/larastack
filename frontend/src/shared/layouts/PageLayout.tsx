@@ -1,5 +1,19 @@
-import { Grid } from '~/styled-system/jsx'
+import type { FC } from 'react'
 
-export const PageLayout: typeof Grid = props => {
-  return <Grid placeItems="center" {...props} />
+import type { BoxProps } from '~/styled-system/jsx'
+import { Box } from '~/styled-system/jsx'
+
+export const PageLayout: FC<BoxProps> = props => {
+  return (
+    <Box
+      as="main"
+      maxW="1200px"
+      minH="calc(100vh - 96px)"
+      mx="auto"
+      px={{ base: 5, md: 10 }}
+      py={{ base: 10, md: 16 }}
+      w="full"
+      {...props}
+    />
+  )
 }

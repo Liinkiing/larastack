@@ -5,16 +5,19 @@ export const textStyles = defineTextStyles({
     lg: {
       value: {
         fontSize: 'body.lg',
+        lineHeight: '1.7',
       },
     },
     md: {
       value: {
         fontSize: 'body.md',
+        lineHeight: '1.65',
       },
     },
     sm: {
       value: {
         fontSize: 'body.sm',
+        lineHeight: '1.6',
       },
     },
   },
@@ -25,7 +28,9 @@ export const textStyles = defineTextStyles({
           base: 'heading.mobile.2xl',
           sm: 'heading.desktop.2xl',
         },
-        fontWeight: 'bold',
+        fontWeight: '600',
+        letterSpacing: '-0.03em',
+        lineHeight: '1.05',
       },
     },
     h2: {
@@ -34,7 +39,9 @@ export const textStyles = defineTextStyles({
           base: 'heading.mobile.lg',
           sm: 'heading.desktop.lg',
         },
-        fontWeight: 'bold',
+        fontWeight: '600',
+        letterSpacing: '-0.025em',
+        lineHeight: '1.1',
       },
     },
     h3: {
@@ -43,7 +50,9 @@ export const textStyles = defineTextStyles({
           base: 'heading.mobile.md',
           sm: 'heading.desktop.md',
         },
-        fontWeight: 'bold',
+        fontWeight: '600',
+        letterSpacing: '-0.02em',
+        lineHeight: '1.15',
       },
     },
     h4: {
@@ -52,7 +61,9 @@ export const textStyles = defineTextStyles({
           base: 'heading.mobile.sm',
           sm: 'heading.desktop.sm',
         },
-        fontWeight: 'bold',
+        fontWeight: '600',
+        letterSpacing: '-0.01em',
+        lineHeight: '1.25',
       },
     },
     h5: {
@@ -61,7 +72,8 @@ export const textStyles = defineTextStyles({
           base: 'heading.mobile.xs',
           sm: 'heading.desktop.xs',
         },
-        fontWeight: 'bold',
+        fontWeight: '600',
+        lineHeight: '1.3',
       },
     },
     h6: {
@@ -70,7 +82,8 @@ export const textStyles = defineTextStyles({
           base: 'heading.mobile.xs',
           sm: 'heading.desktop.xs',
         },
-        fontWeight: 'bold',
+        fontWeight: '600',
+        lineHeight: '1.3',
       },
     },
   },

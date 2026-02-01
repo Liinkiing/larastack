@@ -21,19 +21,24 @@ export const AppNavigationItem: FC<Props> = ({ children, isActiveForRoutes = [],
     <AppLink
       {...currentPageProps}
       _currentPage={{
-        bg: 'gray.200',
+        backgroundColor: 'accent.soft',
+        color: 'text',
+        fontWeight: '700',
       }}
       _disabled={{
         opacity: 0.5,
         pointerEvents: 'none',
         userSelect: 'none',
       }}
-      bg={{ _hover: 'gray.300' }}
-      borderRadius="2xl"
+      _hover={{
+        backgroundColor: 'bg.surface.muted',
+      }}
+      backgroundColor="transparent"
+      borderRadius="999px"
       cursor="pointer"
       gap={2}
-      px={2}
-      py={3}
+      px={3}
+      py={2}
       {...(disabled ? { 'data-disabled': true } : {})}
       href={href}
       {...props}

@@ -8,7 +8,7 @@ export const headingRecipe = defineRecipe({
   staticCss: ['*'],
   jsx: ['Heading'],
   base: {
-    fontFamily: 'geistMono',
+    fontFamily: 'display',
     color: 'current',
   },
   variants: {

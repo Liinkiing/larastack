@@ -14,14 +14,16 @@ type Props = CenterProps & {
 export const GenericErrorLayout: FC<Props> = ({ message, ...props }) => {
   return (
     <FullPageCenterLayout {...props}>
-      <VStack>
-        <Heading as="h1">Une erreur est survenue</Heading>
+      <VStack gap={4} maxW="480px" textAlign="center">
+        <Heading as="h1">Something went wrong</Heading>
         {message ? (
-          <code>
-            <Text as="pre">{message}</Text>
-          </code>
+          <Text as="pre" backgroundColor="bg.surface.muted" borderRadius="xl" px={4} py={3} textAlign="left">
+            {message}
+          </Text>
         ) : null}
-        <Button onClick={() => globalThis.location.reload()}>Recharger</Button>
+        <Button size="lg" onClick={() => globalThis.location.reload()}>
+          Reload page
+        </Button>
       </VStack>
     </FullPageCenterLayout>
   )

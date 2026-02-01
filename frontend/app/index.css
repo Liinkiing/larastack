@@ -1,1 +1,65 @@
 @layer reset, base, tokens, recipes, utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --c-ink: #1b1210;
+    --c-ink-muted: rgba(27, 18, 16, 0.72);
+    --c-paper: #fff6f1;
+    --c-surface: #fff9f6;
+    --c-blush: #ffd7ce;
+    --c-coral: #ff7a59;
+    --c-cherry: #d9232e;
+    --c-mint: #9fe3c5;
+    --c-sun: #ffc857;
+    --c-border: rgba(27, 18, 16, 0.12);
+    --c-shadow: rgba(27, 18, 16, 0.16);
+  }
+
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    background-color: var(--c-paper);
+    color: var(--c-ink);
+    font-family: var(--font-body);
+    position: relative;
+    z-index: 0;
+  }
+
+  body::before {
+    background:
+      radial-gradient(60% 60% at 10% 0%, rgba(255, 215, 206, 0.9) 0%, transparent 60%),
+      radial-gradient(50% 50% at 85% 10%, rgba(159, 227, 197, 0.55) 0%, transparent 60%),
+      radial-gradient(60% 60% at 70% 90%, rgba(255, 200, 87, 0.35) 0%, transparent 60%);
+    content: '';
+    height: 120vh;
+    left: -10vw;
+    opacity: 0.9;
+    pointer-events: none;
+    position: fixed;
+    top: -20vh;
+    width: 120vw;
+    z-index: -2;
+  }
+
+  body::after {
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 100%);
+    content: '';
+    inset: 0;
+    opacity: 0.35;
+    pointer-events: none;
+    position: fixed;
+    z-index: -1;
+  }
+
+  ::selection {
+    background: rgba(217, 35, 46, 0.2);
+  }
+
+  a {
+    color: inherit;
+  }
+}

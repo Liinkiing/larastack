@@ -1,16 +1,25 @@
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Fraunces, JetBrains_Mono, Spline_Sans } from 'next/font/google'
 
-const geistSans = Geist({
+const display = Fraunces({
   subsets: ['latin'],
-  variable: '--fonts-geist-sans',
+  variable: '--font-display',
+  weight: ['400', '500', '600', '700'],
 })
 
-const geistMono = Geist_Mono({
+const body = Spline_Sans({
   subsets: ['latin'],
-  variable: '--fonts-geist-mono',
+  variable: '--font-body',
+  weight: ['300', '400', '500', '600', '700'],
+})
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  weight: ['400', '500', '600'],
 })
 
 export const fonts = {
-  geistMono,
-  geistSans,
+  body,
+  display,
+  mono,
 } as const
