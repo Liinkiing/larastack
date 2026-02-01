@@ -84,7 +84,13 @@ export default function Home() {
                 <Text color="text.muted">
                   Curate your next deploy, see the auth rhythm, and keep teams aligned in a view that feels alive.
                 </Text>
-                <Grid gap={3} gridTemplateColumns={{ base: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }}>
+                <Grid
+                  gap={3}
+                  gridTemplateColumns={{
+                    base: '1fr',
+                    sm: 'repeat(2, minmax(0, 1fr))',
+                  }}
+                >
                   {[
                     { label: 'Active sessions', value: '128' },
                     { label: 'Build time', value: '4m 12s' },
@@ -103,12 +109,30 @@ export default function Home() {
                 </Grid>
               </Stack>
             </Box>
-            <Grid gap={3} gridTemplateColumns={{ base: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }}>
+            <Grid
+              gap={3}
+              gridTemplateColumns={{
+                base: '1fr',
+                sm: 'repeat(2, minmax(0, 1fr))',
+              }}
+            >
               {[
-                { body: 'Colocated fragments keep data tidy.', title: 'GraphQL ready' },
-                { body: 'Panda CSS keeps the palette consistent.', title: 'Token driven' },
-                { body: 'Sanctum plus social login out of the box.', title: 'Auth flows' },
-                { body: 'Subtle animation cues everywhere.', title: 'Motion polish' },
+                {
+                  body: 'Colocated fragments keep data tidy.',
+                  title: 'GraphQL ready',
+                },
+                {
+                  body: 'Panda CSS keeps the palette consistent.',
+                  title: 'Token driven',
+                },
+                {
+                  body: 'Sanctum plus social login out of the box.',
+                  title: 'Auth flows',
+                },
+                {
+                  body: 'Subtle animation cues everywhere.',
+                  title: 'Motion polish',
+                },
               ].map(card => (
                 <Stack
                   key={card.title}

@@ -5,7 +5,7 @@
 - `backend/`: Laravel 12 API, Lighthouse GraphQL, and Sail tooling. Key areas: `app/`, `config/`, `routes/`, `graphql/`, `database/`, `tests/`.
 - `frontend/`: Next.js app. Routes live in `app/`, shared UI logic in `src/shared/`, design system in `src/ui/` and `src/theme/`.
 - `frontend/public/` and `backend/public/`: static assets.
-- Root config: `pnpm-workspace.yaml`, `eslint.config.js`, `commitlint.config.js`, `.lintstagedrc.js`.
+- Root config: `pnpm-workspace.yaml`, `commitlint.config.js`, `.lintstagedrc.js`.
 
 ## Build, Test, and Development Commands
 
@@ -20,7 +20,7 @@
 
 ## Coding Style & Naming Conventions
 
-- JavaScript/TypeScript: ESLint (flat config) + Prettier; sort-keys-fix is enforced in frontend.
+- JavaScript/TypeScript: OXLint + OXFmt.
 - PHP: Laravel Pint (`backend/pint.json`, preset `laravel`).
 - Naming: use PascalCase for React components and PHP classes, `useX` for hooks, and Laravel’s timestamped migration names in `backend/database/migrations/`.
 - Prefer formatting via the tooling above rather than manual alignment.
@@ -35,7 +35,7 @@
 ## Commit & Pull Request Guidelines
 
 - Conventional Commits are required (commitlint + Husky). Use `type(scope): subject`, e.g., `feat(frontend): add login form`.
-- Pre-commit runs lint-staged (ESLint + Prettier on changed files). Fix lint before pushing.
+- Pre-commit runs lint-staged (OXLint + OXFmt on changed files). Fix lint before pushing.
 - PRs should include: a clear description, linked issues (if any), and screenshots/GIFs for UI changes. Note if `pnpm gql:dump` updated `frontend/schema.graphql`.
 
 ## Security & Configuration Tips

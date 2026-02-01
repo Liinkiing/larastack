@@ -1,9 +1,11 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import type { FC } from 'react'
 
+import { usePathname } from 'next/navigation'
+
 import type { AppLinkProps } from '~/shared/components/AppLink'
+
 import { AppLink } from '~/shared/components/AppLink'
 
 interface Props extends AppLinkProps {

@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie'
+import { routes } from '~app/routes'
 
 import { ApiService } from '~/services/api'
 import { compilerEnv } from '~/shared/env'
-import { routes } from '~app/routes'
 
 export const LOGIN_URL = routes.auth.login.root
 export const LOGGED_IN_URL = routes.root

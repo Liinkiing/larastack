@@ -33,6 +33,9 @@ jobs:
       - name: Run lint
         run: |
           pnpm --filter "./frontend" lint
+      - name: Check formatting
+        run: |
+          pnpm --filter "./frontend" format:check
   typecheck:
     runs-on: ubuntu-latest
     steps:

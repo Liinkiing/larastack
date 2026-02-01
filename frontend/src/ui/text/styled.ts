@@ -1,9 +1,10 @@
 import type { ElementType } from 'react'
 
-import { styled } from '~/styled-system/jsx'
 import type { TextVariantProps } from '~/styled-system/recipes'
-import { text } from '~/styled-system/recipes'
 import type { ComponentProps, StyledComponent } from '~/styled-system/types'
+
+import { styled } from '~/styled-system/jsx'
+import { text } from '~/styled-system/recipes'
 
 type Props = TextVariantProps & { as?: ElementType }
 

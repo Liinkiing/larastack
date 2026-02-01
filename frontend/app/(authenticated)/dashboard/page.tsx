@@ -30,7 +30,11 @@ export default function HomePage() {
         <Grid gap={4} gridTemplateColumns={{ base: '1fr', md: 'repeat(3, minmax(0, 1fr))' }}>
           {[
             { detail: '4 are high priority', label: 'Open tasks', value: '18' },
-            { detail: 'Last build 12 min ago', label: 'Deploy status', value: 'Green' },
+            {
+              detail: 'Last build 12 min ago',
+              label: 'Deploy status',
+              value: 'Green',
+            },
             { detail: 'Up 8% this week', label: 'Sessions', value: '128' },
           ].map(card => (
             <Stack
