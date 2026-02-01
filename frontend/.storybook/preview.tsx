@@ -8,10 +8,7 @@ import { fonts } from '../app/fonts'
 const preview: Preview = {
   decorators: [
     Story => (
-      <div
-        className={`${fonts.body.variable} ${fonts.display.variable} ${fonts.mono.variable}`}
-        style={{ display: 'contents' }}
-      >
+      <div className={`${fonts.geistSans.variable} ${fonts.geistMono.variable}`} style={{ display: 'contents' }}>
         <Story />
       </div>
     ),
