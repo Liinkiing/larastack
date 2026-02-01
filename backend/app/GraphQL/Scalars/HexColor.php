@@ -25,7 +25,6 @@ class HexColor extends ScalarType
 
     public function parseLiteral(Node $valueNode, ?array $variables = null)
     {
-        /** @phpstan-ignore property.notFound */
         return $this->validate($valueNode->value);
     }
 
