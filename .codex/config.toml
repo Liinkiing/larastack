@@ -1,0 +1,11 @@
+[mcp_servers.laravel-boost]
+command = "docker"
+args = ["exec", "-i", "larastack-app-1", "php", "/var/www/html/artisan", "boost:mcp"]
+
+[mcp_servers.ark-ui]
+command = "npx"
+args = ["-y", "@ark-ui/mcp"]
+
+[mcp_servers.panda]
+command = "pnpm"
+args = ["--filter", "frontend", "exec", "panda", "mcp"]
