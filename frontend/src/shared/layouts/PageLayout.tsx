@@ -8,7 +8,7 @@ export const PageLayout: FC<BoxProps> = props => {
     <Box
       as="main"
       maxW="1200px"
-      minH="calc(100vh - 96px)"
+      minH="calc(100dvh - 96px)"
       mx="auto"
       px={{ base: 5, md: 10 }}
       py={{ base: 10, md: 16 }}
