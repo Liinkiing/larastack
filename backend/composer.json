@@ -20,14 +20,15 @@
   "require-dev": {
     "fakerphp/faker": "^1.24",
     "larastan/larastan": "^3.0",
-    "laravel/boost": "^1.1",
+    "laravel/boost": "^2.0",
     "laravel/pail": "^1.2",
     "laravel/pint": "^1.20",
     "laravel/sail": "^1.41",
     "laravel/telescope": "^5.5",
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
-    "phpunit/phpunit": "^11.0"
+    "phpunit/phpunit": "^11.5.50",
+    "psy/psysh": "^0.12.19"
   },
   "autoload": {
     "files": [

@@ -57,6 +57,7 @@ class OAuthController extends Controller
 
             $returnTo = Session::get('return_to', '/dashboard');
             Auth::login($user);
+            request()->session()->regenerate();
             Session::forget('return_to');
 
             return redirect(frontend_url($returnTo));

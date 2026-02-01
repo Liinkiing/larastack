@@ -18,7 +18,3 @@ Route::prefix('/auth/{provider}')
         Route::get('/redirect', [OAuthController::class, 'redirect']);
         Route::get('/callback', [OAuthController::class, 'callback']);
     });
-
-Route::get('/user', function (Request $request) {
-    return request()->user();
-})->middleware('auth:sanctum');

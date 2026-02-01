@@ -1,10 +1,10 @@
 # Laravel Boost Guidelines
 
-The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. Follow these closely to enhance developer experience.
+The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to ensure the best experience when building Laravel applications.
 
 ## Foundational Context
 
-This application is a Laravel app and its main Laravel ecosystem packages and versions are below:
+This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
 - php - 8.4.11
 - laravel/framework (LARAVEL) - v12
@@ -18,92 +18,93 @@ This application is a Laravel app and its main Laravel ecosystem packages and ve
 - laravel/telescope (TELESCOPE) - v5
 - phpunit/phpunit (PHPUNIT) - v11
 
+## Skills Activation
+
+This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
+
 ## Conventions
 
-- Follow existing code conventions. Check sibling files for structure, approach, and naming.
-- Use descriptive names for variables and methods. Example: `isRegisteredForDiscounts`, not `discount()`.
+- You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, and naming.
+- Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
 - Check for existing components to reuse before writing a new one.
 
 ## Verification Scripts
 
-- Do not create verification scripts or tinker when tests already cover that functionality.
+- Do not create verification scripts or tinker when tests cover that functionality and prove they work. Unit and feature tests are more important.
 
-## Application Structure and Architecture
+## Application Structure & Architecture
 
-- Stick to existing directory structure; do not create new base folders without approval.
-- Do not change dependencies without approval.
+- Stick to existing directory structure; don't create new base folders without approval.
+- Do not change the application's dependencies without approval.
 
 ## Frontend Bundling
 
-- If a frontend change is not reflected in the UI, the user may need to run `npm run build`, `npm run dev`, or `composer run dev`. Ask them.
-
-## Replies
-
-- Be concise; focus on what's important.
+- If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `npm run build`, `npm run dev`, or `composer run dev`. Ask them.
 
 ## Documentation Files
 
-- Only create documentation files if explicitly requested by the user.
+- You must only create documentation files if explicitly requested by the user.
 
-## Laravel Boost
+## Replies
 
-- Laravel Boost is an MCP server with tools designed for this app. Use them.
+- Be concise in your explanations - focus on what's important rather than explaining obvious details.
+
+# Laravel Boost
+
+- Laravel Boost is an MCP server that comes with powerful tools designed specifically for this application. Use them.
 
 ## Laravel Sail
 
-- Always use Sail commands instead of direct PHP/Composer commands.
+- Always use Sail commands instead of direct PHP/Composer/Node commands.
 - Use `./vendor/bin/sail artisan` instead of `php artisan`.
 - Use `./vendor/bin/sail composer` instead of `composer`.
 - Use `./vendor/bin/sail npm` instead of `npm` (when running inside containers).
 - Use `./vendor/bin/sail pint` instead of `vendor/bin/pint`.
 - Use `./vendor/bin/sail test` instead of `php artisan test`.
 - Use `./vendor/bin/sail bin phpstan analyze` for static analysis.
-- Any PHP/Composer/Node command should be prefixed with `./vendor/bin/sail` when working with this application.
+- Prefix any PHP/Composer/Node command with `./vendor/bin/sail` when working with this application.
 
 ## Artisan
 
-- Use the `list-artisan-commands` tool when you need to call an Artisan command to double check the available parameters.
-- Always use `./vendor/bin/sail artisan` for Artisan commands.
+- Use the `list-artisan-commands` tool when you need to call an Artisan command to double-check the available parameters.
+- Prefix Artisan commands with `./vendor/bin/sail artisan`.
 
 ## URLs
 
-- When sharing a project URL, use the `get-absolute-url` tool to ensure correct scheme, domain or IP, and port.
+- Whenever you share a project URL with the user, you should use the `get-absolute-url` tool to ensure you're using the correct scheme, domain/IP, and port.
 
-## Tinker and Debugging
+## Tinker / Debugging
 
-- Use the `tinker` tool when you need to execute PHP to debug code or query Eloquent models directly.
+- You should use the `tinker` tool when you need to execute PHP to debug code or query Eloquent models directly.
 - Use the `database-query` tool when you only need to read from the database.
 
 ## Reading Browser Logs With the `browser-logs` Tool
 
-- Use the `browser-logs` tool to read browser logs, errors, and exceptions.
-- Only recent browser logs are useful; ignore old logs.
+- You can read browser logs, errors, and exceptions using the `browser-logs` tool from Boost.
+- Only recent browser logs will be useful - ignore old logs.
 
 ## Searching Documentation (Critically Important)
 
-- Use the `search-docs` tool before other approaches for Laravel ecosystem docs.
-- Pass an array of packages to filter when you know the relevant packages.
-- Use multiple, broad, simple, topic-based queries to start. Example: `['rate limiting', 'routing rate limiting', 'routing']`.
-- Do not add package names to queries; package info is already shared.
+- Boost comes with a powerful `search-docs` tool you should use before trying other approaches when working with Laravel or Laravel ecosystem packages. This tool automatically passes a list of installed packages and their versions to the remote Boost API, so it returns only version-specific documentation for the user's circumstance. You should pass an array of packages to filter on if you know you need docs for particular packages.
+- Search the documentation before making code changes to ensure we are taking the correct approach.
+- Use multiple, broad, simple, topic-based queries at once. For example: `['rate limiting', 'routing rate limiting', 'routing']`. The most relevant results will be returned first.
+- Do not add package names to queries; package information is already shared. For example, use `test resource table`, not `filament 4 test resource table`.
 
 ### Available Search Syntax
 
-1. Simple word searches with auto-stemming: `authentication`
-2. Multiple words (AND logic): `rate limit`
-3. Quoted phrases (exact position): `"infinite scroll"`
-4. Mixed queries: `middleware "rate limit"`
-5. Multiple queries: `queries=["authentication", "middleware"]`
+1. Simple Word Searches with auto-stemming - query=authentication - finds 'authenticate' and 'auth'.
+2. Multiple Words (AND Logic) - query=rate limit - finds knowledge containing both "rate" AND "limit".
+3. Quoted Phrases (Exact Position) - query="infinite scroll" - words must be adjacent and in that order.
+4. Mixed Queries - query=middleware "rate limit" - "middleware" AND exact phrase "rate limit".
+5. Multiple Queries - queries=["authentication", "middleware"] - ANY of these terms.
 
-## PHP
+# PHP
 
-- Always use curly braces for control structures, even if it has one line.
+- Always use curly braces for control structures, even for single-line bodies.
 
-### Constructors
+## Constructors
 
 - Use PHP 8 constructor property promotion in `__construct()`.
-- Do not allow empty `__construct()` methods with zero parameters.
-
-Example:
 
 ```php
 public function __construct(public GitHub $github)
@@ -111,7 +112,9 @@ public function __construct(public GitHub $github)
 }
 ```
 
-### Type Declarations
+- Do not allow empty `__construct()` methods with zero parameters unless the constructor is private.
+
+## Type Declarations
 
 - Always use explicit return type declarations for methods and functions.
 - Use appropriate PHP type hints for method parameters.
@@ -119,126 +122,115 @@ public function __construct(public GitHub $github)
 ```php
 protected function isAccessible(User $user, ?string $path = null): bool
 {
-    // ...
+    ...
 }
 ```
 
+## Enums
+
+- Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
+
 ## Comments
 
-- Prefer PHPDoc blocks over comments.
-- Never use comments within the code itself unless there is something very complex going on.
+- Prefer PHPDoc blocks over inline comments. Never use comments within the code itself unless the logic is exceptionally complex.
 
 ## PHPDoc Blocks
 
-- Add useful array shape type definitions for arrays when appropriate.
+- Add useful array shape type definitions when appropriate.
 
-## Enums
+# Do Things the Laravel Way
 
-- Keys in an Enum should be TitleCase. Example: `FavoritePerson`, `BestLake`, `Monthly`.
+- Use `./vendor/bin/sail artisan make:` commands to create new files (i.e. migrations, controllers, models, etc.). You can list available Artisan commands using the `list-artisan-commands` tool.
+- If you're creating a generic PHP class, use `./vendor/bin/sail artisan make:class`.
+- Pass `--no-interaction` to all Artisan commands to ensure they work without user input. You should also pass the correct `--options` to ensure correct behavior.
 
-## Do Things the Laravel Way
+## Database
 
-- Use `./vendor/bin/sail artisan make:` commands to create new files.
-- If creating a generic PHP class, use `./vendor/bin/sail artisan make:class`.
-- Pass `--no-interaction` to all Artisan commands and include correct options.
-
-### Database
-
-- Use proper Eloquent relationship methods with return type hints.
+- Always use proper Eloquent relationship methods with return type hints. Prefer relationship methods over raw queries or manual joins.
 - Use Eloquent models and relationships before suggesting raw database queries.
-- Avoid `DB::`; prefer `Model::query()`.
-- Prevent N+1 by using eager loading.
-- Use the query builder for very complex database operations.
+- Avoid `DB::`; prefer `Model::query()`. Generate code that leverages Laravel's ORM capabilities rather than bypassing them.
+- Generate code that prevents N+1 query problems by using eager loading.
+- Use Laravel's query builder for very complex database operations.
 
 ### Model Creation
 
-- When creating new models, create useful factories and seeders too.
-- Ask the user if they need other make options; use `list-artisan-commands` to check available options.
+- When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `list-artisan-commands` to check the available options to `php artisan make:model`.
 
-### APIs and Eloquent Resources
+### APIs & Eloquent Resources
 
-- For APIs, default to Eloquent API Resources and API versioning unless existing conventions say otherwise.
+- For APIs, default to using Eloquent API Resources and API versioning unless existing API routes do not, then you should follow existing application convention.
 
-### Controllers and Validation
+## Controllers & Validation
 
-- Always create Form Request classes for validation rather than inline validation.
-- Include validation rules and custom error messages.
-- Check sibling Form Requests for array or string based rules.
+- Always create Form Request classes for validation rather than inline validation in controllers. Include both validation rules and custom error messages.
+- Check sibling Form Requests to see if the application uses array or string based validation rules.
 
-### Queues
+## Authentication & Authorization
+
+- Use Laravel's built-in authentication and authorization features (gates, policies, Sanctum, etc.).
+
+## URL Generation
+
+- When generating links to other pages, prefer named routes and the `route()` function.
+
+## Queues
 
 - Use queued jobs for time-consuming operations with the `ShouldQueue` interface.
 
-### Authentication and Authorization
+## Configuration
 
-- Use Laravel's built-in authentication and authorization features.
+- Use environment variables only in configuration files - never use the `env()` function directly outside of config files. Always use `config('app.name')`, not `env('APP_NAME')`.
 
-### URL Generation
+## Testing
 
-- Prefer named routes and the `route()` function.
+- When creating models for tests, use the factories for the models. Check if the factory has custom states that can be used before manually setting up the model.
+- Faker: Use methods such as `$this->faker->word()` or `fake()->randomDigit()`. Follow existing conventions whether to use `$this->faker` or `fake()`.
+- When creating tests, make use of `php artisan make:test [options] {name}` to create a feature test, and pass `--unit` to create a unit test. Most tests should be feature tests.
 
-### Configuration
+## Vite Error
 
-- Use environment variables only in config files. Never call `env()` directly outside config.
+- If you receive an "Illuminate\\Foundation\\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
-### Testing
+# Laravel 12
 
-- For tests, use model factories and check for custom states.
-- Use `$this->faker` or `fake()` based on existing conventions.
-- Create tests with `./vendor/bin/sail artisan make:test [options] <name>`.
-- Most tests should be feature tests; use `--unit` for unit tests.
+- CRITICAL: ALWAYS use `search-docs` tool for version-specific Laravel documentation and updated code examples.
+- Since Laravel 11, Laravel has a new streamlined file structure which this project uses.
 
-### Vite Error
+## Laravel 12 Structure
 
-- If you see "Illuminate\\Foundation\\ViteException: Unable to locate file in Vite manifest", run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
+- In Laravel 12, middleware are no longer registered in `app/Http/Kernel.php`.
+- Middleware are configured declaratively in `bootstrap/app.php` using `Application::configure()->withMiddleware()`.
+- `bootstrap/app.php` is the file to register middleware, exceptions, and routing files.
+- `bootstrap/providers.php` contains application specific service providers.
+- The `app\Console\Kernel.php` file no longer exists; use `bootstrap/app.php` or `routes/console.php` for console configuration.
+- Console commands in `app/Console/Commands/` are automatically available and do not require manual registration.
 
-## Laravel 12
+## Database
 
-- Use the `search-docs` tool for version-specific documentation.
-- Laravel 12 uses a streamlined file structure.
-
-### Laravel 12 Structure
-
-- No middleware files in `app/Http/Middleware/`.
-- `bootstrap/app.php` registers middleware, exceptions, and routing files.
-- `bootstrap/providers.php` contains application-specific service providers.
-- No `app/Console/Kernel.php`; use `bootstrap/app.php` or `routes/console.php`.
-- Commands auto-register from `app/Console/Commands/`.
-
-### Database
-
-- When modifying a column, the migration must include all attributes previously defined on the column.
-- Laravel 11+ allows limiting eagerly loaded records natively: `$query->latest()->limit(10);`.
+- When modifying a column, the migration must include all of the attributes that were previously defined on the column. Otherwise, they will be dropped and lost.
+- Laravel 12 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
 
 ### Models
 
-- Casts can be set in a `casts()` method rather than the `$casts` property. Follow existing conventions.
+- Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
 
-## Laravel Pint Code Formatter
+# Laravel Pint Code Formatter
 
-- Run `./vendor/bin/sail pint --dirty` before finalizing changes.
-- Do not run `./vendor/bin/sail pint --test`; run `./vendor/bin/sail pint` to fix formatting.
+- You must run `vendor/bin/pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
+- Do not run `vendor/bin/pint --test`, simply run `vendor/bin/pint` to fix any formatting issues.
 
-## PHPStan / Larastan Static Analysis
+# PHPUnit
 
-- Run `./vendor/bin/sail bin phpstan analyze` before finalizing PHP changes.
-- PHPStan is configured at level 6 in `phpstan.neon`.
-- Fix errors; do not ignore type errors unless absolutely necessary and documented.
-- Run PHPStan on specific paths you changed: `./vendor/bin/sail bin phpstan analyze app/Path/To/File.php`.
-
-## PHPUnit Core
-
-- Tests must be written as PHPUnit classes.
-- Use `./vendor/bin/sail artisan make:test --phpunit <name>` to create new tests.
-- If you see a test using Pest, convert it to PHPUnit.
+- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `php artisan make:test --phpunit {name}` to create a new test.
+- If you see a test using "Pest", convert it to PHPUnit.
 - Every time a test has been updated, run that singular test.
-- When tests are passing, ask the user if they want to run the entire test suite.
-- Tests should cover happy paths, failure paths, and weird paths.
-- Do not remove any tests or test files without approval.
+- When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
+- Tests should cover all happy paths, failure paths, and edge cases.
+- You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files; these are core to the application.
 
-### Running Tests
+## Running Tests
 
 - Run the minimal number of tests, using an appropriate filter, before finalizing.
-- Run all tests: `./vendor/bin/sail artisan test`.
-- Run all tests in a file: `./vendor/bin/sail artisan test tests/Feature/ExampleTest.php`.
-- Filter by test name: `./vendor/bin/sail artisan test --filter=testName`.
+- To run all tests: `php artisan test --compact`.
+- To run all tests in a file: `php artisan test --compact tests/Feature/ExampleTest.php`.
+- To filter on a particular test name: `php artisan test --compact --filter=testName` (recommended after making a change to a related file).
