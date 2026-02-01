@@ -9,7 +9,9 @@ This application uses Panda CSS as the exclusive styling solution. Use MCP tools
 ## Core Principles
 
 - Always use Panda CSS; never use inline styles, CSS modules, styled-components, or other solutions
-- Prefer prop-based styling on Panda components (`<Box bg="..." />`) whenever possible
+- Prefer prop-based styling on Panda components (`<Box backgroundColor="..." />`) whenever possible
+- When setting a single color, prefer `backgroundColor` over `background`
+- Before using tokens, first check the Panda MCP tools for available tokens/recipes/patterns. If the MCP tools are unavailable or return errors, proceed with the best judgment anyway.
 - Avoid over-componentizing small layout-only blocks; duplication is acceptable when it improves clarity
 - Prefer config recipes when available
 - Use semantic tokens over raw color values

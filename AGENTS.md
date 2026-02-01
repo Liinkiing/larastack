@@ -9,14 +9,14 @@
 
 ## Build, Test, and Development Commands
 
-- Frontend dev: `cd frontend && pnpm dev` (runs Next.js with Turbopack; predev runs GraphQL + Panda codegen).
-- Frontend build: `cd frontend && pnpm build` (prebuild runs Panda + GraphQL codegen).
-- Frontend lint/typecheck: `cd frontend && pnpm lint` and `pnpm ts:check`.
-- Storybook: `cd frontend && pnpm storybook`.
-- Backend dev: `cd backend && pnpm dev` (Vite for frontend assets).
-- Backend build: `cd backend && pnpm build`.
-- Backend lint/typecheck: `cd backend && pnpm lint` (Pint) and `pnpm typecheck` (PHPStan via Sail).
-- GraphQL schema sync: `cd backend && pnpm gql:dump` (writes `frontend/schema.graphql` and regenerates frontend types).
+- Frontend dev: `pnpm --filter=frontend dev` (runs Next.js with Turbopack; predev runs GraphQL + Panda codegen).
+- Frontend build: `pnpm --filter=frontend build` (prebuild runs Panda + GraphQL codegen).
+- Frontend lint/typecheck: `pnpm --filter=frontend lint` and `pnpm --filter=frontend ts:check`.
+- Storybook: `pnpm --filter=frontend storybook`.
+- Backend dev: `pnpm --filter=backend dev` (Vite for frontend assets).
+- Backend build: `pnpm --filter=backend build`.
+- Backend lint/typecheck: `pnpm --filter=backend lint` (Pint) and `pnpm --filter=backend typecheck` (PHPStan via Sail).
+- GraphQL schema sync: `pnpm --filter=backend gql:dump` (writes `frontend/schema.graphql` and regenerates frontend types).
 
 ## Coding Style & Naming Conventions
 
@@ -30,6 +30,7 @@
 - Backend tests use PHPUnit (`backend/phpunit.xml`) under `tests/Unit` and `tests/Feature`.
   - Run with Sail: `cd backend && ./vendor/bin/sail phpunit`.
 - No frontend test runner is configured; use Storybook for UI verification and keep GraphQL codegen in sync.
+- After heavy frontend modifications, run `pnpm --filter=frontend ts:check` and then `pnpm --filter=frontend lint`.
 
 ## Commit & Pull Request Guidelines
 

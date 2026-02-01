@@ -6,7 +6,7 @@ type Query {
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime
 
-"Can be used as an argument to upload files using https:\/\/github.com\/jaydenseric\/graphql-multipart-request-spec"
+"Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
 scalar FileUpload
 
 "An RFC 3986, RFC 3987, and RFC 6570 (level 4) compliant URI string."
