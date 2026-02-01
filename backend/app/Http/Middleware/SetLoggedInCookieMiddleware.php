@@ -15,8 +15,10 @@ class SetLoggedInCookieMiddleware
         Cookie::queue(
             Cookie::forever(
                 config('session.logged_in_cookie_key'),
-                Auth::check() ? base64_encode('User:'.Auth::user()->id) : 'false',
-                httpOnly: false
+                Auth::check() ? 'true' : 'false',
+                secure: config('session.secure'),
+                httpOnly: false,
+                sameSite: config('session.same_site')
             )
         );
 

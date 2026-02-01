@@ -14,7 +14,7 @@ class AuthServiceApp {
   get isLoggedIn(): boolean {
     const isLoggedIn = Cookies.get('larastack_logged_in')
 
-    return isLoggedIn !== undefined && isLoggedIn !== 'false'
+    return isLoggedIn === 'true'
   }
 
   public async login({
