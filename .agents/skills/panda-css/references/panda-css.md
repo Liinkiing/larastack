@@ -9,16 +9,19 @@ This application uses Panda CSS as the exclusive styling solution. Use MCP tools
 ## Core Principles
 
 - Always use Panda CSS; never use inline styles, CSS modules, styled-components, or other solutions
+- Prefer prop-based styling on Panda components (`<Box bg="..." />`) whenever possible
+- Avoid over-componentizing small layout-only blocks; duplication is acceptable when it improves clarity
 - Prefer config recipes when available
 - Use semantic tokens over raw color values
 - Check available resources using MCP tools before writing styles
 
 ## Styling Priority Order
 
+1. Component props on Panda components (e.g. `Box`, `Stack`, `Grid`)
 1. Config recipes
-2. Patterns
-3. `css()` function
-4. `styled()` components
+1. Patterns
+1. `css()` function (only when props/recipes/patterns are insufficient)
+1. `styled()` components (prefer props + composition before creating new styled wrappers)
 
 ## Config Recipes
 
