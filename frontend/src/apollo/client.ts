@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-node-protocol */
+/* oxlint-disable unicorn/prefer-node-protocol */
 import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client'
 import UploadHttpLink from 'apollo-upload-client/UploadHttpLink.mjs'
 import * as http from 'http'

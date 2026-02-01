@@ -1,8 +1,11 @@
 import type { OperationVariables } from '@apollo/client/core'
+
 import { useFragment as useApolloFragment } from '@apollo/client/react'
 
 export const useFragment = <TData = any, TVars extends OperationVariables = OperationVariables>(
-  options: Omit<useApolloFragment.Options<TData, TVars>, 'fragmentName'> & { fragmentName?: string },
+  options: Omit<useApolloFragment.Options<TData, TVars>, 'fragmentName'> & {
+    fragmentName?: string
+  },
 ): TData => {
   const { fragment, from, client, optimistic, fragmentName, variables } = options
 

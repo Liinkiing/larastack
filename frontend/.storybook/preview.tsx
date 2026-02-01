@@ -1,5 +1,4 @@
 import '../app/index.css'
-
 // @ts-ignore
 import type { Preview } from '@storybook/nextjs-vite'
 

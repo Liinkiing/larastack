@@ -1,11 +1,13 @@
 'use client'
 
+import type { FC, ReactNode } from 'react'
+
 import { useQuery } from '@apollo/client/react'
 import { runIfFn } from '@zag-js/utils'
-import type { FC, ReactNode } from 'react'
 import { createContext, useMemo } from 'react'
 
 import type { ViewerQuery } from '~/__generated__/gql/graphql'
+
 import { ViewerDocument } from '~/__generated__/gql/graphql'
 import { AuthService, LOGGED_IN_URL, LOGIN_URL } from '~/services/auth'
 import { GlobalLoader } from '~/shared/components/GlobalLoader'

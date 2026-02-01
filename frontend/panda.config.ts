@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from '@pandacss/dev'
 
 import { animationStyles } from '~/theme/animation-styles'

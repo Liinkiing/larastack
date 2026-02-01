@@ -1,11 +1,12 @@
 import type { FC } from 'react'
 
+import { routes } from '~app/routes'
+
 import { AppLink } from '~/shared/components/AppLink'
 import { LogoutButton } from '~/shared/components/LogoutButton'
 import { AuthenticatedGuard } from '~/shared/guards/AuthenticatedGuard'
 import { Box, Flex, HStack } from '~/styled-system/jsx'
 import { Text } from '~/ui/text'
-import { routes } from '~app/routes'
 
 import { AppNavigationItem } from './components/AppNavigationItem'
 

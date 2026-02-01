@@ -1,11 +1,13 @@
 'use client'
 
 import type { LinkProps as NextLinkProps } from 'next/link'
-import NextLink from 'next/link'
-import { useSearchParams } from 'next/navigation'
 import type { FC } from 'react'
 
+import NextLink from 'next/link'
+import { useSearchParams } from 'next/navigation'
+
 import type { LinkProps } from '~/ui/link'
+
 import { Link } from '~/ui/link'
 
 export type AppLinkProps = Omit<LinkProps, keyof NextLinkProps> &

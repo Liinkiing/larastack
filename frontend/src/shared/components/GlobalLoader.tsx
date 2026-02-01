@@ -1,8 +1,10 @@
-import Image from 'next/image'
 import type { FC } from 'react'
 
-import { FullPageCenterLayout } from '~/shared/layouts/FullpageCenterLayout'
+import Image from 'next/image'
+
 import type { CenterProps } from '~/styled-system/jsx'
+
+import { FullPageCenterLayout } from '~/shared/layouts/FullpageCenterLayout'
 
 export const GlobalLoader: FC<CenterProps> = props => {
   return (

@@ -1,7 +1,8 @@
 'use client'
 
-import { ApolloProvider } from '@apollo/client/react'
 import type { FC, ReactNode } from 'react'
+
+import { ApolloProvider } from '@apollo/client/react'
 
 import { apolloClient } from '~/apollo/client'
 
