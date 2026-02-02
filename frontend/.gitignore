@@ -20,3 +20,6 @@ src/__generated__
 
 # Vite
 .vite
+
+# Storybook
+storybook-static

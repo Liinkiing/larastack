@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { button } from '~/styled-system/recipes'
 import { Button } from '~/ui/button'
@@ -38,6 +38,6 @@ export const Ghost = {
 
 export const Outline = {
   args: {
-    variant: 'Outline',
+    variant: 'outline',
   },
 }

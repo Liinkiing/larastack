@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { VStack } from '~/styled-system/jsx'
 import { heading } from '~/styled-system/recipes'

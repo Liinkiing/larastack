@@ -19,7 +19,9 @@
     "gen:gql": "graphql-codegen --config codegen.ts",
     "gen:gql:watch": "graphql-codegen --config codegen.ts --watch",
     "prets:check": "pnpm run gen:gql && pnpm run gen:panda",
-    "ts:check": "tsc --pretty --skipLibCheck --noEmit"
+    "ts:check": "tsc --pretty --skipLibCheck --noEmit",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@apollo/client": "^4.0.11",
@@ -51,11 +53,16 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@pandacss/dev": "^1.8.0",
     "@pandacss/shared": "^1.8.0",
+    "@storybook/addon-docs": "^10.2.3",
+    "@storybook/addon-links": "^10.2.3",
+    "@storybook/react": "^10.2.3",
+    "@storybook/react-vite": "^10.2.3",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.0",
+    "storybook": "^10.2.3",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vite-tsconfig-paths": "^5.1.4"
