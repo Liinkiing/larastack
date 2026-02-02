@@ -30,13 +30,11 @@ export const Route = createRootRoute({
       { href: '/favicon.ico', rel: 'icon' },
     ],
   }),
-  errorComponent: props => {
-    return (
-      <RootDocument>
-        <GenericErrorLayout message={props.error instanceof Error ? props.error.message : undefined} />
-      </RootDocument>
-    )
-  },
+  errorComponent: props => (
+    <RootDocument>
+      <GenericErrorLayout message={props.error instanceof Error ? props.error.message : undefined} />
+    </RootDocument>
+  ),
   notFoundComponent: () => <NotFoundPage />,
   component: RootComponent,
 })

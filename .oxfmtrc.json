@@ -2,7 +2,7 @@
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "semi": false,
   "arrowParens": "avoid",
-  "ignorePatterns": ["backend/vendor/**/*", "backend/public/vendor/**/*"],
+  "ignorePatterns": ["backend/vendor/**/*", "backend/public/vendor/**/*", "frontend/src/routeTree.gen.ts"],
   "printWidth": 120,
   "singleQuote": true,
   "experimentalSortImports": {

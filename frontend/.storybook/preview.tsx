@@ -1,3 +1,4 @@
+// @ts-ignore
 import type { Preview } from '@storybook/react'
 
 import '../src/styles/app.css'
@@ -11,8 +12,8 @@ const preview: Preview = {
         date: /Date$/,
       },
     },
-    layout: 'centered',
   },
+  tags: ['autodocs'],
 }
 
 export default preview

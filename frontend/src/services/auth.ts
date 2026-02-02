@@ -1,12 +1,12 @@
 import Cookies from 'js-cookie'
-import { routes } from '~app/routes'
 
+import { AppHref } from '~/@types/routes'
 import { ApiService } from '~/services/api'
 import { compilerEnv } from '~/shared/env'
 
-export const LOGIN_URL = routes.auth.login.root
-export const LOGGED_IN_URL = routes.root
-export const FALLBACK_URL = routes.auth.login.root
+export const LOGIN_URL: AppHref = '/auth/login'
+export const LOGGED_IN_URL: AppHref = '/'
+export const FALLBACK_URL: AppHref = '/auth/login'
 
 export type AuthProvider = 'google'
 

@@ -28,7 +28,7 @@ component-name/
 ### Compound Component Pattern
 
 ```tsx
-'use client'
+
 
 import { ComponentName as ArkComponentName } from '@ark-ui/react/component-name'
 import type { ComponentProps } from 'react'
@@ -53,7 +53,7 @@ export * as ComponentName from './styled'
 ### Simple Component Pattern
 
 ```tsx
-'use client'
+
 
 import { ark } from '@ark-ui/react/factory'
 import { styled } from '~/styled-system/jsx'
@@ -154,11 +154,7 @@ Always use exact names from `mcp_ark-ui_get_component_props`. Match slot names e
 
 Export TypeScript types for all component props.
 
-### 5. Use 'use client' Directive
-
-Always include `'use client'` in `styled.tsx` files.
-
-### 6. Use Theme Tokens
+### 5. Use Theme Tokens
 
 - Spacing: `0`, `1`, `2`, `4`, `8`, etc.
 - Sizes: `full` (not `100%`)
@@ -170,7 +166,7 @@ Always include `'use client'` in `styled.tsx` files.
 ### Dialog (Compound Component)
 
 ```tsx
-'use client'
+
 
 import { Dialog as ArkDialog } from '@ark-ui/react/dialog'
 import type { ComponentProps } from 'react'
@@ -210,7 +206,7 @@ import { Button } from '~/ui/button'
 ### Button (Simple Component)
 
 ```tsx
-'use client'
+
 
 import { ark } from '@ark-ui/react/factory'
 import { styled } from '~/styled-system/jsx'
@@ -231,7 +227,6 @@ Do:
 - Use exact subcomponent names from Ark UI
 - Use theme tokens for spacing, colors, and sizes
 - Export types for all props
-- Use `'use client'` in `styled.tsx`
 
 Don't:
 

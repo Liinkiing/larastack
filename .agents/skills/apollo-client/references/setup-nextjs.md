@@ -184,7 +184,7 @@ export default async function Page() {
 ### Step 2: Consume with useSuspenseQuery in Client Components
 
 ```tsx
-'use client'
+
 
 import { useSuspenseQuery } from '@apollo/client/react'
 
@@ -216,7 +216,7 @@ For advanced use cases, you can use `PreloadQuery` with `useReadQuery` to avoid 
 In your Client Component:
 
 ```tsx
-'use client'
+
 
 import { useQueryRefHandlers, useReadQuery, QueryRef } from '@apollo/client/react'
 

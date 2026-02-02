@@ -1,6 +1,5 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["src/stories/**"],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,

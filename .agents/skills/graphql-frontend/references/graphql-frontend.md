@@ -53,7 +53,7 @@ export const ActiveQuizCard: FC<Props> = ({ quiz: quizFragment }) => {
 Each Next.js page should have one query that spreads all child fragments. Parent queries compose child fragments and never duplicate field selections.
 
 ```tsx
-'use client'
+
 
 import { useSuspenseQuery } from '@apollo/client/react'
 import { graphql } from '~/__generated__/gql'
@@ -77,7 +77,6 @@ export default function Home() {
 ### Key Rules
 
 - Use `useSuspenseQuery` (not `useQuery`); loading handled by `loading.tsx`
-- Always include `'use client'` directive
 - Always include `id` field on entities with fragment spreads
 - Import generated document types from `~/__generated__/gql/graphql`
 

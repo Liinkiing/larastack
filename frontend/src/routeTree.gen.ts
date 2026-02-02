@@ -9,14 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as GuestAuthLoginRouteImport } from './routes/_guest/auth/login'
-import { Route as GuestRouteRouteImport } from './routes/_guest/route'
-import { Route as PublicIndexRouteImport } from './routes/_public/index'
-import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
 import { Route as PublicRouteRouteImport } from './routes/_public/route'
+import { Route as GuestRouteRouteImport } from './routes/_guest/route'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PublicTermsRouteImport } from './routes/_public/terms'
+import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as GuestAuthLoginRouteImport } from './routes/_guest/auth/login'
 
 const PublicRouteRoute = PublicRouteRouteImport.update({
   id: '/_public',
@@ -173,7 +173,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
 }
 
-const AuthenticatedRouteRouteWithChildren = AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface GuestRouteRouteChildren {
   GuestAuthLoginRoute: typeof GuestAuthLoginRoute
@@ -183,7 +184,9 @@ const GuestRouteRouteChildren: GuestRouteRouteChildren = {
   GuestAuthLoginRoute: GuestAuthLoginRoute,
 }
 
-const GuestRouteRouteWithChildren = GuestRouteRoute._addFileChildren(GuestRouteRouteChildren)
+const GuestRouteRouteWithChildren = GuestRouteRoute._addFileChildren(
+  GuestRouteRouteChildren,
+)
 
 interface PublicRouteRouteChildren {
   PublicPrivacyRoute: typeof PublicPrivacyRoute
@@ -197,18 +200,21 @@ const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicIndexRoute: PublicIndexRoute,
 }
 
-const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(PublicRouteRouteChildren)
+const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
+  PublicRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   GuestRouteRoute: GuestRouteRouteWithChildren,
   PublicRouteRoute: PublicRouteRouteWithChildren,
 }
-export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()
-
-import type { createStart } from '@tanstack/react-start'
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
