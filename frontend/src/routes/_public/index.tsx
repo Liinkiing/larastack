@@ -1,3 +1,5 @@
+import { createFileRoute } from '@tanstack/react-router'
+
 import { AppLink } from '~/shared/components/AppLink'
 import { AuthenticatedGuard } from '~/shared/guards/AuthenticatedGuard'
 import { PageLayout } from '~/shared/layouts/PageLayout'
@@ -6,7 +8,11 @@ import { Button } from '~/ui/button'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
 
-export default function Home() {
+export const Route = createFileRoute('/_public/')({
+  component: Home,
+})
+
+function Home() {
   return (
     <PageLayout>
       <Stack gap={{ base: 10, md: 16 }}>

@@ -8,7 +8,7 @@ class ApiServiceApp {
   private readonly client: AxiosInstance
 
   constructor() {
-    const baseURL = compilerEnv.__USE_BACKEND_PROXY__ ? '/api' : process.env.NEXT_PUBLIC_API_URL
+    const baseURL = compilerEnv.__USE_BACKEND_PROXY__ ? '/api' : import.meta.env.VITE_API_URL
 
     this.client = Axios.create({
       baseURL,

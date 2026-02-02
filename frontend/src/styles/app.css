@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Spline+Sans:wght@300;400;500;600;700&display=swap');
+
 @layer reset, base, tokens, recipes, utilities;
 
 @layer base {
   :root {
     color-scheme: light;
+    --font-display: 'Fraunces', ui-serif, Georgia, serif;
+    --font-body: 'Spline Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+      'Courier New', monospace;
     --c-ink: #1b1210;
     --c-ink-muted: rgba(27, 18, 16, 0.72);
     --c-paper: #fff6f1;

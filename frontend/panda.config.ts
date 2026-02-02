@@ -16,7 +16,7 @@ import { zIndex } from '~/theme/tokens/z-index'
 export default defineConfig({
   conditions,
   exclude: [],
-  include: ['./src/**/*.{js,jsx,ts,tsx}', './app/**/*.{js,jsx,ts,tsx}'],
+  include: ['./src/**/*.{js,jsx,ts,tsx}'],
   jsxFramework: 'react',
   lightningcss: true,
   outdir: './src/styled-system',

@@ -48,7 +48,8 @@ export const AuthProvider: FC<Props> = ({ children, mode }) => {
   }
 
   if (!AuthService.isLoggedIn && mode === 'authenticated') {
-    const redirectUrl = `${LOGIN_URL}?return_to=${encodeURIComponent(globalThis.location.pathname)}`
+    const returnTo = typeof window !== 'undefined' ? window.location.pathname : '/'
+    const redirectUrl = `${LOGIN_URL}?return_to=${encodeURIComponent(returnTo)}`
     return <Redirect to={redirectUrl} />
   }
 

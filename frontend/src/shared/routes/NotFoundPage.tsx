@@ -5,7 +5,7 @@ import { Button } from '~/ui/button'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
 
-export default function NotFound() {
+export function NotFoundPage() {
   return (
     <PageLayout>
       <Stack gap={{ base: 8, md: 12 }}>

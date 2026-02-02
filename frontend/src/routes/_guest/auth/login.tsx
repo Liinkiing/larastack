@@ -1,4 +1,4 @@
-'use client'
+import { createFileRoute } from '@tanstack/react-router'
 
 import { AppLink } from '~/shared/components/AppLink'
 import { useAuth } from '~/shared/hooks/useAuth'
@@ -8,7 +8,11 @@ import { Button } from '~/ui/button'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
 
-export default function LoginPage() {
+export const Route = createFileRoute('/_guest/auth/login')({
+  component: LoginPage,
+})
+
+function LoginPage() {
   const { loginWithProvider } = useAuth()
 
   return (

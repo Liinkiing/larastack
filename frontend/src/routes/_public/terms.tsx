@@ -1,16 +1,15 @@
-import type { Metadata } from 'next'
+import { createFileRoute } from '@tanstack/react-router'
 
 import { PageLayout } from '~/shared/layouts/PageLayout'
 import { Stack } from '~/styled-system/jsx'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
 
-export const metadata: Metadata = {
-  description: 'Terms and conditions',
-  title: 'Terms',
-}
+export const Route = createFileRoute('/_public/terms')({
+  component: TermsPage,
+})
 
-export default function TermsPage() {
+function TermsPage() {
   return (
     <PageLayout>
       <Stack gap={6} maxW="720px">

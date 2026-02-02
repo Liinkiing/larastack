@@ -2,7 +2,7 @@
 
 import type { FC } from 'react'
 
-import { useRouter } from 'next/navigation'
+import { useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 interface Props {
@@ -11,17 +11,14 @@ interface Props {
 }
 
 export const Redirect: FC<Props> = ({ to, mode = 'replace' }) => {
-  const router = useRouter()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (mode === 'replace') {
-      router.replace(to)
-    } else if (mode === 'push') {
-      router.push(to)
-    } else {
-      throw new Error(`Unknown mode given for <Redirect />: ${mode}`)
-    }
-  }, [router, mode, to])
+    navigate({
+      replace: mode === 'replace',
+      to,
+    })
+  }, [navigate, mode, to])
 
   return null
 }

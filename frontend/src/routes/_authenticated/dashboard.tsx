@@ -1,4 +1,4 @@
-'use client'
+import { createFileRoute } from '@tanstack/react-router'
 
 import { useAuth } from '~/shared/hooks/useAuth'
 import { PageLayout } from '~/shared/layouts/PageLayout'
@@ -7,7 +7,11 @@ import { Button } from '~/ui/button'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
 
-export default function HomePage() {
+export const Route = createFileRoute('/_authenticated/dashboard')({
+  component: DashboardPage,
+})
+
+function DashboardPage() {
   const { viewer } = useAuth()
 
   return (

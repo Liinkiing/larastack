@@ -12,6 +12,7 @@ export type AuthProvider = 'google'
 
 class AuthServiceApp {
   get isLoggedIn(): boolean {
+    if (typeof document === 'undefined') return false
     const isLoggedIn = Cookies.get('larastack_logged_in')
 
     return isLoggedIn === 'true'
@@ -39,7 +40,7 @@ class AuthServiceApp {
       window.location.pathname = `/api/auth/${provider}/redirect`
     } else {
       const url = new URL(window.location.href)
-      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/${provider}/redirect${url.search}`
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/${provider}/redirect${url.search}`
     }
   }
 

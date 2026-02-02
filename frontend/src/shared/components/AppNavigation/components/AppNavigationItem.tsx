@@ -2,7 +2,7 @@
 
 import type { FC } from 'react'
 
-import { usePathname } from 'next/navigation'
+import { useRouterState } from '@tanstack/react-router'
 
 import type { AppLinkProps } from '~/shared/components/AppLink'
 
@@ -14,9 +14,10 @@ interface Props extends AppLinkProps {
 }
 
 export const AppNavigationItem: FC<Props> = ({ children, isActiveForRoutes = [], disabled, href, ...props }) => {
-  const pathname = usePathname()
-  const computedHref = typeof href === 'object' ? href.href : href
-  const isActive = pathname === computedHref || isActiveForRoutes.includes(pathname)
+  const pathname = useRouterState({
+    select: state => state.location.pathname,
+  })
+  const isActive = pathname === href || isActiveForRoutes.includes(pathname)
   const currentPageProps = isActive ? ({ 'aria-current': 'page' } as const) : {}
 
   return (
