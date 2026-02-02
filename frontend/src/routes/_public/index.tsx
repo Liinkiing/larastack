@@ -56,7 +56,7 @@ function Home() {
                   <AppLink href="/dashboard">View dashboard</AppLink>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                  <AppLink href="#">Close your session</AppLink>
+                  <AppLink href="/">Close your session</AppLink>
                 </Button>
               </AuthenticatedGuard>
             </Stack>
