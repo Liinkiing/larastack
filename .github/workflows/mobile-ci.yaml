@@ -1,0 +1,78 @@
+name: 'mobile-ci'
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'mobile/**'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+      - '.github/workflows/mobile-ci.yaml'
+  pull_request:
+    paths:
+      - 'mobile/**'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+      - '.github/workflows/mobile-ci.yaml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - &checkout_step
+        name: Checkout Commit
+        uses: actions/checkout@v4
+
+      - &setup_pnpm_step
+        name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - &setup_node_step
+        name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - &install_mobile_dependencies_step
+        name: Install Dependencies
+        run: pnpm install --frozen-lockfile --filter "./mobile..."
+
+      - name: Run lint
+        run: pnpm --filter "./mobile" lint
+
+      - name: Check formatting
+        run: pnpm --filter "./mobile" format:check
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout_step
+      - *setup_pnpm_step
+      - *setup_node_step
+      - *install_mobile_dependencies_step
+
+      - name: Check types
+        run: pnpm --filter "./mobile" ts:check
+
+  healthcheck:
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck]
+    steps:
+      - *checkout_step
+      - *setup_pnpm_step
+      - *setup_node_step
+      - *install_mobile_dependencies_step
+
+      - name: Run Expo health check
+        run: pnpm --filter "./mobile" exec npx expo-doctor

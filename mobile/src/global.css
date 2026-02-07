@@ -1,0 +1,82 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+
+@layer theme {
+  @theme {
+    --color-background: #fffaf2;
+    --color-foreground: #1f2a44;
+    --color-card: #ffffffeb;
+    --color-card-border: #fffffff2;
+    --color-panel-border: #bae6fdcc;
+    --color-item: #f0fdfa;
+    --color-item-border: #5eead499;
+
+    --color-primary: #f97316;
+    --color-primary-foreground: #fffaf5;
+    --color-secondary: #14b8a6;
+    --color-secondary-foreground: #ecfeff;
+    --color-accent: #0ea5e9;
+    --color-accent-foreground: #f0f9ff;
+    --color-muted: #475569;
+    --color-muted-foreground: #0f766e;
+
+    --color-bubble-orange: #fb9233;
+    --color-bubble-teal: #2dd4bf;
+
+    --radius-card: 1.5rem;
+    --radius-panel: 1.25rem;
+    --radius-button: 1rem;
+    --radius-item: 1rem;
+    --radius-pill: 9999px;
+
+    --shadow-card: 0 18px 34px rgba(249, 115, 22, 0.16);
+    --shadow-panel: 0 14px 26px rgba(56, 189, 248, 0.14);
+    --shadow-button: 0 10px 20px rgba(15, 23, 42, 0.12);
+
+    --text-display: 1.8125rem;
+    --text-display--line-height: 2.125rem;
+    --text-title: 1.6875rem;
+    --text-title--line-height: 2rem;
+    --text-heading: 1.125rem;
+    --text-heading--line-height: 1.5rem;
+    --text-body: 0.9375rem;
+    --text-body--line-height: 1.375rem;
+    --text-caption: 0.8125rem;
+    --text-caption--line-height: 1.125rem;
+    --text-button: 0.9375rem;
+    --text-button--line-height: 1.25rem;
+    --text-metric: 1.25rem;
+    --text-metric--line-height: 1.5rem;
+  }
+}
+
+@utility surface-hero {
+  @apply rounded-card border border-card-border bg-card shadow-card;
+}
+
+@utility surface-panel {
+  @apply rounded-panel border border-panel-border bg-card shadow-panel;
+}
+
+@utility surface-item {
+  @apply rounded-item border border-item-border bg-item;
+}
+
+@media android {
+  :root {
+    --font-mono: monospace;
+    --font-rounded: normal;
+    --font-serif: serif;
+    --font-sans: normal;
+  }
+}
+
+@media ios {
+  :root {
+    --font-mono: ui-monospace;
+    --font-serif: ui-serif;
+    --font-sans: system-ui;
+    --font-rounded: ui-rounded;
+  }
+}
