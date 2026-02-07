@@ -47,15 +47,9 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "<project_id>"
-      }
+      "router": {}
     },
     "owner": "liinkiing",
-    "updates": {
-      "url": "https://u.expo.dev/<project_id>"
-    },
     "runtimeVersion": {
       "policy": "appVersion"
     }
