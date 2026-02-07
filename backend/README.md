@@ -1,6 +1,6 @@
 # Larastack Backend 🚀
 
-Welcome to the backend directory of your fullstack application template! This is where you'll be working on the server-side of your application using Laravel, Lighthouse GraphQL, and Laravel Socialite for user authentication.
+Welcome to the backend directory of your fullstack application template. This is where you'll build the server-side APIs used by both the Next.js frontend (`../frontend`) and the Expo/React Native mobile app (`../mobile`) using Laravel, Lighthouse GraphQL, and Laravel Socialite.
 
 ## Technologies Used 🛠️
 

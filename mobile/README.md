@@ -1,13 +1,19 @@
-# Welcome to your Expo app 👋
+# Larastack Mobile 📱
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is the Expo/React Native mobile app for Larastack. It lives in the same monorepo as the Laravel backend (`../backend`) and Next.js frontend (`../frontend`).
 
 ## Get started
 
-To start the app, in your terminal run:
+From the repository root, run:
 
 ```bash
-pnpm run start
+pnpm --filter @larastack/mobile start
+```
+
+Or from this directory (`mobile/`), run:
+
+```bash
+pnpm start
 ```
 
 In the output, you'll find options to open the app in:
@@ -17,7 +23,7 @@ In the output, you'll find options to open the app in:
 - [an iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+You can start developing by editing files in **src/app**. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
 ## Workflows
 
@@ -38,16 +44,6 @@ Run `pnpm run deploy` to [deploy to production](https://docs.expo.dev/eas/workfl
 ## Hosting
 
 Expo offers hosting for websites and API functions via EAS Hosting. See the [Getting Started](https://docs.expo.dev/eas/hosting/get-started/) guide to learn more.
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-pnpm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
 ## Learn more
 

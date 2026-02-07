@@ -1,6 +1,6 @@
 # Larastack Frontend 🚀
 
-This is the frontend part of the Larastack project, a fullstack starter template that combines the power of Laravel for the backend and Next.js for the frontend. This project is bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) and includes various tools and components to streamline the development process.
+This is the web frontend part of the Larastack project, a fullstack starter template with a Laravel backend, a Next.js web app, and an Expo/React Native mobile app in `../mobile`. This project is bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) and includes various tools and components to streamline the development process.
 
 ## Technologies Used 🛠️
 

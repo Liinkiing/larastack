@@ -1,6 +1,6 @@
 # Larastack 🚀
 
-Welcome to Larastack, a fullstack starter template that combines the power of Laravel for the backend and Next.js for the frontend. This starter kit is designed to streamline the development process, making it easier to build modern, scalable web applications.
+Welcome to Larastack, a fullstack starter template that combines Laravel for the backend, Next.js for the web frontend, and Expo/React Native for mobile. This starter kit is designed to streamline development for modern, scalable, multi-platform applications.
 
 ## Technologies Used 🛠️
 
@@ -16,11 +16,18 @@ Welcome to Larastack, a fullstack starter template that combines the power of La
 - **Panda CSS**: A styling engine used for writing CSS-in-JS, providing flexibility and ease of use in styling components.
 - **Storybook**: A tool for developing UI components in isolation, making it easier to build and test components.
 
+### Mobile
+
+- **Expo**: A platform and toolchain for building and shipping React Native apps quickly.
+- **React Native**: A framework for building native mobile apps using React.
+- **Expo Router**: File-based routing and navigation for Expo apps.
+
 ## Features ✨
 
 - **GraphQL Integration**: Easily create and manage GraphQL endpoints with Lighthouse.
 - **OAuth Login**: Simplified user authentication using Laravel Socialite.
 - **Custom Components**: A set of custom components to ease development when building new features.
+- **Cross-Platform Setup**: Build backend, web, and mobile apps from a single monorepo.
 
 ## Installation ⚙️
 
@@ -89,6 +96,22 @@ Welcome to Larastack, a fullstack starter template that combines the power of La
 
 4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### Mobile
+
+1. Navigate to the mobile directory:
+
+   ```shell
+   cd ../mobile
+   ```
+
+2. Start the Expo development server:
+
+   ```bash
+   pnpm start
+   ```
+
+3. Use the terminal prompts to open the app in an iOS simulator, Android emulator, web, or Expo Go.
+
 ## Learn More 📚
 
 To learn more about the technologies used in this project, take a look at the following resources:
@@ -99,6 +122,8 @@ To learn more about the technologies used in this project, take a look at the fo
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Panda CSS Documentation](https://panda-css.com)
 - [Storybook Documentation](https://storybook.js.org/docs)
+- [Expo Documentation](https://docs.expo.dev)
+- [React Native Documentation](https://reactnative.dev/docs/getting-started)
 
 ## Deploy on Vercel 🚀
 
