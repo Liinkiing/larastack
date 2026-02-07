@@ -4,7 +4,8 @@ import type { ComponentProps } from 'react'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native'
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>
+type SymbolName = Extract<SymbolViewProps['name'], string>
+type MaterialIconName = ComponentProps<typeof MaterialIcons>['name']
 type IconSymbolName = keyof typeof MAPPING
 
 /**
@@ -25,7 +26,7 @@ const MAPPING = {
   'camera.fill': 'photo-camera',
   'chart.bar.fill': 'bar-chart',
   'gearshape.fill': 'settings',
-} as IconMapping
+} as const satisfies Partial<Record<SymbolName, MaterialIconName>>
 
 export function IconSymbol({
   name,

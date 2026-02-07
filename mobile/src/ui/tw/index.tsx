@@ -13,7 +13,7 @@ import { useCssElement, useNativeVariable } from 'react-native-css'
 type LinkProps = ComponentProps<typeof RouterLink> & { className?: string }
 
 const CssLink = (props: LinkProps) => {
-  return useCssElement(RouterLink, props, { className: 'style' })
+  return useCssElement(RouterLink as any, props as any, { className: 'style' } as any)
 }
 
 export const Link = Object.assign(CssLink, {
@@ -32,11 +32,11 @@ export type ViewProps = ComponentProps<typeof RNView> & {
 }
 
 export const View = (props: ViewProps) => {
-  return useCssElement(RNView, props, { className: 'style' })
+  return useCssElement(RNView as any, props as any, { className: 'style' } as any)
 }
 
 export const Text = (props: ComponentProps<typeof RNText> & { className?: string }) => {
-  return useCssElement(RNText, props, { className: 'style' })
+  return useCssElement(RNText as any, props as any, { className: 'style' } as any)
 }
 
 type ScrollViewProps = ComponentProps<typeof RNScrollView> & {
@@ -45,18 +45,22 @@ type ScrollViewProps = ComponentProps<typeof RNScrollView> & {
 }
 
 export const ScrollView = (props: ScrollViewProps) => {
-  return useCssElement(RNScrollView, props, {
-    className: 'style',
-    contentContainerClassName: 'contentContainerStyle',
-  })
+  return useCssElement(
+    RNScrollView as any,
+    props as any,
+    {
+      className: 'style',
+      contentContainerClassName: 'contentContainerStyle',
+    } as any,
+  )
 }
 
 export const Pressable = (props: ComponentProps<typeof RNPressable> & { className?: string }) => {
-  return useCssElement(RNPressable, props, { className: 'style' })
+  return useCssElement(RNPressable as any, props as any, { className: 'style' } as any)
 }
 
 export const TextInput = (props: ComponentProps<typeof RNTextInput> & { className?: string }) => {
-  return useCssElement(RNTextInput, props, { className: 'style' })
+  return useCssElement(RNTextInput as any, props as any, { className: 'style' } as any)
 }
 
 export { Image } from './image'

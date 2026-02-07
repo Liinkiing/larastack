@@ -27,19 +27,15 @@ These documentation files are specifically formatted for AI agents and should be
 
 ```
 /
-├── app/                   # Expo Router file-based routing
-│   ├── (tabs)/            # Tab-based navigation screens
-│   │   ├── index.tsx      # Home screen
-│   │   ├── explore.tsx    # Explore screen
-│   │   └── _layout.tsx    # Tabs layout
-│   ├── _layout.tsx        # Root layout with theme provider
-│   └── modal.tsx          # Modal screen example
-├── components/            # Reusable React components
-│   ├── ui/                # UI primitives (IconSymbol, Collapsible)
-│   └── ...                # Feature components (themed, haptic, parallax)
-├── constants/             # App-wide constants (theme, colors)
-├── hooks/                 # Custom React hooks (color scheme, theme)
-├── assets/                # Static assets (images, fonts)
+├── src/
+│   ├── app/               # Expo Router file-based routing
+│   │   ├── (tabs)/        # Tab-based navigation screens
+│   │   ├── _layout.tsx    # Root layout with theme provider
+│   │   └── ...
+│   ├── assets/            # Static assets (images, fonts)
+│   ├── components/        # Reusable React components
+│   ├── ui/                # UI primitives and design system
+│   └── utils/             # Shared utilities
 ├── scripts/               # Utility scripts (reset-project)
 ├── .eas/workflows/        # EAS Workflows (CI/CD automation)
 ├── app.json               # Expo configuration
@@ -57,16 +53,17 @@ npx expo start --clear          # Clear cache and start dev server
 npx expo install <package>      # Install packages with compatible versions
 npx expo install --check        # Check which installed packages need to be updated
 npx expo install --fix          # Automatically update any invalid package versions
-npm run development-builds      # Create development builds (workflow)
-npm run reset-project           # Reset to blank template
+pnpm run development-builds     # Create development builds (workflow)
+pnpm run reset-project          # Reset to blank template
 ```
 
 ### Building & Testing
 
 ```bash
 npx expo doctor      # Check project health and dependencies
+pnpm run ts:check    # Run TypeScript type checking
 npx expo lint        # Run ESLint
-npm run draft        # Publish preview update and website (workflow)
+pnpm run draft       # Publish preview update and website (workflow)
 ```
 
 ### Production
@@ -74,7 +71,7 @@ npm run draft        # Publish preview update and website (workflow)
 ```bash
 npx eas-cli@latest build --platform ios -s          # Use EAS to build for iOS platform and submit to App Store
 npx eas-cli@latest build --platform android -s      # Use EAS to build for Android platform and submit to Google Play Store
-npm run deploy                                      # Deploy to production (workflow)
+pnpm run deploy                                     # Deploy to production (workflow)
 ```
 
 ## Development Guidelines
