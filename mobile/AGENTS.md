@@ -13,6 +13,7 @@ When working on this project, **always consult the official Expo documentation**
 - **https://docs.expo.dev/llms-eas.txt** - Complete EAS (Expo Application Services) documentation
 - **https://docs.expo.dev/llms-sdk.txt** - Complete Expo SDK documentation
 - **https://reactnative.dev/docs/getting-started** - Complete React Native documentation
+- **https://github.com/expo/fyi** - Expo team guidance with advanced patterns, package-specific notes, and practical recommendations
 
 These documentation files are specifically formatted for AI agents and should be your **primary reference** for:
 
@@ -156,6 +157,7 @@ When working on this project:
    - For general Expo questions: https://docs.expo.dev/llms-full.txt
    - For EAS/deployment questions: https://docs.expo.dev/llms-eas.txt
    - For SDK/API questions: https://docs.expo.dev/llms-sdk.txt
+   - For package-specific and advanced Expo patterns: https://github.com/expo/fyi
 
 2. **Understand before implementing**: Read the relevant docs section before writing code
 

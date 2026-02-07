@@ -60,6 +60,7 @@ Single-file frontend checks:
 - Lint + fix: `pnpm --filter @larastack/mobile lint:fix`
 - Format: `pnpm --filter @larastack/mobile format`
 - Format check: `pnpm --filter @larastack/mobile format:check`
+- Reference docs for package-specific/advanced Expo patterns: https://github.com/expo/fyi
 
 Single-file mobile checks:
 - Lint one file: `pnpm --filter @larastack/mobile exec oxlint app/_layout.tsx`
