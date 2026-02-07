@@ -1,156 +1,159 @@
 # Agent Guidelines (Larastack)
 
-This repo is a pnpm workspace with a Laravel 12 backend and a Next.js 16 App Router frontend.
+This monorepo uses pnpm workspaces with three apps:
+- `backend/` (Laravel 12 + Lighthouse + Sail)
+- `frontend/` (Next.js 16 App Router + Apollo + Panda)
+- `mobile/` (Expo Router + React Native)
+
+## Rule Sources Checked
+
+No Cursor/Copilot rule files were found at the time of writing:
+- `.cursor/rules/**` (not present)
+- `.cursorrules` (not present)
+- `.github/copilot-instructions.md` (not present)
+
+If these files are added later, treat them as higher-priority instructions for agents.
 
 ## Repo Map
 
-- `backend/`: Laravel API + Lighthouse GraphQL + Sail + Vite assets
-- `frontend/`: Next.js app; routes in `frontend/app/`, shared logic in `frontend/src/shared/`, UI primitives in `frontend/src/ui/`, theme/tokens in `frontend/src/theme/`
-- Root tooling: `pnpm-workspace.yaml`, `.lintstagedrc.js`, `commitlint.config.js`
+- `backend/app/`: Laravel application code (controllers, requests, GraphQL resolvers, etc.)
+- `backend/graphql/`: Lighthouse GraphQL schema split into modules
+- `frontend/app/`: route-specific Next.js App Router files
+- `frontend/src/`: shared frontend code (`shared/`, `ui/`, `theme/`, `apollo/`)
+- `mobile/app/`: Expo Router route files
+- Root tooling: `pnpm-workspace.yaml`, `.lintstagedrc.js`, `commitlint.config.js`, `.oxlintrc.json`
 
-## Commands (Build/Lint/Test)
+## Build / Lint / Test Commands
 
-All pnpm commands are meant to be run from repo root.
+Run all `pnpm` commands from repository root unless noted.
 
-### Install / Bootstrap
+### Bootstrap
 
-- JS deps (workspace): `pnpm install`
-- Backend PHP deps: `cd backend && composer install`
-- Backend env: `cp backend/.env.example backend/.env` (then set secrets locally)
-- Sail up: `cd backend && ./vendor/bin/sail up -d`
+- Install JS workspace deps: `pnpm install`
+- Install backend PHP deps: `cd backend && composer install`
+- Create backend env file: `cp backend/.env.example backend/.env`
+- Start backend services: `cd backend && ./vendor/bin/sail up -d`
 
-### Frontend (Next.js)
+### Frontend (`@larastack/frontend`)
 
-- Dev (runs GraphQL + Panda codegen first): `pnpm --filter=frontend dev`
-- Build (runs Panda + GraphQL codegen first): `pnpm --filter=frontend build`
-- Start: `pnpm --filter=frontend start`
-- Typecheck: `pnpm --filter=frontend ts:check`
-- Lint: `pnpm --filter=frontend lint`
-- Lint (fix): `pnpm --filter=frontend lint:fix`
-- Format (write): `pnpm --filter=frontend format`
-- Format (check): `pnpm --filter=frontend format:check`
-- Storybook: `pnpm --filter=frontend storybook`
+- Dev: `pnpm --filter @larastack/frontend dev`
+- Build: `pnpm --filter @larastack/frontend build`
+- Start prod server: `pnpm --filter @larastack/frontend start`
+- Typecheck: `pnpm --filter @larastack/frontend ts:check`
+- Lint: `pnpm --filter @larastack/frontend lint`
+- Lint + fix: `pnpm --filter @larastack/frontend lint:fix`
+- Format: `pnpm --filter @larastack/frontend format`
+- Format check: `pnpm --filter @larastack/frontend format:check`
+- Storybook: `pnpm --filter @larastack/frontend storybook`
 
-Useful "single file" checks:
+Single-file frontend checks:
+- Lint one file: `pnpm --filter @larastack/frontend lint -- app/(public)/page.tsx`
+- Format one file: `pnpm --filter @larastack/frontend exec oxfmt --write app/(public)/page.tsx`
 
-- Lint one file: `pnpm --filter=frontend lint -- app/(public)/page.tsx`
-- Format one file: `pnpm --filter=frontend exec oxfmt --write app/(public)/page.tsx`
+### Mobile (`@larastack/mobile`)
 
-### Backend (Laravel)
+- Dev server: `pnpm --filter @larastack/mobile start`
+- iOS: `pnpm --filter @larastack/mobile ios`
+- Android: `pnpm --filter @larastack/mobile android`
+- Web: `pnpm --filter @larastack/mobile web`
+- Lint: `pnpm --filter @larastack/mobile lint`
+- Lint + fix: `pnpm --filter @larastack/mobile lint:fix`
+- Format: `pnpm --filter @larastack/mobile format`
+- Format check: `pnpm --filter @larastack/mobile format:check`
 
-- Dev (Vite): `pnpm --filter=backend dev`
-- Build (Vite): `pnpm --filter=backend build`
-- Format/lint (Pint): `pnpm --filter=backend lint`
-- Typecheck (PHPStan via Sail): `pnpm --filter=backend typecheck`
-- Reset DB: `pnpm --filter=backend db:reset`
+Single-file mobile checks:
+- Lint one file: `pnpm --filter @larastack/mobile exec oxlint app/_layout.tsx`
+- Format one file: `pnpm --filter @larastack/mobile exec oxfmt --write app/_layout.tsx`
 
-### Backend Tests (PHPUnit) - including single test
+### Backend (`@larastack/backend`)
 
-Run with Sail (preferred so container services match):
+- Vite dev: `pnpm --filter @larastack/backend dev`
+- Vite build: `pnpm --filter @larastack/backend build`
+- Lint/format (Pint): `pnpm --filter @larastack/backend lint`
+- Typecheck (Larastan via Sail): `pnpm --filter @larastack/backend typecheck`
+- Reset database: `pnpm --filter @larastack/backend db:reset`
 
+### Backend Tests (single test emphasized)
+
+Use Sail to match containerized services:
 - All tests: `cd backend && ./vendor/bin/sail phpunit`
-- Single test file: `cd backend && ./vendor/bin/sail phpunit tests/Feature/AuthTest.php`
+- Single file: `cd backend && ./vendor/bin/sail phpunit tests/Feature/AuthTest.php`
 - Single test method: `cd backend && ./vendor/bin/sail phpunit --filter test_login_succeeds tests/Feature/AuthTest.php`
 - Single suite: `cd backend && ./vendor/bin/sail phpunit --testsuite Unit`
 
 ### GraphQL / Codegen Sync
 
-- Backend schema dump + frontend regen: `pnpm --filter=backend gql:dump`
-  - Writes backend schema to `backend/storage/app/private/lighthouse-schema.graphql`
-  - Copies to `frontend/schema.graphql`
-  - Regenerates frontend types in `frontend/src/__generated__/gql/`
+- Full schema + frontend regen: `pnpm --filter @larastack/backend gql:dump`
+- Frontend-only GraphQL regen: `pnpm --filter @larastack/frontend gen:gql`
 
-If you touch any of:
+Run codegen after changing GraphQL schema/documents in:
+- `backend/graphql/**/*.graphql`
+- frontend GraphQL operations in `frontend/app/**/*.ts(x)` or `frontend/src/**/*.ts(x)`
 
-- `backend/graphql/**/*.graphql` or Lighthouse directives/resolvers
-- `frontend/app/**/*.ts(x)` / `frontend/src/**/*.ts(x)` GraphQL documents
+## Coding Standards
 
-...run `pnpm --filter=backend gql:dump` (or at least `pnpm --filter=frontend gen:gql`).
+### General
 
-## Code Style (General)
-
-- Prefer the repo's formatters/linters over manual alignment.
-- Keep changes local: avoid unrelated refactors while fixing a bug/feature.
-- Don't commit secrets (`.env`, credentials, tokens).
-
-## Frontend Style (TypeScript / React / Next)
-
-### Language + Types
-
-- TypeScript is `strict` (`frontend/tsconfig.json`); don't "work around" with `any` unless you have no alternative.
-- Prefer `unknown` for caught errors and narrow with type guards.
-- Use `NonNullable<T>` and explicit return types for shared hooks/services.
-- Prefer `as const` for "enum-ish" objects (see `frontend/src/shared/env.ts`).
+- Prefer minimal, local changes; avoid unrelated refactors.
+- Never commit secrets (`.env`, API keys, credentials).
+- Use existing linters/formatters instead of manual style tweaks.
+- Follow existing naming patterns in nearby files first.
 
 ### Imports
 
-- Use path aliases: `~/*` for `frontend/src/*` and `~app/*` for `frontend/app/*`.
-- Use `import type { ... }` for type-only imports.
-- Keep imports grouped with blank lines:
-  - React/Next first
-  - Third-party libs
-  - Generated code (`~/__generated__/...`)
-  - Internal modules (`~/...`)
+- Use TypeScript type-only imports: `import type { Foo } from '...'`.
+- Frontend aliases: `~/*` for `frontend/src/*`, `~app/*` for `frontend/app/*`.
+- Mobile alias: `~/*` for `mobile/*`.
+- Keep import groups ordered: framework, third-party, generated, internal.
 
-### Components + Files
+### Formatting / Linting
 
-- Next App Router:
-  - Server components by default; add `'use client'` only when needed (hooks, state, browser APIs).
-  - Put route-specific components next to the route under `frontend/app/...`.
-  - Shared components/providers/layouts live under `frontend/src/shared/...`.
-- UI primitives live in `frontend/src/ui/` and should be styled via Panda/Ark recipes.
-
-### Styling (Panda CSS + Ark UI)
-
-- Prefer Panda tokens/semantic tokens over raw hex values.
-- Use `~/styled-system/jsx` primitives (`Stack`, `Box`, etc.) for layout.
-- Add/adjust recipes in `frontend/src/theme/recipes/*` and keep variants predictable.
-- Keep typography consistent with text styles in `frontend/src/theme/text-styles.ts`.
-
-### GraphQL (Apollo Client)
-
-- Define operations/fragments with the `graphql` tagged template (scanned by codegen).
-- Prefer colocated fragments near the component using them.
-- Use fragment masking helpers (`getFragmentData`) and `useFragment` wrapper when reading fragments.
-- Don't manually edit generated files in `frontend/src/__generated__/gql/`.
-
-### Error Handling
-
-- For GraphQL errors, rely on the centralized error link (`frontend/src/apollo/links/error.ts`) and present user-safe messages.
-- Avoid `console.error` noise in production paths; gate debug logs behind `compilerEnv.__DEV__`.
-- Prefer rendering a fallback UI (error boundary/layout) over `window.alert` for new work.
-
-## Backend Style (Laravel / PHP)
-
-### Formatting + Static Analysis
-
-- Format/lint: Pint (`backend/pint.json`, preset `laravel`) via `pnpm --filter=backend lint`.
-- Typecheck: PHPStan (Larastan) via `pnpm --filter=backend typecheck` (`backend/phpstan.neon`, level 6).
-
-### Naming + Structure
-
-- Controllers: `backend/app/Http/Controllers/...` with explicit return types (`Response`, `JsonResponse`, etc.).
-- Validation: prefer Form Requests (`backend/app/Http/Requests/...`) for request validation/auth.
-- GraphQL:
-  - Schema in `backend/graphql/**/*.graphql` (imported by `backend/graphql/schema.graphql`).
-  - Custom scalars/directives/resolvers under `backend/app/GraphQL/...`.
-  - Keep schema docs in triple quotes and use Lighthouse directives consistently (`@field`, `@rename`, `@guard`, etc.).
-
-### Imports + Facades
-
-- Prefer explicit facade imports (`use Illuminate\Support\Facades\Auth;`) over global aliases.
-- Prefer `final` for small resolver classes when extension isn't intended.
-
-### Error Handling + Logging
-
-- Throw framework exceptions that map cleanly to HTTP/GraphQL (`AuthorizationException`, validation exceptions, etc.).
-- Log with context arrays (ids, provider, input metadata) and avoid logging secrets.
-- Use helpers intentionally (e.g., `frontend_url()` from `backend/app/helpers.php`).
-
-## Git Hygiene (Commit/PR)
-
-- Conventional Commits enforced by commitlint: `type(scope): subject` (e.g., `feat(frontend): add login form`).
-- Pre-commit runs lint-staged:
+- JavaScript/TypeScript linting uses `oxlint`.
+- JavaScript/TypeScript formatting uses `oxfmt`.
+- Backend PHP formatting uses Pint (`laravel` preset).
+- Pre-commit (`lint-staged`) runs:
   - `oxlint --fix` on `*.{js,jsx,ts,tsx}`
   - `oxfmt --write` on `*.{js,jsx,ts,tsx,json}`
-- PR template lives at `.github/pull_request_template.md` (fill context + solution; add a testing plan when risky).
+
+### TypeScript / React / Next (frontend + mobile)
+
+- Keep TS strictness; avoid introducing `any` unless unavoidable.
+- Prefer `unknown` for caught errors and narrow explicitly.
+- Prefer explicit return types for shared hooks/utilities/services.
+- Use `as const` for enum-like constant maps.
+- Next.js defaults to Server Components; add `'use client'` only when required.
+- Co-locate route-specific UI in `app/` route folders; keep reusable UI in shared directories.
+
+### Styling (frontend)
+
+- Prefer Panda design tokens/semantic tokens over hardcoded values.
+- Use `~/styled-system/jsx` layout primitives.
+- Keep recipes in `frontend/src/theme/recipes/*` predictable and composable.
+
+### Laravel / PHP (backend)
+
+- Prefer Form Requests for validation and authorization.
+- Use explicit return types in controllers/resolvers when possible.
+- Prefer explicit facade imports over global aliases.
+- Keep GraphQL schema docs in triple quotes and directives consistent.
+- Prefer `final` on small classes not intended for inheritance.
+
+### Naming Conventions
+
+- Use descriptive names; avoid abbreviations unless common domain terms.
+- Components/classes: PascalCase. Functions/variables: camelCase.
+- Test names should describe behavior (for PHPUnit, clear `test_*` intent).
+
+### Error Handling / Logging
+
+- Throw framework-appropriate exceptions (Laravel auth/validation/authorization).
+- For frontend GraphQL errors, use centralized handling in Apollo links.
+- Avoid noisy production logs; gate debug output behind dev checks.
+- Log structured context (IDs/metadata), never secrets or tokens.
+
+## Git & PR Hygiene
+
+- Commit messages follow Conventional Commits: `type(scope): subject`.
+- Keep commits focused and atomic.
+- Use `.github/pull_request_template.md` when opening PRs.
+- Include a short testing plan for risky changes.
