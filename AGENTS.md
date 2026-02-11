@@ -27,6 +27,11 @@ If they are added later, treat them as higher-priority instructions.
 - `mobile/src/ui/` - reusable mobile UI primitives
 - Root tooling: `.oxlintrc.json`, `.lintstagedrc.js`, `commitlint.config.js`
 
+## Documentation Priorities
+- For Expo/mobile work, check relevant installed skills first (for example `expo-dev-client`, `expo-deployment`, `expo-cicd-workflows`, `upgrading-expo`, `expo-tailwind-setup`).
+- For Expo setup issues, native integration, and common workflows/workarounds, consult official Expo docs and `https://github.com/expo/fyi` early before proposing custom fixes.
+- Prefer stable, documented Expo patterns over ad-hoc workarounds when both are viable.
+
 ## Build/Lint/Test Commands
 Run from repo root unless explicitly noted.
 
