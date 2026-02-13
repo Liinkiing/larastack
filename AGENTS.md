@@ -46,11 +46,15 @@ Run from repo root unless explicitly noted.
 - Build: `pnpm --filter @larastack/frontend build`
 - Start: `pnpm --filter @larastack/frontend start`
 - Typecheck: `pnpm --filter @larastack/frontend ts:check`
+- Pre-typecheck pipeline: `pnpm --filter @larastack/frontend prets:check`
 - Lint: `pnpm --filter @larastack/frontend lint`
 - Lint fix: `pnpm --filter @larastack/frontend lint:fix`
 - Format: `pnpm --filter @larastack/frontend format`
 - Format check: `pnpm --filter @larastack/frontend format:check`
+- GraphQL codegen: `pnpm --filter @larastack/frontend gen:gql`
+- GraphQL codegen (watch): `pnpm --filter @larastack/frontend gen:gql:watch`
 - Storybook: `pnpm --filter @larastack/frontend storybook`
+- Storybook build: `pnpm --filter @larastack/frontend build-storybook`
 
 Single-file frontend checks:
 - Lint one file: `pnpm --filter @larastack/frontend lint -- app/(public)/page.tsx`
@@ -58,14 +62,18 @@ Single-file frontend checks:
 
 ### Mobile (`@larastack/mobile`)
 - Dev: `pnpm --filter @larastack/mobile start`
+- Dev client: `pnpm --filter @larastack/mobile start:dev-client`
 - iOS: `pnpm --filter @larastack/mobile ios`
 - Android: `pnpm --filter @larastack/mobile android`
 - Web: `pnpm --filter @larastack/mobile web`
 - Typecheck: `pnpm --filter @larastack/mobile ts:check`
+- Pre-typecheck pipeline: `pnpm --filter @larastack/mobile prets:check`
 - Lint: `pnpm --filter @larastack/mobile lint`
 - Lint fix: `pnpm --filter @larastack/mobile lint:fix`
 - Format: `pnpm --filter @larastack/mobile format`
 - Format check: `pnpm --filter @larastack/mobile format:check`
+- GraphQL codegen: `pnpm --filter @larastack/mobile gen:gql`
+- GraphQL codegen (watch): `pnpm --filter @larastack/mobile gen:gql:watch`
 - Health check: `pnpm --filter @larastack/mobile exec expo-doctor`
 
 Single-file mobile checks:
@@ -96,11 +104,16 @@ Notes:
   `pnpm --filter @larastack/backend gql:dump`
 - Frontend-only GraphQL codegen:
   `pnpm --filter @larastack/frontend gen:gql`
+- Mobile-only GraphQL codegen:
+  `pnpm --filter @larastack/mobile gen:gql`
+- Frontend + mobile GraphQL codegen (manual run):
+  `pnpm --filter @larastack/frontend gen:gql && pnpm --filter @larastack/mobile gen:gql`
 
 Run codegen after changes in:
 - `backend/graphql/**/*.graphql`
 - `frontend/app/**/*.ts(x)` GraphQL operations
 - `frontend/src/**/*.ts(x)` GraphQL operations
+- `mobile/src/**/*.ts(x)` GraphQL operations
 
 ## Code Style Guidelines
 
