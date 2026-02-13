@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router'
 
-export default function AboutLayout() {
+export default function AuthenticatedSessionLayout() {
   return (
     <Stack
       screenOptions={{
@@ -10,7 +10,7 @@ export default function AboutLayout() {
         headerBackButtonDisplayMode: 'minimal',
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'About' }} />
+      <Stack.Screen name="index" options={{ title: 'Session' }} />
     </Stack>
   )
 }

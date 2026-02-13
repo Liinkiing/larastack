@@ -5,9 +5,9 @@ import type { GestureResponderEvent, StyleProp, ViewStyle } from 'react-native'
 import { cva } from 'class-variance-authority'
 import * as Haptics from 'expo-haptics'
 
-import { IconSymbol } from '~/ui/icon-symbol'
+import { IconSymbol } from '~/ui/IconSymbol'
 import { Pressable, View } from '~/ui/tw'
-import { Typography } from '~/ui/typography'
+import { Typography } from '~/ui/Typography'
 import { cn } from '~/utils/cn'
 
 type ButtonIcon = ComponentProps<typeof IconSymbol>['name']

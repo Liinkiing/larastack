@@ -33,6 +33,7 @@ export const AuthContext = createContext<Context>({
 
 export const AuthProvider: FC<Props> = ({ children, mode }) => {
   const { data, error, loading } = useQuery(ViewerDocument, {
+    fetchPolicy: 'cache-and-network',
     skip: mode === 'guest' || !AuthService.isLoggedIn,
   })
 

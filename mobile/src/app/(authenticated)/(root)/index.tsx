@@ -1,11 +1,11 @@
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 
-import { Button } from '~/ui/button'
-import { Card } from '~/ui/card'
-import { IconSymbol } from '~/ui/icon-symbol'
+import { Button } from '~/ui/Button'
+import { Card } from '~/ui/Card'
+import { IconSymbol } from '~/ui/IconSymbol'
 import { ScrollView, View } from '~/ui/tw'
-import { Typography } from '~/ui/typography'
+import { Typography } from '~/ui/Typography'
 
 export default function HomeScreen() {
   const router = useRouter()
@@ -35,16 +35,15 @@ export default function HomeScreen() {
         </Typography>
 
         <Typography variant="body" tone="muted" selectable>
-          We kept the native iOS 26 tabs and stacks, then reset everything else to a tiny app with a colorful
-          personality.
+          Native tabs plus proper headers on each authenticated tab.
         </Typography>
 
         <Button label="Spark some joy" icon="star.fill" onPress={handleSparkPress} />
         <Button
-          label="Open About"
+          label="Open Session tab"
           icon="person.crop.circle.fill"
           variant="secondary"
-          onPress={() => router.push('/about')}
+          onPress={() => router.push('/session')}
         />
       </Card>
 

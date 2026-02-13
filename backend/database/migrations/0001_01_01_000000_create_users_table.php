@@ -22,9 +22,11 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table->string('google_id')->nullable();
+            $table->string('google_id')->nullable()->unique();
             $table->text('google_token')->nullable();
             $table->text('google_refresh_token')->nullable();
+
+            $table->string('apple_id')->nullable()->unique();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

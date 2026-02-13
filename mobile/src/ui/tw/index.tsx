@@ -63,4 +63,4 @@ export const TextInput = (props: ComponentProps<typeof RNTextInput> & { classNam
   return useCssElement(RNTextInput as any, props as any, { className: 'style' } as any)
 }
 
-export { Image } from './image'
+export { Image } from './Image'

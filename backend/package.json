@@ -9,7 +9,7 @@
     "lint": "./vendor/bin/sail pint",
     "typecheck": "./vendor/bin/sail bin phpstan",
     "db:reset": "./vendor/bin/sail artisan migrate:fresh --seed",
-    "gql:dump": "./vendor/bin/sail artisan lighthouse:print-schema --write && cp ./storage/app/private/lighthouse-schema.graphql ../frontend/schema.graphql && pnpm --filter '../frontend' gen:gql",
+    "gql:dump": "./vendor/bin/sail artisan lighthouse:print-schema --write && ./scripts/sync-gql-schema.sh",
     "gql:ide-helper": "./vendor/bin/sail artisan lighthouse:ide-helper --omit-built-in"
   },
   "devDependencies": {
