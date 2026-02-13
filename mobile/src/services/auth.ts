@@ -20,32 +20,60 @@ export type MobileAuthUser = {
   email: string
   avatar_url: string | null
   google_id: string | null
+  apple_id: string | null
 }
 
-export type MobileGoogleAuthResponse = {
+export type MobileOAuthAuthResponse = {
   token: string
   token_type: 'Bearer'
   user: MobileAuthUser
 }
 
-export async function exchangeGoogleIdToken(idToken: string): Promise<MobileGoogleAuthResponse> {
-  const response = await fetch(`${getApiBaseUrl()}/api/auth/google/mobile`, {
+export type MobileAppleAuthPayload = {
+  identityToken: string
+  appleUser: string
+  email: string | null
+  givenName: string | null
+  familyName: string | null
+}
+
+const exchangeMobileOAuth = async (
+  path: string,
+  body: Record<string, string | null>,
+): Promise<MobileOAuthAuthResponse> => {
+  const response = await fetch(`${getApiBaseUrl()}${path}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      id_token: idToken,
+      ...body,
       device_name: getDeviceName(),
     }),
   })
 
   if (!response.ok) {
-    throw new Error('Unable to authenticate with Google right now.')
+    throw new Error('Unable to authenticate right now.')
   }
 
-  return (await response.json()) as MobileGoogleAuthResponse
+  return (await response.json()) as MobileOAuthAuthResponse
+}
+
+export async function exchangeGoogleIdToken(idToken: string): Promise<MobileOAuthAuthResponse> {
+  return exchangeMobileOAuth('/api/auth/google/mobile', {
+    id_token: idToken,
+  })
+}
+
+export async function exchangeAppleIdentityToken(payload: MobileAppleAuthPayload): Promise<MobileOAuthAuthResponse> {
+  return exchangeMobileOAuth('/api/auth/apple/mobile', {
+    identity_token: payload.identityToken,
+    apple_user: payload.appleUser,
+    email: payload.email,
+    given_name: payload.givenName,
+    family_name: payload.familyName,
+  })
 }
 
 export async function persistAccessToken(token: string): Promise<void> {

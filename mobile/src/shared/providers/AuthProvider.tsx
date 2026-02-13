@@ -1,8 +1,9 @@
 import { skipToken, useSuspenseQuery } from '@apollo/client/react'
+import { Redirect } from 'expo-router'
 
 import { graphql } from '~/__generated__/gql'
-import { MobileAuthViewerDocument, MobileAuthViewerQuery } from '~/__generated__/gql/graphql'
-import { useOAuth } from '~/providers/oauth-provider'
+import { MobileAuthViewerDocument, type MobileAuthViewerQuery } from '~/__generated__/gql/graphql'
+import { useOAuth } from '~/shared/providers/OAuthProvider'
 
 export type Viewer = NonNullable<MobileAuthViewerQuery['viewer']>
 
@@ -35,9 +36,11 @@ export function useAuth(): UseAuthReturn {
   )
 
   if (!data?.viewer) {
-    throw new Error(
+    console.error(
       'Trying to access viewer data while not authenticated. useAuth should only be used within <OAuthProvider /> and when the user is authenticated.',
     )
+
+    return (<Redirect href="/login" />) as unknown as UseAuthReturn
   }
 
   return {

@@ -41,6 +41,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "expo": "55.0.0-preview.10",
+    "expo-apple-authentication": "~55.0.5",
     "expo-constants": "~55.0.4",
     "expo-dev-client": "~55.0.5",
     "expo-device": "~55.0.6",

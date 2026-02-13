@@ -5,8 +5,8 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 
 import '../global.css'
-import { ApolloAppProvider } from '~/providers/apollo-provider'
-import { useOAuth, OAuthProvider } from '~/providers/oauth-provider'
+import { ApolloAppProvider } from '~/shared/providers/ApolloAppProvider'
+import { useOAuth, OAuthProvider } from '~/shared/providers/OAuthProvider'
 
 void SplashScreen.preventAutoHideAsync()
 

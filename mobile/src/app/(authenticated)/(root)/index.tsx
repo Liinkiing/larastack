@@ -1,11 +1,11 @@
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 
-import { Button } from '~/ui/button'
-import { Card } from '~/ui/card'
-import { IconSymbol } from '~/ui/icon-symbol'
+import { Button } from '~/ui/Button'
+import { Card } from '~/ui/Card'
+import { IconSymbol } from '~/ui/IconSymbol'
 import { ScrollView, View } from '~/ui/tw'
-import { Typography } from '~/ui/typography'
+import { Typography } from '~/ui/Typography'
 
 export default function HomeScreen() {
   const router = useRouter()

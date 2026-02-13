@@ -1,8 +1,10 @@
 import { createContext, type PropsWithChildren, use, useEffect, useState } from 'react'
 
 import { apolloClient } from '~/apollo/client'
+import { isAppleSignInAvailable, signInWithApple } from '~/services/apple-signin'
 import {
   clearAccessToken,
+  exchangeAppleIdentityToken,
   exchangeGoogleIdToken,
   fetchCurrentUser,
   getPersistedAccessToken,
@@ -17,7 +19,9 @@ type OAuthContextValue = {
   isHydratingSession: boolean
   isLoading: boolean
   isAuthenticated: boolean
+  isAppleLoginAvailable: boolean
   loginWithGoogle: () => Promise<void>
+  loginWithApple: () => Promise<void>
   logout: () => Promise<void>
   clearError: () => void
 }
@@ -29,6 +33,20 @@ export function OAuthProvider({ children }: PropsWithChildren) {
   const [authError, setAuthError] = useState<string | null>(null)
   const [isHydratingSession, setIsHydratingSession] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
+  const [isAppleLoginAvailable, setIsAppleLoginAvailable] = useState(false)
+
+  useEffect(() => {
+    if (process.env.EXPO_OS !== 'ios') {
+      return
+    }
+
+    const resolveAppleAvailability = async () => {
+      const isAvailable = await isAppleSignInAvailable()
+      setIsAppleLoginAvailable(isAvailable)
+    }
+
+    void resolveAppleAvailability()
+  }, [])
 
   useEffect(() => {
     const hydrateSession = async () => {
@@ -88,6 +106,34 @@ export function OAuthProvider({ children }: PropsWithChildren) {
     }
   }
 
+  const loginWithApple = async () => {
+    setIsLoading(true)
+    setAuthError(null)
+
+    try {
+      const applePayload = await signInWithApple()
+      const { token } = await exchangeAppleIdentityToken(applePayload)
+
+      await persistAccessToken(token)
+      setAccessToken(token)
+      await apolloClient.clearStore()
+    } catch (error) {
+      const cancelled =
+        typeof error === 'object' &&
+        error !== null &&
+        'code' in error &&
+        (error as { code?: string }).code === 'ERR_REQUEST_CANCELED'
+
+      if (cancelled) {
+        return
+      }
+
+      setAuthError(error instanceof Error ? error.message : 'Authentication failed. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   const logout = async () => {
     setIsLoading(true)
     setAuthError(null)
@@ -122,7 +168,9 @@ export function OAuthProvider({ children }: PropsWithChildren) {
     clearError: clearAuthError,
     isLoading: isLoading,
     isAuthenticated: Boolean(accessToken),
+    isAppleLoginAvailable,
     isHydratingSession,
+    loginWithApple,
     loginWithGoogle,
     logout,
   }
