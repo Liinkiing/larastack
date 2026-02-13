@@ -86,6 +86,6 @@ export async function revokeCurrentToken(token: string): Promise<void> {
   })
 
   if (!response.ok) {
-    throw new Error('Unable to revoke the current session.')
+    throw new Error('ERR_REVOKE_TOKEN_FAILED')
   }
 }

@@ -5,12 +5,13 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 
 import '../global.css'
-import { AuthProvider, useAuth } from '~/providers/auth-provider'
+import { ApolloAppProvider } from '~/providers/apollo-provider'
+import { useOAuth, OAuthProvider } from '~/providers/oauth-provider'
 
 void SplashScreen.preventAutoHideAsync()
 
 function RootNavigator() {
-  const { user, isHydratingSession } = useAuth()
+  const { isAuthenticated, isHydratingSession } = useOAuth()
 
   useEffect(() => {
     if (!isHydratingSession) {
@@ -22,8 +23,8 @@ function RootNavigator() {
     return null
   }
 
-  const allowAuthenticatedScreens = Boolean(user)
-  const allowGuestScreens = !user
+  const allowAuthenticatedScreens = isAuthenticated
+  const allowGuestScreens = !isAuthenticated
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -40,10 +41,12 @@ function RootNavigator() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <ThemeProvider value={DefaultTheme}>
-        <RootNavigator />
-      </ThemeProvider>
-    </AuthProvider>
+    <ApolloAppProvider>
+      <OAuthProvider>
+        <ThemeProvider value={DefaultTheme}>
+          <RootNavigator />
+        </ThemeProvider>
+      </OAuthProvider>
+    </ApolloAppProvider>
   )
 }

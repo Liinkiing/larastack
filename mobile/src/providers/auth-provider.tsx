@@ -1,123 +1,46 @@
-import type { PropsWithChildren } from 'react'
+import { skipToken, useSuspenseQuery } from '@apollo/client/react'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { graphql } from '~/__generated__/gql'
+import { MobileAuthViewerDocument, MobileAuthViewerQuery } from '~/__generated__/gql/graphql'
+import { useOAuth } from '~/providers/oauth-provider'
 
-import {
-  clearAccessToken,
-  exchangeGoogleIdToken,
-  fetchCurrentUser,
-  getPersistedAccessToken,
-  persistAccessToken,
-  revokeCurrentToken,
-  type MobileAuthUser,
-} from '~/services/auth'
-import { signInWithGoogle, signOutFromGoogle } from '~/services/google-signin'
+export type Viewer = NonNullable<MobileAuthViewerQuery['viewer']>
 
-type AuthContextValue = {
-  user: MobileAuthUser | null
-  authError: string | null
-  isHydratingSession: boolean
-  isAuthenticating: boolean
-  loginWithGoogle: () => Promise<void>
-  logout: () => Promise<void>
-  clearAuthError: () => void
+type UseAuthReturn = {
+  viewer: Viewer
 }
 
-const AuthContext = createContext<AuthContextValue | null>(null)
+graphql(`
+  query MobileAuthViewer {
+    viewer {
+      id
+      name
+      email
+      abilities {
+        viewApp
+      }
+    }
+  }
+`)
 
-export function AuthProvider({ children }: PropsWithChildren) {
-  const [user, setUser] = useState<MobileAuthUser | null>(null)
-  const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [authError, setAuthError] = useState<string | null>(null)
-  const [isHydratingSession, setIsHydratingSession] = useState(true)
-  const [isAuthenticating, setIsAuthenticating] = useState(false)
-
-  useEffect(() => {
-    const hydrateSession = async () => {
-      try {
-        const token = await getPersistedAccessToken()
-        if (!token) {
-          return
+export function useAuth(): UseAuthReturn {
+  const { isAuthenticated } = useOAuth()
+  const { data } = useSuspenseQuery(
+    MobileAuthViewerDocument,
+    isAuthenticated
+      ? {
+          fetchPolicy: 'cache-and-network',
         }
+      : skipToken,
+  )
 
-        const authenticatedUser = await fetchCurrentUser(token)
-        setAccessToken(token)
-        setUser(authenticatedUser)
-      } catch {
-        await clearAccessToken()
-        setAccessToken(null)
-        setUser(null)
-      } finally {
-        setIsHydratingSession(false)
-      }
-    }
-
-    void hydrateSession()
-  }, [])
-
-  const loginWithGoogle = async () => {
-    setIsAuthenticating(true)
-    setAuthError(null)
-
-    try {
-      const idToken = await signInWithGoogle()
-      const { token, user: authenticatedUser } = await exchangeGoogleIdToken(idToken)
-
-      await persistAccessToken(token)
-      setAccessToken(token)
-      setUser(authenticatedUser)
-    } catch (error) {
-      if (error instanceof Error && error.message === 'Google sign-in was cancelled.') {
-        return
-      }
-
-      setAuthError(error instanceof Error ? error.message : 'Authentication failed. Please try again.')
-    } finally {
-      setIsAuthenticating(false)
-    }
+  if (!data?.viewer) {
+    throw new Error(
+      'Trying to access viewer data while not authenticated. useAuth should only be used within <OAuthProvider /> and when the user is authenticated.',
+    )
   }
 
-  const logout = async () => {
-    setIsAuthenticating(true)
-    setAuthError(null)
-
-    try {
-      if (accessToken) {
-        await revokeCurrentToken(accessToken)
-      }
-
-      await signOutFromGoogle()
-      await clearAccessToken()
-      setAccessToken(null)
-      setUser(null)
-    } catch (error) {
-      setAuthError(error instanceof Error ? error.message : 'Unable to sign out right now.')
-    } finally {
-      setIsAuthenticating(false)
-    }
+  return {
+    viewer: data.viewer,
   }
-
-  const clearAuthError = () => setAuthError(null)
-
-  const value: AuthContextValue = {
-    user,
-    authError,
-    isHydratingSession,
-    isAuthenticating,
-    loginWithGoogle,
-    logout,
-    clearAuthError,
-  }
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
-
-export function useAuth(): AuthContextValue {
-  const context = useContext(AuthContext)
-
-  if (!context) {
-    throw new Error('useAuth must be used inside AuthProvider.')
-  }
-
-  return context
 }

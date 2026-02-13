@@ -1,11 +1,13 @@
 import { useAuth } from '~/providers/auth-provider'
+import { useOAuth } from '~/providers/oauth-provider'
 import { Button } from '~/ui/button'
 import { Card } from '~/ui/card'
 import { ScrollView } from '~/ui/tw'
 import { Typography } from '~/ui/typography'
 
 export default function SessionScreen() {
-  const { user, authError, isAuthenticating, logout } = useAuth()
+  const { viewer } = useAuth()
+  const { error, isLoading, logout } = useOAuth()
 
   return (
     <ScrollView
@@ -26,17 +28,27 @@ export default function SessionScreen() {
         <Typography variant="heading" selectable>
           Account
         </Typography>
-        <Typography variant="body" tone="muted" selectable>
-          {user ? user.email : 'Unknown user'}
-        </Typography>
-        {authError ? (
+        {error ? (
           <Typography variant="body" tone="subtle" selectable>
-            {authError}
+            {error}
           </Typography>
         ) : null}
       </Card>
 
-      <Button label="Sign out" onPress={() => void logout()} disabled={isAuthenticating} />
+      <Card variant="panel" className="gap-2.5">
+        <Typography variant="heading" selectable>
+          GraphQL sanity check
+        </Typography>
+
+        <Typography variant="body" tone="muted" selectable>
+          Viewer: {viewer.email}
+        </Typography>
+        <Typography variant="caption" tone="subtle" selectable>
+          viewApp: {viewer.abilities.viewApp ? 'true' : 'false'}
+        </Typography>
+      </Card>
+
+      <Button label="Sign out" onPress={() => void logout()} disabled={isLoading} />
     </ScrollView>
   )
 }

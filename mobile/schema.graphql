@@ -1,0 +1,104 @@
+type Query {
+  "Get the current user."
+  viewer: User
+}
+
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime
+
+"Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
+scalar FileUpload
+
+"An RFC 3986, RFC 3987, and RFC 6570 (level 4) compliant URI string."
+scalar URI
+
+interface Timestampable {
+  "When the node was created."
+  createdAt: DateTime!
+
+  "When the node was updated."
+  updatedAt: DateTime!
+}
+
+"Abilities of the user."
+type UserAbilities {
+  viewApp: Boolean!
+}
+
+"Account of a person who utilizes this application."
+type User implements Timestampable {
+  "The unique identifier of the user."
+  id: ID!
+
+  "Non-unique name."
+  name: String!
+
+  "Unique email address."
+  email: String!
+
+  "Avatar URL."
+  avatarUrl: URI
+
+  "When the account was created."
+  createdAt: DateTime!
+
+  "When the account was last updated."
+  updatedAt: DateTime!
+
+  "Abilities of the user."
+  abilities: UserAbilities!
+}
+
+"Directions for ordering a list of records."
+enum SortOrder {
+  "Sort records in ascending order."
+  ASC
+
+  "Sort records in descending order."
+  DESC
+}
+
+"Aggregate functions when ordering by a relation without specifying a column."
+enum OrderByRelationAggregateFunction {
+  "Amount of items."
+  COUNT
+}
+
+"Aggregate functions when ordering by a relation that may specify a column."
+enum OrderByRelationWithColumnAggregateFunction {
+  "Average."
+  AVG
+
+  "Minimum."
+  MIN
+
+  "Maximum."
+  MAX
+
+  "Sum."
+  SUM
+
+  "Amount of items."
+  COUNT
+}
+
+"Allows ordering a list of records."
+input OrderByClause {
+  "The column that is used for ordering."
+  column: String!
+
+  "The direction that is used for ordering."
+  order: SortOrder!
+}
+
+"Specify if you want to include or exclude trashed results from a query."
+enum Trashed {
+  "Only return trashed results."
+  ONLY
+
+  "Return both trashed and non-trashed results."
+  WITH
+
+  "Only return non-trashed results."
+  WITHOUT
+}

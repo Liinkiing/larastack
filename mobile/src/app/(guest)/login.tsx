@@ -1,11 +1,11 @@
-import { useAuth } from '~/providers/auth-provider'
+import { useOAuth } from '~/providers/oauth-provider'
 import { Button } from '~/ui/button'
 import { Card } from '~/ui/card'
 import { ScrollView } from '~/ui/tw'
 import { Typography } from '~/ui/typography'
 
 export default function LoginScreen() {
-  const { authError, isAuthenticating, loginWithGoogle, clearAuthError } = useAuth()
+  const { error, isLoading, loginWithGoogle, clearError } = useOAuth()
 
   return (
     <ScrollView
@@ -22,12 +22,12 @@ export default function LoginScreen() {
         </Typography>
       </Card>
 
-      {authError ? (
+      {error ? (
         <Card variant="panel" className="gap-2.5">
           <Typography variant="body" tone="subtle" selectable>
-            {authError}
+            {error}
           </Typography>
-          <Button label="Dismiss" variant="secondary" onPress={clearAuthError} />
+          <Button label="Dismiss" variant="secondary" onPress={clearError} />
         </Card>
       ) : null}
 
@@ -35,7 +35,7 @@ export default function LoginScreen() {
         label="Continue with Google"
         icon="person.crop.circle.fill"
         onPress={() => void loginWithGoogle()}
-        disabled={isAuthenticating}
+        disabled={isLoading}
       />
     </ScrollView>
   )

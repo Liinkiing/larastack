@@ -12,5 +12,7 @@ Route::post('/auth/mobile/logout', [MobileTokenController::class, 'destroy'])
     ->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->only([
+        'id'
+    ]);
 });
