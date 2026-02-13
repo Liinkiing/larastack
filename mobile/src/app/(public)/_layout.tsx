@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router'
 
-export default function HomeLayout() {
+export default function PublicLayout() {
   return (
     <Stack
       screenOptions={{
@@ -10,7 +10,7 @@ export default function HomeLayout() {
         headerBackButtonDisplayMode: 'minimal',
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'Home' }} />
+      <Stack.Screen name="about" options={{ title: 'About' }} />
     </Stack>
   )
 }

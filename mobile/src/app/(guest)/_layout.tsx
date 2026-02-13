@@ -1,16 +1,15 @@
 import { Stack } from 'expo-router'
 
-export default function AboutLayout() {
+export default function GuestLayout() {
   return (
     <Stack
       screenOptions={{
-        headerLargeTitle: true,
+        headerLargeTitle: false,
         headerShadowVisible: false,
-        headerLargeTitleShadowVisible: false,
         headerBackButtonDisplayMode: 'minimal',
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'About' }} />
+      <Stack.Screen name="login" options={{ title: 'Login' }} />
     </Stack>
   )
 }

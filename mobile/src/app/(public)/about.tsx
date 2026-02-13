@@ -9,18 +9,18 @@ import { Typography } from '~/ui/typography'
 const FEATURES = [
   {
     icon: 'house.fill',
-    title: 'Native tabs',
-    body: 'System tab chrome with smooth minimize-on-scroll behavior.',
+    title: 'Route groups',
+    body: 'Authenticated, guest, and public sections are now separated by folder structure.',
   },
   {
     icon: 'star.fill',
-    title: 'Playful palette',
-    body: 'Bright tones, soft cards, and subtle depth for a happy baseline.',
+    title: 'Protected guards',
+    body: 'Screens are automatically enabled or blocked based on auth state.',
   },
   {
     icon: 'person.crop.circle.fill',
-    title: 'Simple structure',
-    body: 'Only Home and About right now so the app stays focused.',
+    title: 'Native auth flow',
+    body: 'Google sign-in uses native UX and backend-issued Sanctum tokens.',
   },
 ] as const
 
@@ -35,11 +35,10 @@ export default function AboutScreen() {
     >
       <Card variant="hero" spacing="lg" className="gap-2.5">
         <Typography variant="title" selectable>
-          A tiny base with iOS-native polish.
+          A tiny base with clean route boundaries.
         </Typography>
         <Typography variant="body" tone="muted" selectable>
-          This is intentionally minimal for now, but still keeps the modern native routing and tab experience you
-          wanted.
+          Public screens stay open, guest screens stay logged-out only, and authenticated screens are protected.
         </Typography>
       </Card>
 

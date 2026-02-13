@@ -35,11 +35,16 @@ export default function HomeScreen() {
         </Typography>
 
         <Typography variant="body" tone="muted" selectable>
-          We kept the native iOS 26 tabs and stacks, then reset everything else to a tiny app with a colorful
-          personality.
+          We kept the latest Expo Router flow, then reset everything else to a tiny app with a colorful personality.
         </Typography>
 
         <Button label="Spark some joy" icon="star.fill" onPress={handleSparkPress} />
+        <Button
+          label="Open Session tab"
+          icon="person.crop.circle.fill"
+          variant="secondary"
+          onPress={() => router.push('./session')}
+        />
         <Button
           label="Open About"
           icon="person.crop.circle.fill"
