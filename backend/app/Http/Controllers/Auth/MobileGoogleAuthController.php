@@ -64,7 +64,7 @@ class MobileGoogleAuthController extends Controller
             $deviceName = 'mobile';
         }
 
-        $token = $user->createToken($deviceName, ['*'])->plainTextToken;
+        $token = $user->createToken($deviceName)->plainTextToken;
 
         return response()->json([
             'token' => $token,

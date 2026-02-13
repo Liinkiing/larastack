@@ -69,7 +69,7 @@ class GoogleIdTokenVerifier
      */
     private function googleKeys(): array
     {
-        return Cache::remember(self::JWKS_CACHE_KEY, now()->addHours(6), function (): array {
+        $jwks = Cache::remember(self::JWKS_CACHE_KEY, now()->addHours(6), function (): array {
             /** @var \Illuminate\Http\Client\Response $response */
             $response = Http::retry(2, 200)->acceptJson()->get(self::JWKS_URL);
 
@@ -86,14 +86,16 @@ class GoogleIdTokenVerifier
                 ]);
             }
 
-            try {
-                return JWK::parseKeySet($jwks, 'RS256');
-            } catch (Throwable) {
-                throw ValidationException::withMessages([
-                    'id_token' => 'Invalid Google key set.',
-                ]);
-            }
+            return $jwks;
         });
+
+        try {
+            return JWK::parseKeySet($jwks, 'RS256');
+        } catch (Throwable) {
+            throw ValidationException::withMessages([
+                'id_token' => 'Invalid Google key set.',
+            ]);
+        }
     }
 
     private function audienceIsAllowed(mixed $audience): bool

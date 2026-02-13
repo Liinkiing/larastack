@@ -34,8 +34,6 @@ function RootNavigator() {
       <Stack.Protected guard={allowGuestScreens}>
         <Stack.Screen name="(guest)" />
       </Stack.Protected>
-
-      <Stack.Screen name="(public)" />
     </Stack>
   )
 }

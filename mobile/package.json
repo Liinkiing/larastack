@@ -39,6 +39,7 @@
     "expo": "55.0.0-preview.10",
     "expo-constants": "~55.0.4",
     "expo-dev-client": "~55.0.5",
+    "expo-device": "~55.0.6",
     "expo-font": "~55.0.3",
     "expo-haptics": "~55.0.5",
     "expo-image": "~55.0.3",

@@ -1,5 +1,7 @@
 import * as SecureStore from 'expo-secure-store'
 
+import { getDeviceName } from '~/utils/device'
+
 const ACCESS_TOKEN_KEY = 'larastack.mobile.access-token'
 
 const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL
@@ -35,7 +37,7 @@ export async function exchangeGoogleIdToken(idToken: string): Promise<MobileGoog
     },
     body: JSON.stringify({
       id_token: idToken,
-      device_name: `expo-${process.env.EXPO_OS ?? 'mobile'}`,
+      device_name: getDeviceName(),
     }),
   })
 

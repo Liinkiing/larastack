@@ -6,7 +6,7 @@ export default function AuthenticatedLayout() {
 
   return (
     <NativeTabs tintColor={tabTint} labelStyle={{ color: tabTint }} minimizeBehavior="onScrollDown">
-      <NativeTabs.Trigger name="index">
+      <NativeTabs.Trigger name="(root)">
         <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>

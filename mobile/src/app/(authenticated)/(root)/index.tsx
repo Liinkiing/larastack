@@ -35,7 +35,7 @@ export default function HomeScreen() {
         </Typography>
 
         <Typography variant="body" tone="muted" selectable>
-          We kept the latest Expo Router flow, then reset everything else to a tiny app with a colorful personality.
+          Native tabs plus proper headers on each authenticated tab.
         </Typography>
 
         <Button label="Spark some joy" icon="star.fill" onPress={handleSparkPress} />
@@ -43,13 +43,7 @@ export default function HomeScreen() {
           label="Open Session tab"
           icon="person.crop.circle.fill"
           variant="secondary"
-          onPress={() => router.push('./session')}
-        />
-        <Button
-          label="Open About"
-          icon="person.crop.circle.fill"
-          variant="secondary"
-          onPress={() => router.push('/about')}
+          onPress={() => router.push('/session')}
         />
       </Card>
 

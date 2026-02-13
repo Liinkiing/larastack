@@ -217,6 +217,9 @@ importers:
       expo-dev-client:
         specifier: ~55.0.5
         version: 55.0.5(expo@55.0.0-preview.10)
+      expo-device:
+        specifier: ~55.0.6
+        version: 55.0.6(expo@55.0.0-preview.10)
       expo-font:
         specifier: ~55.0.3
         version: 55.0.3(expo@55.0.0-preview.10)(react-native@0.83.1(@babel/core@7.28.5)(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)
@@ -5370,6 +5373,11 @@ packages:
     peerDependencies:
       expo: '*'
 
+  expo-device@55.0.6:
+    resolution: {integrity: sha512-GCO3shHTn8zk5FUBywra3qyFXv08uNQpJSGeNg/gBBJw+GVpgtZ/9mhB3gVh3daueCV+PWRFWn14QT3lW6PwqQ==}
+    peerDependencies:
+      expo: '*'
+
   expo-eas-client@55.0.2:
     resolution: {integrity: sha512-fjOgSXaZFBK2Xmzn/uw0DTF3BsYv97JEa4PYXXqVCEvNJPwJB1cV1eX6Xyq6iKGIhMPH9k62sOc+oUdt094WCw==}
 
@@ -8467,6 +8475,10 @@ packages:
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
+    hasBin: true
+
+  ua-parser-js@0.7.41:
+    resolution: {integrity: sha512-O3oYyCMPYgNNHuO7Jjk3uacJWZF8loBgwrfd/5LE/HyZ3lUIOdniQ7DNXJcIgZbwioZxk0fLfI4EVnetdiX5jg==}
     hasBin: true
 
   ua-parser-js@1.0.40:
@@ -15576,6 +15588,11 @@ snapshots:
       expo: 55.0.0-preview.10(@babel/core@7.28.5)(@expo/dom-webview@55.0.2)(@expo/metro-runtime@55.0.5)(expo-router@55.0.0-preview.7)(react-dom@19.2.0(react@19.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)
       expo-dev-menu-interface: 55.0.1(expo@55.0.0-preview.10)
 
+  expo-device@55.0.6(expo@55.0.0-preview.10):
+    dependencies:
+      expo: 55.0.0-preview.10(@babel/core@7.28.5)(@expo/dom-webview@55.0.2)(@expo/metro-runtime@55.0.5)(expo-router@55.0.0-preview.7)(react-dom@19.2.0(react@19.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)
+      ua-parser-js: 0.7.41
+
   expo-eas-client@55.0.2: {}
 
   expo-file-system@55.0.5(expo@55.0.0-preview.10)(react-native@0.83.1(@babel/core@7.28.5)(@types/react@19.2.7)(react@19.2.0)):
@@ -19222,6 +19239,8 @@ snapshots:
   typed-query-selector@2.12.0: {}
 
   typescript@5.9.3: {}
+
+  ua-parser-js@0.7.41: {}
 
   ua-parser-js@1.0.40: {}
 

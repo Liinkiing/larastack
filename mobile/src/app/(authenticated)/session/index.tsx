@@ -1,5 +1,3 @@
-import { useRouter } from 'expo-router'
-
 import { useAuth } from '~/providers/auth-provider'
 import { Button } from '~/ui/button'
 import { Card } from '~/ui/card'
@@ -7,7 +5,6 @@ import { ScrollView } from '~/ui/tw'
 import { Typography } from '~/ui/typography'
 
 export default function SessionScreen() {
-  const router = useRouter()
   const { user, authError, isAuthenticating, logout } = useAuth()
 
   return (
@@ -39,7 +36,6 @@ export default function SessionScreen() {
         ) : null}
       </Card>
 
-      <Button label="Open About" variant="secondary" onPress={() => router.push('/about')} />
       <Button label="Sign out" onPress={() => void logout()} disabled={isAuthenticating} />
     </ScrollView>
   )
