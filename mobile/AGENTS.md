@@ -1,5 +1,10 @@
 # AGENTS.md
 
+## Scope and Precedence
+
+- Applies to files under `mobile/`.
+- This file overrides root guidance for mobile-specific choices.
+
 ## Project Overview
 
 This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
@@ -28,50 +33,54 @@ These documentation files are specifically formatted for AI agents and should be
 ```
 /
 ├── src/
-│   ├── app/               # Expo Router file-based routing
-│   │   ├── (tabs)/        # Tab-based navigation screens
-│   │   ├── _layout.tsx    # Root layout with theme provider
-│   │   └── ...
-│   ├── assets/            # Static assets (images, fonts)
-│   ├── components/        # Reusable React components
-│   ├── ui/                # UI primitives and design system
-│   └── utils/             # Shared utilities
-├── scripts/               # Utility scripts (reset-project)
-├── .eas/workflows/        # EAS Workflows (CI/CD automation)
-├── app.json               # Expo configuration
-├── eas.json               # EAS Build/Submit configuration
-└── package.json           # Dependencies and scripts
+│   ├── app/                       # Expo Router file-based routing
+│   │   ├── _layout.tsx            # Root layout
+│   │   ├── (authenticated)/       # Authenticated routes
+│   │   └── (guest)/               # Guest/public routes
+│   ├── apollo/                    # Apollo client and GraphQL setup
+│   ├── __generated__/             # GraphQL codegen output
+│   ├── assets/                    # Static assets (images, fonts)
+│   ├── services/                  # Feature/application services
+│   ├── shared/                    # Shared cross-feature code
+│   ├── ui/                        # UI primitives and design system
+│   └── utils/                     # Shared utilities
+├── .eas/workflows/                # EAS Workflows (CI/CD automation)
+├── app.json                       # Expo configuration
+├── eas.json                       # EAS Build/Submit configuration
+├── codegen.ts                     # GraphQL codegen config
+└── package.json                   # Dependencies and scripts
 ```
 
 ## Essential Commands
 
+Run from repo root.
+
 ### Development
 
 ```bash
-npx expo start                  # Start dev server
-npx expo start --clear          # Clear cache and start dev server
-npx expo install <package>      # Install packages with compatible versions
-npx expo install --check        # Check which installed packages need to be updated
-npx expo install --fix          # Automatically update any invalid package versions
-pnpm run development-builds     # Create development builds (workflow)
-pnpm run reset-project          # Reset to blank template
+pnpm --filter @larastack/mobile start                       # Start dev server
+pnpm --filter @larastack/mobile start -- --clear            # Clear cache and start dev server
+pnpm --filter @larastack/mobile exec expo install <package> # Install packages with compatible versions
+pnpm --filter @larastack/mobile exec expo install --check   # Check which installed packages need updates
+pnpm --filter @larastack/mobile exec expo install --fix     # Update invalid package versions
+pnpm --filter @larastack/mobile development-builds          # Create development builds (workflow)
 ```
 
 ### Building & Testing
 
 ```bash
-npx expo doctor      # Check project health and dependencies
-pnpm run ts:check    # Run TypeScript type checking
-npx expo lint        # Run ESLint
-pnpm run draft       # Publish preview update and website (workflow)
+pnpm --filter @larastack/mobile expo:doctor      # Check project health and dependencies
+pnpm --filter @larastack/mobile ts:check         # Run TypeScript type checking
+pnpm --filter @larastack/mobile lint             # Run oxlint
+pnpm --filter @larastack/mobile draft            # Publish preview update and website (workflow)
 ```
 
 ### Production
 
 ```bash
-npx eas-cli@latest build --platform ios -s          # Use EAS to build for iOS platform and submit to App Store
-npx eas-cli@latest build --platform android -s      # Use EAS to build for Android platform and submit to Google Play Store
-pnpm run deploy                                     # Deploy to production (workflow)
+pnpm --filter @larastack/mobile build:prod:ios     # Build iOS production app
+pnpm --filter @larastack/mobile build:prod:android # Build Android production app
+pnpm --filter @larastack/mobile deploy             # Deploy to production (workflow)
 ```
 
 ## Development Guidelines
@@ -144,7 +153,7 @@ When working with EAS Workflows, **always refer to**:
 
 ### Expo Go Errors & Development Builds
 
-If there are errors in **Expo Go** or the project is not running, create a **development build**. **Expo Go** is a sandbox environment with a limited set of native modules. To create development builds, run `eas build:dev`. Additionally, after installing new packages or adding config plugins, new development builds are often required.
+If there are errors in **Expo Go** or the project is not running, create a **development build**. **Expo Go** is a sandbox environment with a limited set of native modules. To create development builds, run `pnpm --filter @larastack/mobile build:dev:ios` and/or `pnpm --filter @larastack/mobile build:dev:android`. Additionally, after installing new packages or adding config plugins, new development builds are often required.
 
 ## AI Agent Instructions
 
