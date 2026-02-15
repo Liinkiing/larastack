@@ -1,0 +1,7 @@
+projects:
+  backend:
+    include:
+      - './backend/schema-directives.graphql'
+      - './backend/programmatic-types.graphql'
+      - './backend/graphql/**/*.graphql'
+    schema: './backend/graphql/schema.graphql'

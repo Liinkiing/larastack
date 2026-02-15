@@ -1,0 +1,14 @@
+projects:
+  frontend:
+    schema:
+      - './frontend/client.schema.graphql'
+      - './frontend/schema.graphql'
+    documents: './frontend/**/*.graphql'
+  mobile:
+    schema:
+      - './mobile/client.schema.graphql'
+      - './mobile/schema.graphql'
+    documents:
+      - './mobile/src/**/*.ts'
+      - './mobile/src/**/*.tsx'
+      - './mobile/src/**/*.graphql'
