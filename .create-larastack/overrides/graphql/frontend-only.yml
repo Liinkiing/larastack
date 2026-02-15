@@ -1,6 +1,0 @@
-projects:
-  frontend:
-    schema:
-      - './frontend/client.schema.graphql'
-      - './frontend/schema.graphql'
-    documents: './frontend/**/*.graphql'

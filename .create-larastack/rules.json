@@ -22,29 +22,44 @@
           ]
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/no-mobile/backend/app/Models/User.php",
-          "to": "backend/app/Models/User.php"
+          "type": "transform",
+          "path": "backend/app/Models/User.php",
+          "transform": "php.user.applyProfile",
+          "options": {
+            "profile": "no-mobile"
+          }
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/no-mobile/backend/routes/api.php",
-          "to": "backend/routes/api.php"
+          "type": "transform",
+          "path": "backend/routes/api.php",
+          "transform": "php.routes.api.applyProfile",
+          "options": {
+            "profile": "no-mobile"
+          }
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/no-mobile/backend/database/migrations/0001_01_01_000000_create_users_table.php",
-          "to": "backend/database/migrations/0001_01_01_000000_create_users_table.php"
+          "type": "transform",
+          "path": "backend/database/migrations/0001_01_01_000000_create_users_table.php",
+          "transform": "php.migration.users.applyProfile",
+          "options": {
+            "profile": "no-mobile"
+          }
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/no-mobile/backend/config/services.php",
-          "to": "backend/config/services.php"
+          "type": "transform",
+          "path": "backend/config/services.php",
+          "transform": "php.config.services.applyProfile",
+          "options": {
+            "profile": "no-mobile"
+          }
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/no-mobile/backend/.env.example",
-          "to": "backend/.env.example"
+          "type": "transform",
+          "path": "backend/.env.example",
+          "transform": "env.backend.applyProfile",
+          "options": {
+            "profile": "no-mobile"
+          }
         }
       ]
     },
@@ -63,9 +78,12 @@
           ]
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/no-frontend/backend/routes/web.php",
-          "to": "backend/routes/web.php"
+          "type": "transform",
+          "path": "backend/routes/web.php",
+          "transform": "php.routes.web.applyProfile",
+          "options": {
+            "profile": "no-frontend"
+          }
         }
       ]
     },
@@ -76,146 +94,64 @@
       },
       "operations": [
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/backend-only/backend/routes/api.php",
-          "to": "backend/routes/api.php"
+          "type": "transform",
+          "path": "backend/routes/api.php",
+          "transform": "php.routes.api.applyProfile",
+          "options": {
+            "profile": "backend-only"
+          }
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/backend-only/backend/app/Models/User.php",
-          "to": "backend/app/Models/User.php"
+          "type": "transform",
+          "path": "backend/app/Models/User.php",
+          "transform": "php.user.applyProfile",
+          "options": {
+            "profile": "backend-only"
+          }
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/backend-only/backend/database/migrations/0001_01_01_000000_create_users_table.php",
-          "to": "backend/database/migrations/0001_01_01_000000_create_users_table.php"
+          "type": "transform",
+          "path": "backend/database/migrations/0001_01_01_000000_create_users_table.php",
+          "transform": "php.migration.users.applyProfile",
+          "options": {
+            "profile": "backend-only"
+          }
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/backend-only/backend/config/services.php",
-          "to": "backend/config/services.php"
+          "type": "transform",
+          "path": "backend/config/services.php",
+          "transform": "php.config.services.applyProfile",
+          "options": {
+            "profile": "backend-only"
+          }
         },
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/backend-only/backend/.env.example",
-          "to": "backend/.env.example"
+          "type": "transform",
+          "path": "backend/.env.example",
+          "transform": "env.backend.applyProfile",
+          "options": {
+            "profile": "backend-only"
+          }
         }
       ]
     },
     {
-      "id": "graphql-config-all-apps",
-      "when": {
-        "allOf": [{ "appSelected": "frontend" }, { "appSelected": "backend" }, { "appSelected": "mobile" }]
-      },
+      "id": "sync-graphql-config",
       "operations": [
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/graphql/all.yml",
-          "to": "graphql.config.yml"
+          "type": "transform",
+          "path": "graphql.config.yml",
+          "transform": "yaml.graphql.syncProjects"
         }
       ]
     },
     {
-      "id": "graphql-config-backend-mobile",
-      "when": {
-        "allOf": [{ "appSelected": "backend" }, { "appSelected": "mobile" }, { "appNotSelected": "frontend" }]
-      },
+      "id": "sync-opencode-config",
       "operations": [
         {
-          "type": "copy",
-          "from": ".create-larastack/overrides/graphql/backend-mobile.yml",
-          "to": "graphql.config.yml"
-        }
-      ]
-    },
-    {
-      "id": "graphql-config-backend-only",
-      "when": {
-        "allOf": [{ "appSelected": "backend" }, { "appNotSelected": "frontend" }, { "appNotSelected": "mobile" }]
-      },
-      "operations": [
-        {
-          "type": "copy",
-          "from": ".create-larastack/overrides/graphql/backend-only.yml",
-          "to": "graphql.config.yml"
-        }
-      ]
-    },
-    {
-      "id": "graphql-config-frontend-mobile",
-      "when": {
-        "allOf": [{ "appSelected": "frontend" }, { "appSelected": "mobile" }, { "appNotSelected": "backend" }]
-      },
-      "operations": [
-        {
-          "type": "copy",
-          "from": ".create-larastack/overrides/graphql/frontend-mobile.yml",
-          "to": "graphql.config.yml"
-        }
-      ]
-    },
-    {
-      "id": "graphql-config-frontend-only",
-      "when": {
-        "allOf": [{ "appSelected": "frontend" }, { "appNotSelected": "backend" }, { "appNotSelected": "mobile" }]
-      },
-      "operations": [
-        {
-          "type": "copy",
-          "from": ".create-larastack/overrides/graphql/frontend-only.yml",
-          "to": "graphql.config.yml"
-        }
-      ]
-    },
-    {
-      "id": "graphql-config-mobile-only",
-      "when": {
-        "allOf": [{ "appSelected": "mobile" }, { "appNotSelected": "frontend" }, { "appNotSelected": "backend" }]
-      },
-      "operations": [
-        {
-          "type": "copy",
-          "from": ".create-larastack/overrides/graphql/mobile-only.yml",
-          "to": "graphql.config.yml"
-        }
-      ]
-    },
-    {
-      "id": "opencode-no-frontend",
-      "when": {
-        "allOf": [{ "appSelected": "backend" }, { "appNotSelected": "frontend" }]
-      },
-      "operations": [
-        {
-          "type": "copy",
-          "from": ".create-larastack/overrides/opencode/no-frontend.json",
-          "to": "opencode.json"
-        }
-      ]
-    },
-    {
-      "id": "opencode-no-backend",
-      "when": {
-        "allOf": [{ "appSelected": "frontend" }, { "appNotSelected": "backend" }]
-      },
-      "operations": [
-        {
-          "type": "copy",
-          "from": ".create-larastack/overrides/opencode/no-backend.json",
-          "to": "opencode.json"
-        }
-      ]
-    },
-    {
-      "id": "opencode-mobile-only",
-      "when": {
-        "allOf": [{ "appSelected": "mobile" }, { "appNotSelected": "backend" }, { "appNotSelected": "frontend" }]
-      },
-      "operations": [
-        {
-          "type": "copy",
-          "from": ".create-larastack/overrides/opencode/mobile-only.json",
-          "to": "opencode.json"
+          "type": "transform",
+          "path": "opencode.json",
+          "transform": "json.opencode.syncMcp"
         }
       ]
     }
