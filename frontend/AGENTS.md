@@ -1,16 +1,20 @@
 # AGENTS.md
+
 Operational guide for coding agents working in `frontend/`.
 
 ## Scope and Precedence
+
 - Applies to files under `frontend/`.
 - This file overrides root guidance for frontend-specific choices.
 
 ## Stack
+
 - Next.js 16 App Router
 - Apollo Client
 - Panda CSS
 
 ## Key Paths
+
 - `app/` -> route-local App Router pages/layouts/components
 - `src/apollo/` -> Apollo client setup and GraphQL helpers
 - `src/ui/` -> shared UI primitives
@@ -18,6 +22,7 @@ Operational guide for coding agents working in `frontend/`.
 - `src/shared/` -> reusable shared utilities
 
 ## Commands
+
 Run from repo root.
 
 - Dev: `pnpm --filter @larastack/frontend dev`
@@ -35,6 +40,7 @@ Run from repo root.
 - Storybook build: `pnpm --filter @larastack/frontend build-storybook`
 
 ## Frontend Standards
+
 - Use type-only imports in TypeScript (`import type { X } from '...'`).
 - Keep import groups ordered: framework -> third-party -> generated -> internal.
 - Aliases:
@@ -47,5 +53,6 @@ Run from repo root.
 - Co-locate route-specific UI in `app/`; keep reusable UI in shared directories.
 
 ## GraphQL Workflow
+
 - After operation/fragment changes in `app/**/*.ts(x)` or `src/**/*.ts(x)`, run `pnpm --filter @larastack/frontend gen:gql`.
 - If backend schema changed and `backend/` exists, run `pnpm --filter @larastack/backend gql:dump` first.
