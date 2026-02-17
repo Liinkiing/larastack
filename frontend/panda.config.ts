@@ -30,12 +30,7 @@ export default defineConfig({
         'cssgen:done': ({ artifact, content }) => {
           if (artifact !== 'styles.css') return
 
-          // Regex to find rules containing both backdrop-filter and -webkit-backdrop-filter
-          // where the unprefixed version comes before the prefixed one
-          return content.replaceAll(
-            /(\s*)(backdrop-filter:\s*[^;]+;)(\s*)(-webkit-backdrop-filter:\s*[^;]+;)/g,
-            '$1$4$3$2',
-          )
+          return content.replaceAll(/(-webkit-backdrop-filter)/g, 'backdrop-filter')
         },
       },
     },

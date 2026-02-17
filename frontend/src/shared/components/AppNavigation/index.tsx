@@ -15,7 +15,7 @@ export const AppNavigation: FC = () => {
     <Box position="sticky" pt={{ base: 4, md: 6 }} px={{ base: 4, md: 8 }} top={0} zIndex={10}>
       <Flex
         align="center"
-        backdropBlur="16px"
+        backdropBlur="6px"
         backdropFilter="auto"
         backgroundColor="bg.surface/80"
         border="1px solid"
