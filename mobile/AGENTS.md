@@ -58,8 +58,7 @@ Run from repo root.
 ### Development
 
 ```bash
-pnpm --filter @larastack/mobile start                       # Start dev server
-pnpm --filter @larastack/mobile start -- --clear            # Clear cache and start dev server
+pnpm --filter @larastack/mobile dev                         # Start dev server
 pnpm --filter @larastack/mobile exec expo install <package> # Install packages with compatible versions
 pnpm --filter @larastack/mobile exec expo install --check   # Check which installed packages need updates
 pnpm --filter @larastack/mobile exec expo install --fix     # Update invalid package versions

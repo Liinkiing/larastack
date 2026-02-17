@@ -7,13 +7,13 @@ This is the Expo/React Native mobile app for Larastack. It lives in the same mon
 From the repository root, run:
 
 ```bash
-pnpm --filter @larastack/mobile start
+pnpm --filter @larastack/mobile dev
 ```
 
 Or from this directory (`mobile/`), run:
 
 ```bash
-pnpm start
+pnpm run dev
 ```
 
 In the output, you'll find options to open the app in:
