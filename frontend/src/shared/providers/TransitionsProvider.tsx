@@ -2,9 +2,9 @@
 
 import type { FC, ReactNode } from 'react'
 
-import { animate } from 'motion/react'
+import { animate, useReducedMotion } from 'motion/react'
 import { TransitionRouter } from 'next-transition-router'
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 
 interface Props {
   children: ReactNode
@@ -12,15 +12,28 @@ interface Props {
 
 export const TransitionsProvider: FC<Props> = ({ children }) => {
   const wrapperRef = useRef<HTMLDivElement>(null!)
+  const shouldReduceMotion = useReducedMotion()
+
+  const runOpacityTransition = useCallback(
+    (opacity: [number, number], ease: 'easeIn' | 'easeOut', next: () => void) => {
+      if (shouldReduceMotion || !wrapperRef.current) {
+        next()
+        return
+      }
+
+      animate(wrapperRef.current, { opacity }, { duration: 0.15, ease, onComplete: next })
+    },
+    [shouldReduceMotion],
+  )
 
   return (
     <TransitionRouter
       auto
-      enter={next => {
-        animate(wrapperRef.current, { opacity: [0, 1] }, { duration: 0.15, ease: 'easeIn', onComplete: next })
+      enter={(next: () => void) => {
+        runOpacityTransition([0, 1], 'easeIn', next)
       }}
-      leave={next => {
-        animate(wrapperRef.current, { opacity: [1, 0] }, { duration: 0.15, ease: 'easeOut', onComplete: next })
+      leave={(next: () => void) => {
+        runOpacityTransition([1, 0], 'easeOut', next)
       }}
     >
       <div ref={wrapperRef}>{children}</div>
