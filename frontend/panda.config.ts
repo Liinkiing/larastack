@@ -21,6 +21,25 @@ export default defineConfig({
   lightningcss: true,
   outdir: './src/styled-system',
   preflight: true,
+  plugins: [
+    {
+      // LightningCSS incorrectly removes `backdrop-filter` when `-webkit-backdrop-filter`
+      // comes after it. This plugin reorders them so webkit comes first.
+      name: 'Fix backdrop-filter order for LightningCSS',
+      hooks: {
+        'cssgen:done': ({ artifact, content }) => {
+          if (artifact !== 'styles.css') return
+
+          // Regex to find rules containing both backdrop-filter and -webkit-backdrop-filter
+          // where the unprefixed version comes before the prefixed one
+          return content.replaceAll(
+            /(\s*)(backdrop-filter:\s*[^;]+;)(\s*)(-webkit-backdrop-filter:\s*[^;]+;)/g,
+            '$1$4$3$2',
+          )
+        },
+      },
+    },
+  ],
   theme: {
     extend: {
       animationStyles,
