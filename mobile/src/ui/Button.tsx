@@ -1,5 +1,5 @@
 import type { VariantProps } from 'class-variance-authority'
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 import type { GestureResponderEvent, StyleProp, ViewStyle } from 'react-native'
 
 import { cva } from 'class-variance-authority'
@@ -52,7 +52,7 @@ const glowByVariant: Record<ButtonVariant, string> = {
 }
 
 type ButtonProps = {
-  label: string
+  children: ReactNode
   onPress?: (event: GestureResponderEvent) => void
   variant?: VariantProps<typeof buttonVariants>['variant']
   size?: VariantProps<typeof buttonVariants>['size']
@@ -63,7 +63,7 @@ type ButtonProps = {
 }
 
 export function Button({
-  label,
+  children,
   onPress,
   variant = 'primary',
   size = 'md',
@@ -113,7 +113,7 @@ export function Button({
       <View className="flex-row items-center justify-center gap-2">
         {icon ? <IconSymbol name={icon} size={16} color={iconColor} /> : null}
         <Typography variant="button" style={{ color: iconColor }} selectable>
-          {label}
+          {children}
         </Typography>
       </View>
     </Pressable>

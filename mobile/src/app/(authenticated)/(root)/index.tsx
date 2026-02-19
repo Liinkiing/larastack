@@ -38,13 +38,12 @@ export default function HomeScreen() {
           Native tabs plus proper headers on each authenticated tab.
         </Typography>
 
-        <Button label="Spark some joy" icon="star.fill" onPress={handleSparkPress} />
-        <Button
-          label="Open Session tab"
-          icon="person.crop.circle.fill"
-          variant="secondary"
-          onPress={() => router.push('/session')}
-        />
+        <Button icon="star.fill" onPress={handleSparkPress}>
+          Spark some joy
+        </Button>
+        <Button icon="person.crop.circle.fill" variant="secondary" onPress={() => router.push('/session')}>
+          Open Session tab
+        </Button>
       </Card>
 
       <Card variant="panel" className="gap-3">

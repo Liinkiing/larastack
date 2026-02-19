@@ -29,7 +29,9 @@ export default function LoginScreen() {
           <Typography variant="body" tone="subtle" selectable>
             {error}
           </Typography>
-          <Button label="Dismiss" variant="secondary" onPress={clearError} />
+          <Button variant="secondary" onPress={clearError}>
+            Dismiss
+          </Button>
         </Card>
       ) : null}
 
@@ -49,12 +51,9 @@ export default function LoginScreen() {
         </Card>
       ) : null}
 
-      <Button
-        label="Continue with Google"
-        icon="person.crop.circle.fill"
-        onPress={() => void loginWithGoogle()}
-        disabled={isLoading}
-      />
+      <Button icon="person.crop.circle.fill" onPress={() => void loginWithGoogle()} disabled={isLoading}>
+        Continue with Google
+      </Button>
     </ScrollView>
   )
 }

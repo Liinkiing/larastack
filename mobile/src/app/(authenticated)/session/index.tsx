@@ -48,7 +48,9 @@ export default function SessionScreen() {
         </Typography>
       </Card>
 
-      <Button label="Sign out" onPress={() => void logout()} disabled={isLoading} />
+      <Button onPress={() => void logout()} disabled={isLoading}>
+        Sign out
+      </Button>
     </ScrollView>
   )
 }
