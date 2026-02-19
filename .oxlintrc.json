@@ -7,7 +7,7 @@
   "env": {
     "builtin": true
   },
-  "ignorePatterns": ["backend/public/vendor/**/*"],
+  "ignorePatterns": ["backend/public/vendor/**/*", "uniwind-types.d.ts"],
   "rules": {
     "constructor-super": "error",
     "for-direction": "error",

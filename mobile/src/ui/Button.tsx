@@ -1,12 +1,11 @@
 import type { VariantProps } from 'class-variance-authority'
 import type { ComponentProps, ReactNode } from 'react'
-import type { GestureResponderEvent, StyleProp, ViewStyle } from 'react-native'
 
 import { cva } from 'class-variance-authority'
 import * as Haptics from 'expo-haptics'
+import { GestureResponderEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native'
 
 import { IconSymbol } from '~/ui/IconSymbol'
-import { Pressable, View } from '~/ui/tw'
 import { Typography } from '~/ui/Typography'
 import { cn } from '~/utils/cn'
 
@@ -105,7 +104,7 @@ export function Button({
     >
       <View
         className={cn(
-          'absolute left-[1px] right-[1px] top-[1px] h-[52%] rounded-[14px]',
+          'absolute top-[1px] right-[1px] left-[1px] h-[52%] rounded-[14px]',
           glowByVariant[resolvedVariant],
         )}
       />

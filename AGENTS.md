@@ -16,7 +16,7 @@ Operational guide for coding agents working in `larastack`.
 - Optional packages in this template:
   - `backend/` -> Laravel 12, Lighthouse GraphQL, Sail
   - `frontend/` -> Next.js 16 App Router, Apollo Client, Panda CSS
-  - `mobile/` -> Expo Router, React Native, NativeWind/react-native-css
+  - `mobile/` -> Expo Router, React Native, Uniwind/Tailwind CSS 4
 
 ## Cursor/Copilot Rules
 Checked paths:

@@ -2,8 +2,8 @@ import type { VariantProps } from 'class-variance-authority'
 import type { ComponentProps } from 'react'
 
 import { cva } from 'class-variance-authority'
+import { Text } from 'react-native'
 
-import { Text } from '~/ui/tw'
 import { cn } from '~/utils/cn'
 
 const typographyVariants = cva('', {

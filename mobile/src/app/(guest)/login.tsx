@@ -1,9 +1,9 @@
 import * as AppleAuthentication from 'expo-apple-authentication'
+import { ScrollView } from 'react-native'
 
 import { useOAuth } from '~/shared/providers/OAuthProvider'
 import { Button } from '~/ui/Button'
 import { Card } from '~/ui/Card'
-import { ScrollView } from '~/ui/tw'
 import { Typography } from '~/ui/Typography'
 
 export default function LoginScreen() {

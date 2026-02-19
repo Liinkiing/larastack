@@ -1,8 +1,8 @@
 import type { VariantProps } from 'class-variance-authority'
 
 import { cva } from 'class-variance-authority'
+import { View, ViewProps } from 'react-native'
 
-import { View, type ViewProps } from '~/ui/tw'
 import { cn } from '~/utils/cn'
 
 const cardVariants = cva('border bg-card', {

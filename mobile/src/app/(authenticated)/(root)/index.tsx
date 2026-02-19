@@ -1,10 +1,10 @@
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
+import { ScrollView, View } from 'react-native'
 
 import { Button } from '~/ui/Button'
 import { Card } from '~/ui/Card'
 import { IconSymbol } from '~/ui/IconSymbol'
-import { ScrollView, View } from '~/ui/tw'
 import { Typography } from '~/ui/Typography'
 
 export default function HomeScreen() {
@@ -19,11 +19,11 @@ export default function HomeScreen() {
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="relative gap-4 px-5 pt-3 pb-12"
     >
-      <View className="absolute -right-6 -top-10 h-44 w-44 rounded-full bg-bubble-orange/20" />
-      <View className="absolute left-[-40px] top-[168px] h-[150px] w-[150px] rounded-full bg-bubble-teal/20" />
+      <View className="absolute -top-10 -right-6 h-44 w-44 rounded-full bg-bubble-orange/20" />
+      <View className="absolute top-[168px] left-[-40px] h-[150px] w-[150px] rounded-full bg-bubble-teal/20" />
 
       <Card variant="hero" spacing="lg" className="gap-3">
-        <View className="self-start flex-row items-center gap-1.5 rounded-pill border border-primary/30 bg-primary/10 px-2.5 py-1.5">
+        <View className="flex-row items-center gap-1.5 self-start rounded-pill border border-primary/30 bg-primary/10 px-2.5 py-1.5">
           <IconSymbol name="star.fill" size={14} color="#f97316" />
           <Typography variant="caption" tone="primary" selectable>
             Light mode playground
