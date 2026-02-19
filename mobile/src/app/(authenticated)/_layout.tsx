@@ -9,7 +9,7 @@ import { useOAuth } from '~/shared/providers/OAuthProvider'
 export default function AuthenticatedLayout() {
   const { isAuthenticated } = useOAuth()
 
-  const tabTint = process.env.EXPO_OS === 'ios' ? PlatformColor('systemOrange') : '#f97316'
+  const tabTint = process.env.EXPO_OS === 'ios' ? PlatformColor('systemIndigo') : '#f97316'
 
   useAppOnFocus(() => {
     if (!isAuthenticated) {

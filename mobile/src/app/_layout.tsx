@@ -1,5 +1,5 @@
 import 'react-native-reanimated'
-import { DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { DarkTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
@@ -43,7 +43,7 @@ export default function RootLayout() {
   return (
     <ApolloAppProvider>
       <OAuthProvider>
-        <ThemeProvider value={DefaultTheme}>
+        <ThemeProvider value={DarkTheme}>
           <RootNavigator />
         </ThemeProvider>
       </OAuthProvider>

@@ -3,59 +3,78 @@
 
 @layer theme {
   @theme {
-    --color-background: #fffaf2;
-    --color-foreground: #1f2a44;
-    --color-card: #ffffffeb;
-    --color-card-border: #fffffff2;
-    --color-panel-border: #bae6fdcc;
-    --color-item: #f0fdfa;
-    --color-item-border: #5eead499;
+    --color-background: #db5c8a;
+    --color-foreground: #ffffff;
 
-    --color-primary: #f97316;
-    --color-primary-foreground: #fffaf5;
-    --color-secondary: #14b8a6;
-    --color-secondary-foreground: #ecfeff;
-    --color-accent: #0ea5e9;
-    --color-accent-foreground: #f0f9ff;
-    --color-muted: #475569;
-    --color-muted-foreground: #0f766e;
+    --color-card: #ffffff24;
+    --color-card-foreground: #ffffff;
+    --color-card-border: #ffffff38;
+    --color-panel-border: #ffffff30;
+    --color-item: #ffffff;
+    --color-item-border: #ffffff7a;
 
-    --color-bubble-orange: #fb9233;
-    --color-bubble-teal: #2dd4bf;
+    --color-primary: #fcd945;
+    --color-primary-foreground: #221e1f;
+    --color-secondary: #2a7bd4;
+    --color-secondary-foreground: #ffffff;
+    --color-accent: #52a658;
+    --color-accent-foreground: #ffffff;
+    --color-destructive: #e63d36;
+    --color-destructive-foreground: #ffffff;
+    --color-muted: #ffeaf3;
+    --color-muted-foreground: #ffd4e7;
+
+    --color-ink: #221e1f;
+    --color-rule-icon: #221e1f;
+    --color-shape-yellow: #fcd945;
+    --color-shape-blue: #2a7bd4;
+    --color-shape-green: #52a658;
+
+    --color-button-shadow-primary: #c4a728;
+    --color-button-shadow-secondary: #1f5ea3;
+    --color-button-shadow-accent: #3f8144;
+    --color-button-shadow-destructive: #b12f2a;
 
     --radius-card: 1.5rem;
-    --radius-panel: 1.25rem;
+    --radius-panel: 1.5rem;
     --radius-button: 1rem;
-    --radius-item: 1rem;
+    --radius-item: 0.75rem;
     --radius-pill: 9999px;
 
-    --shadow-card: 0 18px 34px rgba(249, 115, 22, 0.16);
-    --shadow-panel: 0 14px 26px rgba(56, 189, 248, 0.14);
-    --shadow-button: 0 10px 20px rgba(15, 23, 42, 0.12);
+    --shadow-card: 0 18px 30px rgba(0, 0, 0, 0.16);
+    --shadow-panel: 0 14px 24px rgba(0, 0, 0, 0.14);
+    --shadow-button-offset: 8px;
+    --shadow-button-primary: 0 var(--shadow-button-offset) 0 var(--color-button-shadow-primary);
+    --shadow-button-secondary: 0 var(--shadow-button-offset) 0 var(--color-button-shadow-secondary);
+    --shadow-button-accent: 0 var(--shadow-button-offset) 0 var(--color-button-shadow-accent);
+    --shadow-button-destructive: 0 var(--shadow-button-offset) 0 var(--color-button-shadow-destructive);
 
-    --text-display: 1.8125rem;
-    --text-display--line-height: 2.125rem;
-    --text-title: 1.6875rem;
-    --text-title--line-height: 2rem;
-    --text-heading: 1.125rem;
-    --text-heading--line-height: 1.5rem;
+    --text-display: 2.625rem;
+    --text-display--line-height: 2.5rem;
+    --text-title: 2rem;
+    --text-title--line-height: 2.125rem;
+    --text-heading: 1.25rem;
+    --text-heading--line-height: 1.625rem;
     --text-body: 0.9375rem;
-    --text-body--line-height: 1.375rem;
+    --text-body--line-height: 1.4rem;
     --text-caption: 0.8125rem;
-    --text-caption--line-height: 1.125rem;
-    --text-button: 0.9375rem;
-    --text-button--line-height: 1.25rem;
-    --text-metric: 1.25rem;
-    --text-metric--line-height: 1.5rem;
+    --text-caption--line-height: 1.15rem;
+    --text-button: 1.25rem;
+    --text-button--line-height: 1.4rem;
+    --text-metric: 1.625rem;
+    --text-metric--line-height: 1.75rem;
+
+    --text-subtitle: 1.125rem;
+    --text-subtitle--line-height: 1.5rem;
   }
 }
 
 @utility surface-hero {
-  @apply rounded-card border border-card-border bg-card shadow-card;
+  @apply rounded-card border-2 border-card-border bg-card shadow-card;
 }
 
 @utility surface-panel {
-  @apply rounded-panel border border-panel-border bg-card shadow-panel;
+  @apply rounded-panel border-2 border-panel-border bg-card shadow-panel;
 }
 
 @utility surface-item {

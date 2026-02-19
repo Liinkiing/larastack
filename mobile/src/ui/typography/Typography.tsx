@@ -1,12 +1,10 @@
-import type { VariantProps } from 'class-variance-authority'
 import type { ComponentProps } from 'react'
+import type { VariantProps } from 'tailwind-variants'
 
-import { cva } from 'class-variance-authority'
 import { Text } from 'react-native'
+import { cn, tv } from 'tailwind-variants'
 
-import { cn } from '~/utils/cn'
-
-const typographyVariants = cva('', {
+const typographyVariants = tv({
   variants: {
     variant: {
       display: 'text-display font-bold tracking-[-0.01em]',

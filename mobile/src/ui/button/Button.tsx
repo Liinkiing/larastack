@@ -1,40 +1,37 @@
-import type { VariantProps } from 'class-variance-authority'
 import type { ComponentProps, ReactNode } from 'react'
+import type { VariantProps } from 'tailwind-variants'
 
-import { cva } from 'class-variance-authority'
 import * as Haptics from 'expo-haptics'
 import { GestureResponderEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native'
+import { cn, tv } from 'tailwind-variants'
 
 import { IconSymbol } from '~/ui/icon-symbol'
 import { Typography } from '~/ui/typography'
-import { cn } from '~/utils/cn'
 
 type ButtonIcon = ComponentProps<typeof IconSymbol>['name']
 
-const buttonVariants = cva(
-  'relative min-h-12 justify-center overflow-hidden rounded-button border px-4 shadow-button',
-  {
-    variants: {
-      variant: {
-        primary: 'border-primary bg-primary',
-        secondary: 'border-secondary bg-secondary',
-        accent: 'border-accent bg-accent',
-      },
-      size: {
-        sm: 'min-h-10 px-3',
-        md: 'min-h-12 px-4',
-        lg: 'min-h-14 px-5',
-      },
-      disabled: {
-        true: 'opacity-60',
-      },
+const buttonVariants = tv({
+  base: 'shadow-button relative min-h-12 justify-center overflow-hidden rounded-button border px-4',
+  variants: {
+    variant: {
+      primary: 'border-primary bg-primary',
+      secondary: 'border-secondary bg-secondary',
+      accent: 'border-accent bg-accent',
     },
-    defaultVariants: {
-      variant: 'primary',
-      size: 'md',
+    size: {
+      sm: 'min-h-10 px-3',
+      md: 'min-h-12 px-4',
+      lg: 'min-h-14 px-5',
+    },
+    disabled: {
+      true: 'opacity-60',
     },
   },
-)
+  defaultVariants: {
+    variant: 'primary',
+    size: 'md',
+  },
+})
 
 type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>['variant']>
 

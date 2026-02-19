@@ -4,8 +4,9 @@ export default function GuestLayout() {
   return (
     <Stack
       screenOptions={{
-        headerLargeTitle: false,
+        headerLargeTitle: true,
         headerShadowVisible: false,
+        headerLargeTitleShadowVisible: false,
         headerBackButtonDisplayMode: 'minimal',
       }}
     >

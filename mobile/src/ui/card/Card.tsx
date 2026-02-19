@@ -1,11 +1,10 @@
-import type { VariantProps } from 'class-variance-authority'
+import type { VariantProps } from 'tailwind-variants'
 
-import { cva } from 'class-variance-authority'
 import { View, ViewProps } from 'react-native'
+import { cn, tv } from 'tailwind-variants'
 
-import { cn } from '~/utils/cn'
-
-const cardVariants = cva('border bg-card', {
+const cardVariants = tv({
+  base: 'border bg-card',
   variants: {
     variant: {
       hero: 'surface-hero',

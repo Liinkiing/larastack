@@ -110,6 +110,8 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - **Animations**: `react-native-reanimated` for performant animations on native thread
 - **Gestures**: `react-native-gesture-handler` for native gesture recognition
 - **Storage**: Use `expo-sqlite` for persistent storage, `expo-sqlite/kv-store` for simple key-value storage
+- **Styling**: `uniwind` for Tailwind className styling in React Native
+- **Variants**: `tailwind-variants` (`tv` + `cn`) for component variants/compound variants
 
 ## Debugging & Development Tools
 
