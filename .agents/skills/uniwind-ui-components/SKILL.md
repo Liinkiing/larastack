@@ -21,16 +21,18 @@ Prefer static, token-driven classes and strongly typed variant contracts.
    - Single-part component: one `tv({ base, variants, compoundVariants, defaultVariants })`
    - Compound component: `tv({ slots, variants, compoundVariants, compoundSlots })` + `Component.Root/Header/Body/Footer`
 2. Define semantic variants (`variant`, `size`, `tone`, `state`) and add `defaultVariants`.
-3. Type props with `VariantProps<typeof styles>` and extend React Native props for each slot.
-4. Keep classes static and explicit; avoid string interpolation in class names.
-5. Follow mobile conventions: component folder in kebab-case, PascalCase component file, local `index.ts` barrel.
-6. Validate with:
+3. Treat `defaultVariants` as the single source of truth for defaults; do not duplicate defaults in prop destructuring or context initial values.
+4. Type props with `VariantProps<typeof styles>` and extend React Native props for each slot.
+5. Keep classes static and explicit; avoid string interpolation in class names.
+6. Follow mobile conventions: component folder in kebab-case, PascalCase component file, local `index.ts` barrel.
+7. Validate with:
    - `pnpm --filter @larastack/mobile lint`
    - `pnpm --filter @larastack/mobile ts:check`
 
 ## Output Expectations
 
 - Expose a minimal, predictable API with typed variants and sensible defaults.
+- Keep defaults centralized in `tv(...defaultVariants)`; allow `undefined` variant values to flow through context/props.
 - Prefer slot composition over deeply nested conditional class logic.
 - Keep visual hierarchy intentional (spacing, contrast, radius, elevation) and consistent with project tokens.
 - Avoid ad-hoc one-off styles when a reusable variant/slot belongs in the component contract.

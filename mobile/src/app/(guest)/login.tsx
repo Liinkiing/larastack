@@ -15,40 +15,46 @@ export default function LoginScreen() {
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="gap-4 px-5 pt-3 pb-12"
     >
-      <Card variant="hero" spacing="lg" className="gap-2.5">
-        <Typography variant="title" selectable>
-          Login to continue
-        </Typography>
-        <Typography variant="body" tone="muted" selectable>
-          Native Apple or Google sign-in, then backend-issued Sanctum token for authenticated API requests.
-        </Typography>
-      </Card>
+      <Card.Root spacing="lg">
+        <Card.Header>
+          <Typography variant="title">Login to continue</Typography>
+        </Card.Header>
+        <Card.Body>
+          <Typography tone="muted">
+            Native Apple or Google sign-in, then backend-issued Sanctum token for authenticated API requests.
+          </Typography>
+        </Card.Body>
+      </Card.Root>
 
       {error ? (
-        <Card variant="panel" className="gap-2.5">
-          <Typography variant="body" tone="subtle" selectable>
-            {error}
-          </Typography>
-          <Button variant="secondary" onPress={clearError}>
-            Dismiss
-          </Button>
-        </Card>
+        <Card.Root>
+          <Card.Body>
+            <Typography tone="subtle">{error}</Typography>
+          </Card.Body>
+          <Card.Footer>
+            <Button variant="secondary" onPress={clearError}>
+              Dismiss
+            </Button>
+          </Card.Footer>
+        </Card.Root>
       ) : null}
 
       {isAppleLoginAvailable ? (
-        <Card variant="panel" className="items-center justify-center py-3">
-          <AppleAuthentication.AppleAuthenticationButton
-            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-            cornerRadius={12}
-            style={{ width: '100%', height: 44 }}
-            onPress={() => {
-              if (!isLoading) {
-                void loginWithApple()
-              }
-            }}
-          />
-        </Card>
+        <Card.Root>
+          <Card.Body className="items-center justify-center py-3">
+            <AppleAuthentication.AppleAuthenticationButton
+              buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+              cornerRadius={12}
+              style={{ width: '100%', height: 44 }}
+              onPress={() => {
+                if (!isLoading) {
+                  void loginWithApple()
+                }
+              }}
+            />
+          </Card.Body>
+        </Card.Root>
       ) : null}
 
       <Button icon="person.crop.circle.fill" onPress={() => void loginWithGoogle()} disabled={isLoading}>

@@ -28,7 +28,7 @@ const typographyVariants = tv({
   },
 })
 
-type TypographyProps = ComponentProps<typeof Text> & VariantProps<typeof typographyVariants>
+export type TypographyProps = ComponentProps<typeof Text> & VariantProps<typeof typographyVariants>
 
 export function Typography({ className, variant, tone, ...props }: TypographyProps) {
   return <Text className={cn(typographyVariants({ variant, tone }), className)} {...props} />

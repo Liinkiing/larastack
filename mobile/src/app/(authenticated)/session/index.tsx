@@ -8,7 +8,7 @@ import { Typography } from '~/ui/typography'
 
 export default function SessionScreen() {
   const { viewer } = useAuth()
-  const { error, isLoading, logout } = useOAuth()
+  const { isLoading, logout } = useOAuth()
 
   return (
     <ScrollView
@@ -16,40 +16,29 @@ export default function SessionScreen() {
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="gap-4 px-5 pt-3 pb-12"
     >
-      <Card variant="hero" spacing="lg" className="gap-2.5">
-        <Typography variant="title" selectable>
-          Session
-        </Typography>
-        <Typography variant="body" tone="muted" selectable>
-          This tab is available only while authenticated.
-        </Typography>
-      </Card>
+      <Card.Root>
+        <Card.Header>
+          <Typography variant="title">Session</Typography>
+        </Card.Header>
+        <Card.Body>
+          <Typography tone="muted">This tab is available only while authenticated.</Typography>
+        </Card.Body>
+      </Card.Root>
 
-      <Card variant="panel" className="gap-2.5">
-        <Typography variant="heading" selectable>
-          Account
-        </Typography>
-        {error ? (
-          <Typography variant="body" tone="subtle" selectable>
-            {error}
+      <Card.Root>
+        <Card.Header>
+          <Typography variant="heading">GraphQL sanity check</Typography>
+        </Card.Header>
+
+        <Card.Body className="gap-2.5">
+          <Typography tone="muted">Viewer: {viewer.email}</Typography>
+          <Typography variant="caption" tone="subtle">
+            viewApp: {viewer.abilities.viewApp ? 'true' : 'false'}
           </Typography>
-        ) : null}
-      </Card>
+        </Card.Body>
+      </Card.Root>
 
-      <Card variant="panel" className="gap-2.5">
-        <Typography variant="heading" selectable>
-          GraphQL sanity check
-        </Typography>
-
-        <Typography variant="body" tone="muted" selectable>
-          Viewer: {viewer.email}
-        </Typography>
-        <Typography variant="caption" tone="subtle" selectable>
-          viewApp: {viewer.abilities.viewApp ? 'true' : 'false'}
-        </Typography>
-      </Card>
-
-      <Button onPress={() => void logout()} disabled={isLoading}>
+      <Button variant="destructive" onPress={() => void logout()} disabled={isLoading}>
         Sign out
       </Button>
     </ScrollView>

@@ -6,20 +6,21 @@
     --color-background: #db5c8a;
     --color-foreground: #ffffff;
 
-    --color-card: #ffffff24;
+    --color-card-background: #ffffff24;
     --color-card-foreground: #ffffff;
     --color-card-border: #ffffff38;
-    --color-panel-border: #ffffff30;
-    --color-item: #ffffff;
-    --color-item-border: #ffffff7a;
 
     --color-primary: #fcd945;
+    --color-primary-darkened: #efcd40;
     --color-primary-foreground: #221e1f;
     --color-secondary: #2a7bd4;
+    --color-secondary-darkened: #2570c3;
     --color-secondary-foreground: #ffffff;
     --color-accent: #52a658;
+    --color-accent-darkened: #47914c;
     --color-accent-foreground: #ffffff;
     --color-destructive: #e63d36;
+    --color-destructive-darkened: #cf3832;
     --color-destructive-foreground: #ffffff;
     --color-muted: #ffeaf3;
     --color-muted-foreground: #ffd4e7;
@@ -30,24 +31,10 @@
     --color-shape-blue: #2a7bd4;
     --color-shape-green: #52a658;
 
-    --color-button-shadow-primary: #c4a728;
-    --color-button-shadow-secondary: #1f5ea3;
-    --color-button-shadow-accent: #3f8144;
-    --color-button-shadow-destructive: #b12f2a;
-
     --radius-card: 1.5rem;
-    --radius-panel: 1.5rem;
     --radius-button: 1rem;
-    --radius-item: 0.75rem;
-    --radius-pill: 9999px;
 
     --shadow-card: 0 18px 30px rgba(0, 0, 0, 0.16);
-    --shadow-panel: 0 14px 24px rgba(0, 0, 0, 0.14);
-    --shadow-button-offset: 8px;
-    --shadow-button-primary: 0 var(--shadow-button-offset) 0 var(--color-button-shadow-primary);
-    --shadow-button-secondary: 0 var(--shadow-button-offset) 0 var(--color-button-shadow-secondary);
-    --shadow-button-accent: 0 var(--shadow-button-offset) 0 var(--color-button-shadow-accent);
-    --shadow-button-destructive: 0 var(--shadow-button-offset) 0 var(--color-button-shadow-destructive);
 
     --text-display: 2.625rem;
     --text-display--line-height: 2.5rem;
@@ -67,18 +54,6 @@
     --text-subtitle: 1.125rem;
     --text-subtitle--line-height: 1.5rem;
   }
-}
-
-@utility surface-hero {
-  @apply rounded-card border-2 border-card-border bg-card shadow-card;
-}
-
-@utility surface-panel {
-  @apply rounded-panel border-2 border-panel-border bg-card shadow-panel;
-}
-
-@utility surface-item {
-  @apply rounded-item border border-item-border bg-item;
 }
 
 @media android {

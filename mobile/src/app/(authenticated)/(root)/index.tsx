@@ -1,10 +1,9 @@
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView } from 'react-native'
 
 import { Button } from '~/ui/button'
 import { Card } from '~/ui/card'
-import { IconSymbol } from '~/ui/icon-symbol'
 import { Typography } from '~/ui/typography'
 
 export default function HomeScreen() {
@@ -19,51 +18,51 @@ export default function HomeScreen() {
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="relative gap-4 px-5 pt-3 pb-12"
     >
-      <View className="absolute -top-10 -right-6 h-44 w-44 rounded-full bg-bubble-orange/20" />
-      <View className="absolute top-[168px] left-[-40px] h-[150px] w-[150px] rounded-full bg-bubble-teal/20" />
+      <Card.Root>
+        <Card.Header>
+          <Typography variant="display">Playful, bright, and clean.</Typography>
+        </Card.Header>
 
-      <Card variant="hero" spacing="lg" className="gap-3">
-        <View className="flex-row items-center gap-1.5 self-start rounded-pill border border-primary/30 bg-primary/10 px-2.5 py-1.5">
-          <IconSymbol name="star.fill" size={14} color="#f97316" />
-          <Typography variant="caption" tone="primary" selectable>
-            Light mode playground
+        <Card.Body>
+          <Typography variant="body" tone="muted">
+            Native tabs plus proper headers on each authenticated tab.
           </Typography>
-        </View>
+        </Card.Body>
 
-        <Typography variant="display" selectable>
-          Playful, bright, and clean.
-        </Typography>
+        <Card.Footer>
+          <Button icon="star.fill" onPress={handleSparkPress}>
+            Spark some joy
+          </Button>
+          <Button icon="person.crop.circle.fill" variant="secondary" onPress={() => router.push('/session')}>
+            Open Session tab
+          </Button>
+        </Card.Footer>
+      </Card.Root>
 
-        <Typography variant="body" tone="muted" selectable>
-          Native tabs plus proper headers on each authenticated tab.
-        </Typography>
+      <Card.Root>
+        <Card.Header>
+          <Typography variant="heading">Session vibe</Typography>
+        </Card.Header>
 
-        <Button icon="star.fill" onPress={handleSparkPress}>
-          Spark some joy
-        </Button>
-        <Button icon="person.crop.circle.fill" variant="secondary" onPress={() => router.push('/session')}>
-          Open Session tab
-        </Button>
-      </Card>
+        <Card.Body className="gap-3">
+          <Card.Root spacing="sm" className="rounded-[14px]">
+            <Card.Body className="flex-row items-center justify-between">
+              <Typography variant="body" tone="muted">
+                Spark taps
+              </Typography>
+              <Typography variant="metric" style={{ fontVariant: ['tabular-nums'] }}>
+                {sparkCount}
+              </Typography>
+            </Card.Body>
+          </Card.Root>
+        </Card.Body>
 
-      <Card variant="panel" className="gap-3">
-        <Typography variant="heading" selectable>
-          Session vibe
-        </Typography>
-
-        <Card variant="item" spacing="sm" className="flex-row items-center justify-between rounded-[14px]">
-          <Typography variant="body" tone="muted" selectable>
-            Spark taps
+        <Card.Footer>
+          <Typography variant="body" tone="subtle">
+            Tiny app, big color energy. Keep tapping to feel the haptic-enabled button.
           </Typography>
-          <Typography variant="metric" style={{ fontVariant: ['tabular-nums'] }} selectable>
-            {sparkCount}
-          </Typography>
-        </Card>
-
-        <Typography variant="body" tone="subtle" selectable>
-          Tiny app, big color energy. Keep tapping to feel the haptic-enabled button.
-        </Typography>
-      </Card>
+        </Card.Footer>
+      </Card.Root>
     </ScrollView>
   )
 }

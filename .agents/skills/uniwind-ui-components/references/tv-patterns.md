@@ -100,12 +100,9 @@ type CardVariants = VariantProps<typeof cardStyles>
 type CardRootProps = ComponentProps<typeof View> & CardVariants
 type CardSlotProps = ComponentProps<typeof View>
 
-const CardVariantContext = createContext<CardVariants>({
-  tone: 'panel',
-  density: 'comfy',
-})
+const CardVariantContext = createContext<CardVariants>({})
 
-function CardRoot({ tone = 'panel', density = 'comfy', className, ...props }: CardRootProps) {
+function CardRoot({ tone, density, className, ...props }: CardRootProps) {
   const { root } = cardStyles({ tone, density })
   return (
     <CardVariantContext.Provider value={{ tone, density }}>
@@ -143,6 +140,7 @@ export const Card = {
 ## Composition Tips
 
 - Use `extend` to build themed/specialized variants without duplicating base contracts.
+- Keep `defaultVariants` as the only default source; pass `undefined` context/prop variant values through to `tv`.
 - Keep variant names semantic (`tone`, `size`, `density`, `intent`) rather than visual implementation names.
 - Prefer `compoundVariants` for true intersections; avoid stacking one-off conditionals in render functions.
 - Use `cn` from `tailwind-variants` directly for slot overrides and consumer `className` merges.
