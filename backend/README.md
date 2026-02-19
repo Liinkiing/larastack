@@ -27,7 +27,7 @@ Welcome to the backend directory of your fullstack application template. This is
         -u "$(id -u):$(id -g)" \
         -v "$(pwd):/var/www/html" \
         -w /var/www/html \
-        laravelsail/php84-composer:latest \
+        laravelsail/php85-composer:latest \
         composer install --ignore-platform-reqs
     ```
 
