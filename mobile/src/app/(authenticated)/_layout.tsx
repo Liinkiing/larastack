@@ -1,4 +1,3 @@
-import { ErrorBoundaryProps } from 'expo-router'
 import { NativeTabs } from 'expo-router/unstable-native-tabs'
 import { PlatformColor } from 'react-native'
 
