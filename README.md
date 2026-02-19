@@ -43,12 +43,12 @@ Welcome to Larastack, a fullstack starter template that combines Laravel for the
 2. Install dependencies using Docker:
 
    ```shell
-   docker run --rm \
-       -u "$(id -u):$(id -g)" \
-       -v "$(pwd):/var/www/html" \
-       -w /var/www/html \
-       laravelsail/php84-composer:latest \
-       composer install --ignore-platform-reqs
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/app" \
+        -w /app \
+        composer:latest \
+        composer install --ignore-platform-reqs
    ```
 
 3. Add an alias for the `sail` command to your shell configuration file (e.g. `~/.bashrc` or `~/.zshrc`):
