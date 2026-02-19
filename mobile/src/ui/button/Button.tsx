@@ -5,8 +5,8 @@ import { cva } from 'class-variance-authority'
 import * as Haptics from 'expo-haptics'
 import { GestureResponderEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native'
 
-import { IconSymbol } from '~/ui/IconSymbol'
-import { Typography } from '~/ui/Typography'
+import { IconSymbol } from '~/ui/icon-symbol'
+import { Typography } from '~/ui/typography'
 import { cn } from '~/utils/cn'
 
 type ButtonIcon = ComponentProps<typeof IconSymbol>['name']

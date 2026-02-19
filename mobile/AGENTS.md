@@ -88,6 +88,7 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 
 - **TypeScript First**: Use TypeScript for all new code with strict type checking
 - **Naming Conventions**: Use meaningful, descriptive names for variables, functions, and components
+- **UI Component Layout**: Place each UI component in its own kebab-case folder under `src/ui/` (for example, `src/ui/icon-symbol/IconSymbol.tsx`) and include a local `index.ts` barrel file. Keep component filenames/components in PascalCase.
 - **Self-Documenting Code**: Write clear, readable code that explains itself; only add comments for complex business logic or design decisions
 - **React 19 Patterns**: Follow modern React patterns including:
   - Function components with hooks

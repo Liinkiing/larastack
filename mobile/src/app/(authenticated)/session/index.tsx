@@ -2,9 +2,7 @@ import { ScrollView } from 'react-native'
 
 import { useAuth } from '~/shared/providers/AuthProvider'
 import { useOAuth } from '~/shared/providers/OAuthProvider'
-import { Button } from '~/ui/Button'
-import { Card } from '~/ui/Card'
-import { Typography } from '~/ui/Typography'
+import { Button, Card, Typography } from '~/ui'
 
 export default function SessionScreen() {
   const { viewer } = useAuth()

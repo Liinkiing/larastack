@@ -2,10 +2,7 @@ import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { ScrollView, View } from 'react-native'
 
-import { Button } from '~/ui/Button'
-import { Card } from '~/ui/Card'
-import { IconSymbol } from '~/ui/IconSymbol'
-import { Typography } from '~/ui/Typography'
+import { Button, Card, IconSymbol, Typography } from '~/ui'
 
 export default function HomeScreen() {
   const router = useRouter()
