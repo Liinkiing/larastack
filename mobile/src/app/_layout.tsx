@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 import '../global.css'
 import { ApolloAppProvider } from '~/shared/providers/ApolloAppProvider'
-import { useOAuth, OAuthProvider } from '~/shared/providers/OAuthProvider'
+import { OAuthProvider, useOAuth } from '~/shared/providers/OAuthProvider'
 
 void SplashScreen.preventAutoHideAsync()
 

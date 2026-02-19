@@ -5,11 +5,12 @@ import { MobileAuthViewerDocument } from '~/__generated__/gql/graphql'
 import { apolloClient } from '~/apollo/client'
 import { useAppOnFocus } from '~/shared/hooks/useAppOnFocus'
 import { useOAuth } from '~/shared/providers/OAuthProvider'
+import { APP_BACKGROUND_COLOR } from '~/shared/theme/colors'
 
 export default function AuthenticatedLayout() {
   const { isAuthenticated } = useOAuth()
 
-  const tabTint = process.env.EXPO_OS === 'ios' ? PlatformColor('systemIndigo') : '#f97316'
+  const tabTint = process.env.EXPO_OS === 'ios' ? PlatformColor('systemIndigo') : '#560591'
 
   useAppOnFocus(() => {
     if (!isAuthenticated) {
@@ -22,7 +23,12 @@ export default function AuthenticatedLayout() {
   })
 
   return (
-    <NativeTabs tintColor={tabTint} labelStyle={{ color: tabTint }} minimizeBehavior="onScrollDown">
+    <NativeTabs
+      tintColor={tabTint}
+      labelStyle={{ color: tabTint }}
+      minimizeBehavior="onScrollDown"
+      backgroundColor={APP_BACKGROUND_COLOR}
+    >
       <NativeTabs.Trigger name="(root)">
         <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
