@@ -91,6 +91,8 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - **TypeScript First**: Use TypeScript for all new code with strict type checking
 - **Naming Conventions**: Use meaningful, descriptive names for variables, functions, and components
 - **UI Component Layout**: Place each UI component in its own kebab-case folder under `src/ui/` (for example, `src/ui/icon-symbol/IconSymbol.tsx`) and include a local `index.ts` barrel file. Keep component filenames/components in PascalCase.
+- **Stack Primitives by Default**: Prefer `<HStack />` and `<VStack />` for simple horizontal/vertical layouts instead of raw `<View className="flex-row" />` or `<View className="flex-col" />`. These stack primitives provide sensible defaults and keep layout patterns consistent.
+- **Shadows via Uniwind Classes**: Prefer Tailwind/Uniwind shadow utilities in `className` (for example, `shadow-sm`, `shadow-md`) instead of inline `style` shadow objects (`shadowColor`, `shadowOffset`, `shadowOpacity`, `shadowRadius`, `elevation`) by default.
 - **Self-Documenting Code**: Write clear, readable code that explains itself; only add comments for complex business logic or design decisions
 - **React 19 Patterns**: Follow modern React patterns including:
   - Function components with hooks
