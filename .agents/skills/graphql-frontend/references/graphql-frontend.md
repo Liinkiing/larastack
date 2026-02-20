@@ -1,14 +1,14 @@
 # GraphQL Frontend Guidelines
 
-These guidelines apply to all GraphQL usage in the `frontend` directory. This project uses Apollo Client with GraphQL Codegen and colocated fragments (Relay-style conventions).
+These guidelines apply to all GraphQL usage in the `frontend` and `mobile` directories. This project uses Apollo Client with GraphQL Codegen and colocated operations.
 
 ## Core Principles
 
-- Colocate fragments: Every component that renders GraphQL data declares its own fragment in the same file
-- One query per page: Next.js pages have one query spreading all child fragments
-- Use useSuspenseQuery: Loading states handled by `loading.tsx`, not inline
-- Data masking enforced: Components only access data declared in their fragment
-- Custom useFragment hook: Always use `~/shared/hooks` version
+- Colocate operations/fragments: Keep queries, mutations, and fragments in the file that owns the UI behavior
+- Compose at screen/page level: Next.js pages and Expo screens should compose child data needs
+- Prefer suspense-ready hooks when the app architecture supports them
+- Data masking enforced where enabled: Components only access declared fields
+- Keep generated documents/types from `~/__generated__/gql/graphql`
 
 ## Colocated Fragments (Relay Convention)
 
@@ -48,9 +48,9 @@ export const ActiveQuizCard: FC<Props> = ({ quiz: quizFragment }) => {
 - Every field in a fragment must be used by the component (no ghost fields)
 - Do not share fragments between components; each component owns its data requirements
 
-## Page-Level Queries
+## Page/Screen-Level Queries
 
-Each Next.js page should have one query that spreads all child fragments. Parent queries compose child fragments and never duplicate field selections.
+Each Next.js page or Expo screen should own its query and compose child fragments/fields without duplicating responsibilities.
 
 ```tsx
 'use client'
@@ -76,14 +76,18 @@ export default function Home() {
 
 ### Key Rules
 
-- Use `useSuspenseQuery` (not `useQuery`); loading handled by `loading.tsx`
-- Always include `'use client'` directive
+- Use `useSuspenseQuery` when using suspense boundaries; otherwise use `useQuery` with explicit loading states
+- In Next.js client components, include `'use client'` directive
 - Always include `id` field on entities with fragment spreads
 - Import generated document types from `~/__generated__/gql/graphql`
 
 ## Loading States
 
-Handle loading via Next.js `loading.tsx` file; no inline loading states.
+Handle loading according to app runtime:
+
+- Next.js: prefer route `loading.tsx`
+- Expo mobile: if using `useSuspenseQuery`, wrap the route/layout subtree in `<Suspense fallback={...}>`
+- Expo mobile: use a themed full-screen fallback (for example background color + centered `ActivityIndicator`) to avoid blank/black transitions
 
 ```tsx
 // app/(public)/loading.tsx
@@ -108,25 +112,85 @@ import { useSuspenseQuery, useMutation } from '@apollo/client/react'
 import { useFragment } from '~/shared/hooks'
 ```
 
+## Apollo Client 4 Types
+
+Apollo Client 4 deprecates many legacy exported type aliases (for example `MutationHookOptions`, `QueryHookOptions`).
+
+- Prefer namespaced hook types directly from the hook function namespace
+- Example: `useMutation.Options<TData, TVariables>` instead of `MutationHookOptions<TData, TVariables>`
+- Keep importing hooks from `@apollo/client/react`
+
 ## Mutations
 
-Return minimal fields and use fragment spreads for cache updates:
+Use dedicated mutation hook files under `~/apollo/mutations/MutationName.ts`.
+
+- Keep the GraphQL document and generated document import in that file
+- Export a `useMutationName` hook that wraps `useMutation`
+- Default to `notifyOnNetworkStatusChange: true`
+- Add a `map...ValuesToInput` helper only when the mutation has meaningful input mapping
+- For no-input mutations, skip the mapper and expose only the hook
+
+Template:
 
 ```tsx
 import { useMutation } from '@apollo/client/react'
+
 import { graphql } from '~/__generated__/gql'
-import { CreateQuizDocument } from '~/__generated__/gql/graphql'
+import type { MutationNameMutation, MutationNameMutationVariables } from '~/__generated__/gql/graphql'
+import { MutationNameDocument } from '~/__generated__/gql/graphql'
 
 graphql(`
-  mutation CreateQuiz($input: CreateQuizInput!) {
-    createQuiz(input: $input) {
+  mutation MutationName($input: MutationInput!) {
+    mutationName(input: $input) {
       id
-      ...ActiveQuizCard_quiz
+      # relevant fields for cache updates
     }
   }
 `)
 
-const [createQuiz] = useMutation(CreateQuizDocument)
+export const mapMutationNameValuesToInput = (
+  values: ValuesFromAForm,
+): MutationNameMutationVariables['input'] => {
+  return {
+    // map values to GraphQL input
+  }
+}
+
+export const useMutationName = (
+  options?: useMutation.Options<MutationNameMutation, MutationNameMutationVariables>,
+) => {
+  return useMutation(MutationNameDocument, {
+    notifyOnNetworkStatusChange: true,
+    ...options,
+  })
+}
+```
+
+No-input template:
+
+```tsx
+import { useMutation } from '@apollo/client/react'
+
+import { graphql } from '~/__generated__/gql'
+import type { FinishOnboardingMutation, FinishOnboardingMutationVariables } from '~/__generated__/gql/graphql'
+import { FinishOnboardingDocument } from '~/__generated__/gql/graphql'
+
+graphql(`
+  mutation FinishOnboarding {
+    finishOnboarding {
+      id
+    }
+  }
+`)
+
+export const useFinishOnboarding = (
+  options?: useMutation.Options<FinishOnboardingMutation, FinishOnboardingMutationVariables>,
+) => {
+  return useMutation(FinishOnboardingDocument, {
+    notifyOnNetworkStatusChange: true,
+    ...options,
+  })
+}
 ```
 
 ## Code Generation
@@ -134,7 +198,8 @@ const [createQuiz] = useMutation(CreateQuizDocument)
 Run after any GraphQL changes:
 
 ```bash
-cd frontend && pnpm run gen:gql
+pnpm --filter @larastack/frontend gen:gql
+pnpm --filter @larastack/mobile gen:gql
 ```
 
 ## Checklist
@@ -142,6 +207,7 @@ cd frontend && pnpm run gen:gql
 - Fragment colocated with component (naming: `ComponentName_typeName`)
 - Every fragment field is used by the component
 - Page query spreads all child fragments
+- Mutation hooks live in `~/apollo/mutations/MutationName.ts`
 - Using `useSuspenseQuery` plus `loading.tsx` for loading states
 - Using custom `useFragment` from `~/shared/hooks`
 - Ran `pnpm run gen:gql` after changes
