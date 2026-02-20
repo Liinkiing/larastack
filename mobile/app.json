@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/expo/expo/refs/heads/main/docs/public/static/schemas/v55.0.0/app-config-schema.json",
   "name": "larastack",
   "slug": "larastack",
   "version": "1.0.0",
