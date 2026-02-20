@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import * as Haptics from 'expo-haptics'
 import { useEffect } from 'react'
-import { GestureResponderEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native'
+import { type GestureResponderEvent, Pressable, type StyleProp, View, type ViewStyle } from 'react-native'
 import { createAnimatedComponent, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 import type { VariantProps } from '~/tailwind-variants'

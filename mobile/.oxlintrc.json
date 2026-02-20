@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["../.oxlintrc.json"],
   "plugins": ["import", "react"],
   "categories": {
     "correctness": "off"
@@ -98,8 +99,15 @@
       }
     },
     {
-      "files": ["**/*.ts", "**/*.tsx", "**/*.d.ts"],
+      "files": ["**/*.{ts,tsx,d.ts}"],
       "rules": {
+        "typescript/consistent-type-imports": [
+          "error",
+          {
+            "prefer": "type-imports",
+            "fixStyle": "inline-type-imports"
+          }
+        ],
         "@typescript-eslint/array-type": [
           "warn",
           {

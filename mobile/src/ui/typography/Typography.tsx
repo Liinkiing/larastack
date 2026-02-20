@@ -2,9 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { Text } from 'react-native'
 
-import type { VariantProps } from '~/tailwind-variants'
-
-import { cn, tv } from '~/tailwind-variants'
+import { cn, tv, type VariantProps } from '~/tailwind-variants'
 
 const typographyVariants = tv({
   variants: {

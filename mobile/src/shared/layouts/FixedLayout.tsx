@@ -1,5 +1,5 @@
-import { ComponentProps, ReactNode, useState } from 'react'
-import { LayoutChangeEvent, ScrollView, StyleProp, View, ViewStyle } from 'react-native'
+import { type ComponentProps, type ReactNode, useState } from 'react'
+import { type LayoutChangeEvent, ScrollView, type StyleProp, View, type ViewStyle } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { cn } from '~/tailwind-variants'

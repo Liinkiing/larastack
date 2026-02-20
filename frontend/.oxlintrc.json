@@ -1,5 +1,6 @@
 {
   "$schema": "../node_modules/oxlint/configuration_schema.json",
+  "extends": ["../.oxlintrc.json"],
   "plugins": ["typescript", "unicorn"],
   "categories": {
     "correctness": "off"
@@ -132,12 +133,13 @@
   },
   "overrides": [
     {
-      "files": ["**/*.{js,jsx,ts,tsx}"],
+      "files": ["**/*.{ts,tsx,d.ts}"],
       "rules": {
-        "@typescript-eslint/consistent-type-imports": [
+        "typescript/consistent-type-imports": [
           "error",
           {
-            "prefer": "type-imports"
+            "prefer": "type-imports",
+            "fixStyle": "inline-type-imports"
           }
         ],
         "@typescript-eslint/no-var-requires": "off",
@@ -365,6 +367,5 @@
       },
       "jsPlugins": ["eslint-plugin-storybook"]
     }
-  ],
-  "extends": ["../.oxlintrc.json"]
+  ]
 }

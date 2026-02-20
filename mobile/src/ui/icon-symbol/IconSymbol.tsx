@@ -2,7 +2,7 @@ import type { SymbolViewProps, SymbolWeight } from 'expo-symbols'
 import type { ComponentProps } from 'react'
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
-import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native'
+import { type OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native'
 
 type SymbolName = Extract<SymbolViewProps['name'], string>
 type MaterialIconName = ComponentProps<typeof MaterialIcons>['name']
