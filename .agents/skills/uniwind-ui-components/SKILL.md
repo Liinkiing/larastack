@@ -8,6 +8,7 @@ description: Create reusable React Native UI components with Uniwind and tailwin
 ## Overview
 
 Build reusable, polished mobile UI components using Uniwind `className` styling and `tailwind-variants` (`tv`, `cn`, `VariantProps`).
+When the repo defines a custom wrapper (for example `mobile/src/tailwind-variants.ts`), import from that local module instead of importing directly from the `tailwind-variants` package.
 Prefer static, token-driven classes and strongly typed variant contracts.
 
 ## Read First
@@ -23,6 +24,8 @@ Prefer static, token-driven classes and strongly typed variant contracts.
 2. Define semantic variants (`variant`, `size`, `tone`, `state`) and add `defaultVariants`.
 3. Treat `defaultVariants` as the single source of truth for defaults; do not duplicate defaults in prop destructuring or context initial values.
 4. Type props with `VariantProps<typeof styles>` and extend React Native props for each slot.
+   - Import `tv`, `cn`, and `VariantProps` from the project-local wrapper when available (for example `~/tailwind-variants`).
+   - Only import from `tailwind-variants` directly if no wrapper exists.
 5. Keep classes static and explicit; avoid string interpolation in class names.
 6. Follow mobile conventions: component folder in kebab-case, PascalCase component file, local `index.ts` barrel.
 7. Validate with:

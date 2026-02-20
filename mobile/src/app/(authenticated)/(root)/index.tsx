@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
-import { ScrollView } from 'react-native'
 
+import { ScrollableLayout } from '~/shared/layouts'
 import { Button } from '~/ui/button'
 import { Card } from '~/ui/card'
 import { Typography } from '~/ui/typography'
@@ -13,11 +13,7 @@ export default function HomeScreen() {
   const handleSparkPress = () => setSparkCount(current => current + 1)
 
   return (
-    <ScrollView
-      className="flex-1 bg-background"
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerClassName="relative gap-4 px-5 pt-3 pb-12"
-    >
+    <ScrollableLayout>
       <Card.Root>
         <Card.Header>
           <Typography variant="display">Playful, bright, and clean.</Typography>
@@ -63,6 +59,6 @@ export default function HomeScreen() {
           </Typography>
         </Card.Footer>
       </Card.Root>
-    </ScrollView>
+    </ScrollableLayout>
   )
 }

@@ -65,6 +65,8 @@ pnpm --filter @larastack/mobile exec expo install --fix     # Update invalid pac
 pnpm --filter @larastack/mobile development-builds          # Create development builds (workflow)
 ```
 
+- Do not run `expo start`/`pnpm --filter @larastack/mobile dev` in the background (no `&`, `nohup`, or detached logging) unless the user explicitly asks for background execution.
+
 ### Building & Testing
 
 ```bash
@@ -94,7 +96,8 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
   - Function components with hooks
   - Enable React Compiler
   - Proper dependency arrays in useEffect
-  - Memoization when appropriate (useMemo, useCallback)
+  - Avoid premature memoization (`useMemo`, `useCallback`, `React.memo`) since React Compiler already handles most optimizations
+  - Add manual memoization only when profiling shows a real bottleneck or when referential stability is required for correctness
   - Error boundaries for better error handling
 
 ### Navigation & Routing

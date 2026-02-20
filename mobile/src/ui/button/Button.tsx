@@ -1,12 +1,13 @@
 import type { ComponentProps, ReactNode } from 'react'
-import type { VariantProps } from 'tailwind-variants'
 
 import * as Haptics from 'expo-haptics'
 import { useEffect } from 'react'
 import { GestureResponderEvent, Pressable, StyleProp, View, ViewStyle } from 'react-native'
 import { createAnimatedComponent, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { cn, tv } from 'tailwind-variants'
 
+import type { VariantProps } from '~/tailwind-variants'
+
+import { cn, tv } from '~/tailwind-variants'
 import { IconSymbol } from '~/ui/icon-symbol'
 import { Typography } from '~/ui/typography'
 

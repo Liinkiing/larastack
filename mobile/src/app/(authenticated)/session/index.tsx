@@ -1,5 +1,4 @@
-import { ScrollView } from 'react-native'
-
+import { ScrollableLayout } from '~/shared/layouts'
 import { useAuth } from '~/shared/providers/AuthProvider'
 import { useOAuth } from '~/shared/providers/OAuthProvider'
 import { Button } from '~/ui/button'
@@ -11,11 +10,7 @@ export default function SessionScreen() {
   const { isLoading, logout } = useOAuth()
 
   return (
-    <ScrollView
-      className="flex-1 bg-background"
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerClassName="gap-4 px-5 pt-3 pb-12"
-    >
+    <ScrollableLayout>
       <Card.Root>
         <Card.Header>
           <Typography variant="title">Session</Typography>
@@ -41,6 +36,6 @@ export default function SessionScreen() {
       <Button variant="destructive" onPress={() => void logout()} disabled={isLoading}>
         Sign out
       </Button>
-    </ScrollView>
+    </ScrollableLayout>
   )
 }

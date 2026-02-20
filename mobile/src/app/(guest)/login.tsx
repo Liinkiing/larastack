@@ -1,6 +1,6 @@
 import * as AppleAuthentication from 'expo-apple-authentication'
-import { ScrollView } from 'react-native'
 
+import { ScrollableLayout } from '~/shared/layouts'
 import { useOAuth } from '~/shared/providers/OAuthProvider'
 import { Button } from '~/ui/button'
 import { Card } from '~/ui/card'
@@ -10,15 +10,8 @@ export default function LoginScreen() {
   const { error, isAppleLoginAvailable, isLoading, loginWithApple, loginWithGoogle, clearError } = useOAuth()
 
   return (
-    <ScrollView
-      className="flex-1 bg-background"
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerClassName="gap-4 px-5 pt-3 pb-12"
-    >
+    <ScrollableLayout>
       <Card.Root spacing="lg">
-        <Card.Header>
-          <Typography variant="title">Login to continue</Typography>
-        </Card.Header>
         <Card.Body>
           <Typography tone="muted">
             Native Apple or Google sign-in, then backend-issued Sanctum token for authenticated API requests.
@@ -60,6 +53,6 @@ export default function LoginScreen() {
       <Button icon="person.crop.circle.fill" onPress={() => void loginWithGoogle()} disabled={isLoading}>
         Continue with Google
       </Button>
-    </ScrollView>
+    </ScrollableLayout>
   )
 }

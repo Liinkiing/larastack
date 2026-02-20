@@ -1,8 +1,10 @@
 import type { ComponentProps } from 'react'
-import type { VariantProps } from 'tailwind-variants'
 
 import { Text } from 'react-native'
-import { cn, tv } from 'tailwind-variants'
+
+import type { VariantProps } from '~/tailwind-variants'
+
+import { cn, tv } from '~/tailwind-variants'
 
 const typographyVariants = tv({
   variants: {
@@ -14,6 +16,7 @@ const typographyVariants = tv({
       caption: 'text-caption font-semibold tracking-[0.02em]',
       button: 'text-button font-bold tracking-[0.01em]',
       metric: 'text-metric font-bold',
+      subtitle: 'text-subtitle font-medium',
     },
     tone: {
       default: 'text-foreground',

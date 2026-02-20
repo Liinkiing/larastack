@@ -10,9 +10,11 @@ Sources:
 ## Standard Imports
 
 ```ts
-import { cn, tv } from 'tailwind-variants'
-import type { VariantProps } from 'tailwind-variants'
+import { cn, tv } from '~/tailwind-variants'
+import type { VariantProps } from '~/tailwind-variants'
 ```
+
+If the repo does not define a local wrapper (for example `src/tailwind-variants.ts`), fall back to direct imports from `tailwind-variants`.
 
 ## Single-Part Component Pattern
 
@@ -47,11 +49,11 @@ Use slots for multipart components (`Card.Root`, `Card.Header`, `Card.Body`, `Ca
 
 ```tsx
 import type { ComponentProps } from 'react'
-import type { VariantProps } from 'tailwind-variants'
+import type { VariantProps } from '~/tailwind-variants'
 
 import { createContext, useContext } from 'react'
 import { View } from 'react-native'
-import { cn, tv } from 'tailwind-variants'
+import { cn, tv } from '~/tailwind-variants'
 
 const cardStyles = tv({
   slots: {
@@ -143,4 +145,4 @@ export const Card = {
 - Keep `defaultVariants` as the only default source; pass `undefined` context/prop variant values through to `tv`.
 - Keep variant names semantic (`tone`, `size`, `density`, `intent`) rather than visual implementation names.
 - Prefer `compoundVariants` for true intersections; avoid stacking one-off conditionals in render functions.
-- Use `cn` from `tailwind-variants` directly for slot overrides and consumer `className` merges.
+- Use `cn` from the local wrapper when present (for example `~/tailwind-variants`) for slot overrides and consumer `className` merges.
