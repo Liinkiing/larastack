@@ -37,6 +37,7 @@ These documentation files are specifically formatted for AI agents and should be
 │   │   ├── _layout.tsx            # Root layout
 │   │   ├── (authenticated)/       # Authenticated routes
 │   │   └── (guest)/               # Guest/public routes
+│   ├── screens/                   # Route-specific components grouped by screen
 │   ├── apollo/                    # Apollo client and GraphQL setup
 │   ├── __generated__/             # GraphQL codegen output
 │   ├── assets/                    # Static assets (images, fonts)
@@ -95,17 +96,21 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - **Shadows via Uniwind Classes**: Prefer Tailwind/Uniwind shadow utilities in `className` (for example, `shadow-sm`, `shadow-md`) instead of inline `style` shadow objects (`shadowColor`, `shadowOffset`, `shadowOpacity`, `shadowRadius`, `elevation`) by default.
 - **Self-Documenting Code**: Write clear, readable code that explains itself; only add comments for complex business logic or design decisions
 - **React 19 Patterns**: Follow modern React patterns including:
-  - Function components with hooks
-  - Enable React Compiler
-  - Proper dependency arrays in useEffect
-  - Avoid premature memoization (`useMemo`, `useCallback`, `React.memo`) since React Compiler already handles most optimizations
-  - Add manual memoization only when profiling shows a real bottleneck or when referential stability is required for correctness
-  - Error boundaries for better error handling
+    - Function components with hooks
+    - Enable React Compiler
+    - Proper dependency arrays in useEffect
+    - Avoid premature memoization (`useMemo`, `useCallback`, `React.memo`) since React Compiler already handles most optimizations
+    - Add manual memoization only when profiling shows a real bottleneck or when referential stability is required for correctness
+    - Error boundaries for better error handling
 
 ### Navigation & Routing
 
 - Use **Expo Router** for all navigation
 - Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`
+- Keep route UI/logic in `src/app/**` files by default.
+- For components used only by a given route/screen, place them under `src/screens/<screen>/components/`.
+- Name files in `src/screens/<screen>/components/` with PascalCase (for example `OnboardingCarousel.tsx`).
+- Do not create ad-hoc `_components` folders inside `src/app/**`.
 - Docs: https://docs.expo.dev/router/introduction/
 
 ### Recommended Libraries
@@ -167,10 +172,10 @@ If there are errors in **Expo Go** or the project is not running, create a **dev
 When working on this project:
 
 1. **Always start by consulting the appropriate documentation**:
-   - For general Expo questions: https://docs.expo.dev/llms-full.txt
-   - For EAS/deployment questions: https://docs.expo.dev/llms-eas.txt
-   - For SDK/API questions: https://docs.expo.dev/llms-sdk.txt
-   - For package-specific and advanced Expo patterns: https://github.com/expo/fyi
+    - For general Expo questions: https://docs.expo.dev/llms-full.txt
+    - For EAS/deployment questions: https://docs.expo.dev/llms-eas.txt
+    - For SDK/API questions: https://docs.expo.dev/llms-sdk.txt
+    - For package-specific and advanced Expo patterns: https://github.com/expo/fyi
 
 2. **Understand before implementing**: Read the relevant docs section before writing code
 
