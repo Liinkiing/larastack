@@ -1,8 +1,7 @@
 'use client'
 
-import type { FC, ReactNode } from 'react'
-
 import { AxiosError } from 'axios'
+import type { FC, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 import { ApiService } from '~/services/api'

@@ -3,7 +3,6 @@
 import type { FC, ReactNode } from 'react'
 
 import type { UserAbilities } from '~/__generated__/gql/graphql'
-
 import { useAuth } from '~/shared/hooks/useAuth'
 
 interface Props {

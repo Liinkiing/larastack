@@ -1,5 +1,4 @@
 import type { AxiosError, AxiosInstance } from 'axios'
-
 import Axios from 'axios'
 
 import { compilerEnv } from '~/shared/env'

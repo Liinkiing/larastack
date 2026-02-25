@@ -3,7 +3,6 @@
 import type { FC, ReactNode } from 'react'
 
 import type { ButtonProps } from '~/ui/button'
-
 import { Button } from '~/ui/button'
 
 import { useAuth } from '../hooks'

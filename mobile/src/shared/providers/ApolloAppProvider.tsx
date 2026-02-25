@@ -1,6 +1,5 @@
-import type { PropsWithChildren } from 'react'
-
 import { ApolloProvider } from '@apollo/client/react'
+import type { PropsWithChildren } from 'react'
 
 import { apolloClient } from '~/apollo/client'
 

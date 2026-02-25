@@ -1,5 +1,4 @@
 import type { ComponentProps } from 'react'
-
 import { ScrollView } from 'react-native'
 
 import { cn } from '~/tailwind-variants'

@@ -1,5 +1,4 @@
 import type { ComponentProps } from 'react'
-
 import { View } from 'react-native'
 
 import { cn } from '~/tailwind-variants'

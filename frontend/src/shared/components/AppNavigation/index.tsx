@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-
 import { routes } from '~app/routes'
 
 import { AppLink } from '~/shared/components/AppLink'

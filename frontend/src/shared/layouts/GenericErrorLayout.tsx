@@ -1,8 +1,7 @@
 import type { FC } from 'react'
 
-import type { CenterProps } from '~/styled-system/jsx'
-
 import { FullPageCenterLayout } from '~/shared/layouts/FullpageCenterLayout'
+import type { CenterProps } from '~/styled-system/jsx'
 import { VStack } from '~/styled-system/jsx'
 import { Button } from '~/ui/button'
 import { Heading } from '~/ui/heading'

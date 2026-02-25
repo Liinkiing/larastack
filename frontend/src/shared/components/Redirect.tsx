@@ -1,8 +1,7 @@
 'use client'
 
-import type { FC } from 'react'
-
 import { useRouter } from 'next/navigation'
+import type { FC } from 'react'
 import { useEffect } from 'react'
 
 interface Props {

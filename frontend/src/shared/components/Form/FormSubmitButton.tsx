@@ -1,9 +1,7 @@
 import type { FC } from 'react'
-
 import { useFormContext } from 'react-hook-form'
 
 import type { ButtonProps } from '~/ui/button'
-
 import { Button } from '~/ui/button'
 
 type SubmitButtonProps = Omit<ButtonProps, 'disabled' | 'isDisabled'> & {

@@ -1,10 +1,9 @@
 import { use, useCallback, useMemo } from 'react'
 
-import type { AuthProvider } from '~/services/auth'
-import type { Viewer } from '~/shared/providers/AuthProvider'
-
 import { graphql } from '~/__generated__/gql'
+import type { AuthProvider } from '~/services/auth'
 import { AuthService } from '~/services/auth'
+import type { Viewer } from '~/shared/providers/AuthProvider'
 import { AuthContext } from '~/shared/providers/AuthProvider'
 
 type Return<T = Viewer> = {

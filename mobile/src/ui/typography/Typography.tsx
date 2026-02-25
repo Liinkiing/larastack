@@ -1,5 +1,4 @@
 import type { ComponentProps } from 'react'
-
 import { Text } from 'react-native'
 
 import { cn, tv, type VariantProps } from '~/tailwind-variants'

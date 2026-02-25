@@ -5,10 +5,10 @@
   "ignorePatterns": ["backend/vendor/**/*", "backend/public/vendor/**/*", "uniwind-types.d.ts"],
   "printWidth": 120,
   "singleQuote": true,
-  "experimentalSortImports": {
+  "sortImports": {
     "newlinesBetween": true
   },
-  "experimentalTailwindcss": {
+  "sortTailwindcss": {
     "stylesheet": "./mobile/src/global.css",
     "functions": ["clsx", "cn", "cva", "tv"],
     "preserveWhitespace": true

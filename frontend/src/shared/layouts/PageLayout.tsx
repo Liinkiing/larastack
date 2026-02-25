@@ -1,7 +1,6 @@
 import type { FC } from 'react'
 
 import type { BoxProps } from '~/styled-system/jsx'
-
 import { Box } from '~/styled-system/jsx'
 
 export const PageLayout: FC<BoxProps> = props => {

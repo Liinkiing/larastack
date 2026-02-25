@@ -1,9 +1,8 @@
 'use client'
 
-import type { FC, ReactNode } from 'react'
-
 import { animate, useReducedMotion } from 'motion/react'
 import { TransitionRouter } from 'next-transition-router'
+import type { FC, ReactNode } from 'react'
 import { useCallback, useRef } from 'react'
 
 interface Props {

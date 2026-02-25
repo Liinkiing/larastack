@@ -1,10 +1,9 @@
 import type { FC } from 'react'
 
-import type { HeadingVariantProps } from '~/styled-system/recipes'
-import type { ComponentProps, StyledComponent } from '~/styled-system/types'
-
 import { styled } from '~/styled-system/jsx'
+import type { HeadingVariantProps } from '~/styled-system/recipes'
 import { heading } from '~/styled-system/recipes'
+import type { ComponentProps, StyledComponent } from '~/styled-system/types'
 
 type Props = HeadingVariantProps & {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'

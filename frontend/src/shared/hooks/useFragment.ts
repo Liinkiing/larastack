@@ -1,5 +1,4 @@
 import type { OperationVariables } from '@apollo/client/core'
-
 import { useFragment as useApolloFragment } from '@apollo/client/react'
 
 export const useFragment = <TData = any, TVars extends OperationVariables = OperationVariables>(

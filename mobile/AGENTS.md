@@ -96,12 +96,12 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - **Shadows via Uniwind Classes**: Prefer Tailwind/Uniwind shadow utilities in `className` (for example, `shadow-sm`, `shadow-md`) instead of inline `style` shadow objects (`shadowColor`, `shadowOffset`, `shadowOpacity`, `shadowRadius`, `elevation`) by default.
 - **Self-Documenting Code**: Write clear, readable code that explains itself; only add comments for complex business logic or design decisions
 - **React 19 Patterns**: Follow modern React patterns including:
-    - Function components with hooks
-    - Enable React Compiler
-    - Proper dependency arrays in useEffect
-    - Avoid premature memoization (`useMemo`, `useCallback`, `React.memo`) since React Compiler already handles most optimizations
-    - Add manual memoization only when profiling shows a real bottleneck or when referential stability is required for correctness
-    - Error boundaries for better error handling
+  - Function components with hooks
+  - Enable React Compiler
+  - Proper dependency arrays in useEffect
+  - Avoid premature memoization (`useMemo`, `useCallback`, `React.memo`) since React Compiler already handles most optimizations
+  - Add manual memoization only when profiling shows a real bottleneck or when referential stability is required for correctness
+  - Error boundaries for better error handling
 
 ### Navigation & Routing
 
@@ -172,10 +172,10 @@ If there are errors in **Expo Go** or the project is not running, create a **dev
 When working on this project:
 
 1. **Always start by consulting the appropriate documentation**:
-    - For general Expo questions: https://docs.expo.dev/llms-full.txt
-    - For EAS/deployment questions: https://docs.expo.dev/llms-eas.txt
-    - For SDK/API questions: https://docs.expo.dev/llms-sdk.txt
-    - For package-specific and advanced Expo patterns: https://github.com/expo/fyi
+   - For general Expo questions: https://docs.expo.dev/llms-full.txt
+   - For EAS/deployment questions: https://docs.expo.dev/llms-eas.txt
+   - For SDK/API questions: https://docs.expo.dev/llms-sdk.txt
+   - For package-specific and advanced Expo patterns: https://github.com/expo/fyi
 
 2. **Understand before implementing**: Read the relevant docs section before writing code
 

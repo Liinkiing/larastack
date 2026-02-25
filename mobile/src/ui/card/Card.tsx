@@ -1,10 +1,8 @@
 import type { ComponentProps } from 'react'
-
 import { createContext, useContext } from 'react'
 import { View } from 'react-native'
 
 import type { VariantProps } from '~/tailwind-variants'
-
 import { cn, tv } from '~/tailwind-variants'
 
 const cardStyles = tv({

@@ -1,9 +1,8 @@
 'use client'
 
-import type { FC, ReactNode } from 'react'
-
 import { ApolloProvider } from '@apollo/client/react'
 import { MotionConfig } from 'motion/react'
+import type { FC, ReactNode } from 'react'
 
 import { apolloClient } from '~/apollo/client'
 
