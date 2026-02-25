@@ -1,16 +1,21 @@
 name: "backend-ci"
+
 on:
   push:
     branches: [master]
   pull_request:
+
 permissions:
   contents: read
+
 concurrency:
   group: backend-ci-${{ github.ref }}
   cancel-in-progress: true
+
 defaults:
   run:
     working-directory: backend
+
 jobs:
   lint:
     runs-on: ubuntu-latest

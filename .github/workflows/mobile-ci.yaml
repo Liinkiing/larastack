@@ -3,17 +3,7 @@ name: 'mobile-ci'
 on:
   push:
     branches: [master]
-    paths:
-      - 'mobile/**'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
-      - '.github/workflows/mobile-ci.yaml'
   pull_request:
-    paths:
-      - 'mobile/**'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
-      - '.github/workflows/mobile-ci.yaml'
 
 permissions:
   contents: read

@@ -1,13 +1,17 @@
 name: 'frontend-ci'
+
 on:
   push:
     branches: [master]
   pull_request:
+
 permissions:
   contents: read
+
 concurrency:
   group: frontend-ci-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: ubuntu-latest
