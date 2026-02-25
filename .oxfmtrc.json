@@ -4,6 +4,7 @@
   "arrowParens": "avoid",
   "ignorePatterns": [
     ".agents/**/*",
+    "**/AGENTS.md",
     ".github/**/*",
     ".husky/**/*",
     "backend/vendor/**/*",
