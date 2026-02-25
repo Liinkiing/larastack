@@ -1,7 +1,6 @@
 import * as http from 'node:http'
 import * as https from 'node:https'
 
-/* oxlint-disable unicorn/prefer-node-protocol */
 import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client'
 import UploadHttpLink from 'apollo-upload-client/UploadHttpLink.mjs'
 import Cookies from 'js-cookie'
