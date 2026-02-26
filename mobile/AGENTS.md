@@ -73,6 +73,8 @@ pnpm --filter @larastack/mobile development-builds          # Create development
 ```bash
 pnpm --filter @larastack/mobile expo:doctor      # Check project health and dependencies
 pnpm --filter @larastack/mobile ts:check         # Run TypeScript type checking
+pnpm --filter @larastack/mobile test             # Run Vitest in watch mode
+pnpm --filter @larastack/mobile test:ci          # Run Vitest once (CI mode)
 pnpm --filter @larastack/mobile lint             # Run oxlint
 pnpm --filter @larastack/mobile draft            # Publish preview update and website (workflow)
 ```
@@ -108,6 +110,7 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - Use **Expo Router** for all navigation
 - Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`
 - Keep route UI/logic in `src/app/**` files by default.
+- Do not place test files inside `src/app/**`; keep tests in `src/screens/**`, `src/services/**`, `src/shared/**`, `src/ui/**`, or `src/utils/**`.
 - For components used only by a given route/screen, place them under `src/screens/<screen>/components/`.
 - Name files in `src/screens/<screen>/components/` with PascalCase (for example `OnboardingCarousel.tsx`).
 - Do not create ad-hoc `_components` folders inside `src/app/**`.

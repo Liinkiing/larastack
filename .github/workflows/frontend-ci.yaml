@@ -55,9 +55,22 @@ jobs:
       - name: Check types
         run: |
           pnpm --filter "./frontend" ts:check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout_step
+      - *setup_pnpm_step
+      - *setup_node_step
+      - *install_frontend_dependencies_step
+
+      - name: Run tests
+        run: |
+          pnpm --filter "./frontend" test:ci
+
   build:
     runs-on: ubuntu-latest
-    needs: [lint, typecheck]
+    needs: [lint, typecheck, test]
     steps:
       - *checkout_step
       - *setup_pnpm_step

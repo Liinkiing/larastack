@@ -19,6 +19,9 @@
     "gen:gql:watch": "graphql-codegen --config codegen.ts --watch",
     "prets:check": "panda codegen && pnpm run gen:gql",
     "ts:check": "tsc --pretty --skipLibCheck --noEmit",
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "test:watch": "vitest --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -63,8 +66,10 @@
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint-plugin-storybook": "10.2.9",
+    "jsdom": "^27.0.1",
     "storybook": "^10.2.9",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "vitest": "^3.2.4"
   }
 }

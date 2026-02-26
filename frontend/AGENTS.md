@@ -30,6 +30,9 @@ Run from repo root.
 - Start: `pnpm --filter @larastack/frontend start`
 - Typecheck: `pnpm --filter @larastack/frontend ts:check`
 - Pre-typecheck pipeline: `pnpm --filter @larastack/frontend prets:check`
+- Test: `pnpm --filter @larastack/frontend test`
+- Test (CI): `pnpm --filter @larastack/frontend test:ci`
+- Test (watch): `pnpm --filter @larastack/frontend test:watch`
 - Lint: `pnpm --filter @larastack/frontend lint`
 - Lint fix: `pnpm --filter @larastack/frontend lint:fix`
 - Format: `pnpm --filter @larastack/frontend format`

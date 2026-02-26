@@ -32,6 +32,7 @@ Run from repo root unless explicitly noted.
 
 - Install JS deps: `pnpm install`
 - Run a package script: `pnpm --filter <workspace-name> <script>`
+- Run workspace tests (if configured): `pnpm --filter <workspace-name> test:ci`
 - Known workspace names (if present):
   - `@larastack/backend`
   - `@larastack/frontend`
