@@ -16,9 +16,25 @@
   "sortImports": {
     "newlinesBetween": true
   },
-  "sortTailwindcss": {
-    "stylesheet": "./mobile/src/global.css",
-    "functions": ["clsx", "cn", "cva", "tv"],
-    "preserveWhitespace": true
-  }
+  "overrides": [
+    {
+      "files": ["mobile/**/*"],
+      "options": {
+        "sortTailwindcss": {
+          "stylesheet": "./mobile/src/global.css",
+          "functions": ["clsx", "cn", "cva", "tv"],
+          "preserveWhitespace": true
+        }
+      }
+    },
+    {
+      "files": ["backend/**/*"],
+      "options": {
+        "sortTailwindcss": {
+          "config": "./backend/tailwind.config.js",
+          "preserveWhitespace": true
+        }
+      }
+    }
+  ]
 }
