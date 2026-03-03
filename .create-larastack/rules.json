@@ -154,6 +154,16 @@
           "transform": "json.opencode.syncMcp"
         }
       ]
+    },
+    {
+      "id": "sync-oxfmt-config",
+      "operations": [
+        {
+          "type": "transform",
+          "path": ".oxfmtrc.json",
+          "transform": "json.oxfmt.syncOverrides"
+        }
+      ]
     }
   ]
 }
