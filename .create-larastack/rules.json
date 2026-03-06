@@ -156,6 +156,16 @@
       ]
     },
     {
+      "id": "sync-codex-config",
+      "operations": [
+        {
+          "type": "transform",
+          "path": ".codex/config.toml",
+          "transform": "toml.codex.syncMcp"
+        }
+      ]
+    },
+    {
       "id": "sync-oxfmt-config",
       "operations": [
         {
