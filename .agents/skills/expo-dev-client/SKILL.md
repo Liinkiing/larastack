@@ -9,14 +9,15 @@ Use EAS Build to create development clients for testing native code changes on p
 
 ## Important: When Development Clients Are Needed
 
-**Only create development clients when your app requires custom native code.** Most apps work fine in Expo Go.
+**Create development clients whenever the app depends on native modules that are not reliably testable in Expo Go.**
 
-You need a dev client ONLY when using:
+You need a dev client when using:
 - Local Expo modules (custom native code)
 - Apple targets (widgets, app clips, extensions)
 - Third-party native modules not in Expo Go
+- App flows that depend on native auth or config plugins
 
-**Try Expo Go first** with `npx expo start`. If everything works, you don't need a dev client.
+For the Larastack mobile app specifically, prefer dev clients/development builds for Apple Sign-In, Google Sign-In, SecureStore-backed auth flows, and config-plugin validation. Expo Go is only a lightweight smoke-test path here.
 
 ## EAS Configuration
 

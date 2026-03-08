@@ -3,7 +3,7 @@
   "slug": "larastack",
   "version": "1.0.0",
   "orientation": "portrait",
-  "platforms": ["ios"],
+  "platforms": ["ios", "android"],
   "icon": "./src/assets/images/icon.png",
   "scheme": "larastack",
   "userInterfaceStyle": "light",

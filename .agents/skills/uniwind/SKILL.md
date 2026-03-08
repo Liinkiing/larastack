@@ -18,9 +18,9 @@ description: >
 
 # Uniwind — Complete Reference
 
-> Uniwind 1.5.0+ / Tailwind CSS v4 / React Native 0.81+ / Expo SDK 54+
+> Repo baseline: Uniwind 1.5.0+ / Tailwind CSS v4 / React Native 0.83 / Expo SDK 55
 
-If user has lower version, recommend updating to 1.5.0+ for best experience.
+If user is below this repo baseline, recommend updating to compatible versions before making Uniwind-specific changes.
 
 Uniwind brings Tailwind CSS v4 to React Native. All core React Native components support the `className` prop out of the box. Styles are compiled at build time — no runtime overhead.
 

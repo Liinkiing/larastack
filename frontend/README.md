@@ -1,6 +1,6 @@
 # Larastack Frontend 🚀
 
-This is the web frontend part of the Larastack project, a fullstack starter template with a Laravel backend, a Next.js web app, and an Expo/React Native mobile app in `../mobile`. This project is bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) and includes various tools and components to streamline the development process.
+This is the web frontend part of the Larastack project, a fullstack starter template with a Laravel backend, a Next.js web app, and an Expo/React Native mobile app in `../mobile`.
 
 ## Technologies Used 🛠️
 
@@ -16,25 +16,43 @@ This is the web frontend part of the Larastack project, a fullstack starter temp
 
 ## Getting Started 🏁
 
-First, run the development server:
+From the repository root, install dependencies and start the frontend dev server:
 
 ```bash
 pnpm install
+pnpm --filter @larastack/frontend dev
+```
+
+Or from this directory (`frontend/`):
+
+```bash
 pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing the public landing page in `app/(public)/page.tsx`. The page auto-updates as you edit the file.
+
+## Common Commands
+
+Run these from the repo root:
+
+```bash
+pnpm --filter @larastack/frontend dev
+pnpm --filter @larastack/frontend build
+pnpm --filter @larastack/frontend ts:check
+pnpm --filter @larastack/frontend gen:gql
+pnpm --filter @larastack/frontend storybook
+```
 
 ## Project Structure 📁
 
 Here's a brief overview of the project structure:
 
 - `app/`: Contains the application's pages and logic.
-- `src/shared/`: Contains reusable piece of logic and components.
-- `src/theme/` and `src/ui`: Contains the panda theme preset and UI components.
-- `src/apollo/`: Contains Apollo related files.
+- `src/shared/`: Contains reusable logic and shared components.
+- `src/theme/` and `src/ui/`: Contain the Panda theme setup and shared UI primitives.
+- `src/apollo/`: Contains Apollo Client setup and GraphQL helpers.
 
 ## Learn More 📚
 

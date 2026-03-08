@@ -31,86 +31,50 @@ Welcome to Larastack, a fullstack starter template that combines Laravel for the
 
 ## Installation ⚙️
 
-### Backend
-
-1. Clone the repository:
+1. Clone the repository and install shared JavaScript dependencies:
 
    ```shell
    git clone https://github.com/Liinkiing/larastack.git
-   cd larastack/backend
-   ```
-
-2. Install dependencies using Docker:
-
-   ```shell
-    docker run --rm \
-        -u "$(id -u):$(id -g)" \
-        -v "$(pwd):/app" \
-        -w /app \
-        composer:latest \
-        composer install --ignore-platform-reqs
-   ```
-
-3. Add an alias for the `sail` command to your shell configuration file (e.g. `~/.bashrc` or `~/.zshrc`):
-
-   ```shell
-   alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
-   ```
-
-4. Copy the example environment file and update your variables:
-
-   ```shell
-   cp .env.example .env
-   ```
-
-5. Start the containers:
-
-   ```shell
-   sail up -d
-   ```
-
-6. Generate a valid `APP_KEY`:
-   ```shell
-   sail artisan key:generate
-   ```
-
-### Frontend
-
-1. Navigate to the frontend directory:
-
-   ```shell
-   cd ../frontend
-   ```
-
-2. Install dependencies:
-
-   ```bash
+   cd larastack
    pnpm install
    ```
 
-3. Run the development server:
+### Backend
 
-   ```bash
-   pnpm dev
-   ```
+From `backend/`, install PHP dependencies and boot Laravel Sail:
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```shell
+cd backend
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/app" \
+    -w /app \
+    composer:latest \
+    composer install --ignore-platform-reqs
+cp .env.example .env
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan key:generate
+```
+
+### Frontend
+
+From the repo root, start the web app with:
+
+```bash
+pnpm --filter @larastack/frontend dev
+```
+
+Then open [http://localhost:3000](http://localhost:3000).
 
 ### Mobile
 
-1. Navigate to the mobile directory:
+From the repo root, start the Expo app with:
 
-   ```shell
-   cd ../mobile
-   ```
+```bash
+pnpm --filter @larastack/mobile dev
+```
 
-2. Start the Expo development server:
-
-   ```bash
-   pnpm start
-   ```
-
-3. Use the terminal prompts to open the app in an iOS simulator, Android emulator, web, or Expo Go.
+Use the terminal prompts to open the app in an iOS simulator, Android emulator, web, or Expo Go. For native auth and other native-module flows, prefer a development build over Expo Go.
 
 ## Learn More 📚
 

@@ -1,12 +1,12 @@
 # React 19
 
-React 19 is included in Expo SDK 54. This release simplifies several common patterns.
+This repo already uses React 19 through Expo SDK 55. React 19 enables several simplifications, but most of them are optional modernizations rather than mandatory rewrites.
 
 ## Context Changes
 
-### useContext → use
+### useContext and use
 
-The `use` hook replaces `useContext`:
+The `use` hook can read context in React 19, but `useContext` remains valid. Prefer `use` only when it materially improves readability or when conditional context reads are useful:
 
 ```tsx
 // Before (React 18)
@@ -21,9 +21,9 @@ const value = use(MyContext);
 - The `use` hook can also read promises, enabling Suspense-based data fetching.
 - `use` can be called conditionally, this simplifies components that consume multiple contexts.
 
-### Context.Provider → Context
+### Context.Provider and Context
 
-Context providers no longer need the `.Provider` suffix:
+Context providers can now omit the `.Provider` suffix, but both forms are valid:
 
 ```tsx
 // Before (React 18)
@@ -41,7 +41,7 @@ Context providers no longer need the `.Provider` suffix:
 
 ### Removing forwardRef
 
-Components can now receive `ref` as a regular prop. `forwardRef` is no longer needed:
+Components can now receive `ref` as a regular prop. `forwardRef` still works, so remove it only when the simpler API improves the component:
 
 ```tsx
 // Before (React 18)
@@ -57,7 +57,7 @@ function Input({ ref, ...props }: Props & { ref?: React.Ref<TextInput> }) {
 }
 ```
 
-### Migration Steps
+### Optional modernization steps
 
 1. Remove `forwardRef` wrapper
 2. Add `ref` to the props destructuring
@@ -72,8 +72,8 @@ function Input({ ref, ...props }: Props & { ref?: React.Ref<TextInput> }) {
 
 ## Cleanup Checklist
 
-When upgrading to SDK 54:
+When reviewing older pre-React-19 patterns:
 
-- [ ] Replace `useContext` with `use`
-- [ ] Remove `.Provider` from Context components
-- [ ] Remove `forwardRef` wrappers, use `ref` prop instead
+- [ ] Consider replacing `useContext` with `use` where it clearly improves the code
+- [ ] Consider using `<Context value={...}>` where it improves readability
+- [ ] Consider removing `forwardRef` wrappers in simple components

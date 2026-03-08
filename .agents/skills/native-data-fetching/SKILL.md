@@ -1,17 +1,17 @@
 ---
 name: native-data-fetching
-description: Use when implementing or debugging ANY network request, API call, or data fetching. Covers fetch API, axios, React Query, SWR, error handling, caching strategies, offline support.
+description: Use when implementing or debugging mobile/native network requests, API calls, or data fetching. Covers fetch API, auth/session flows, error handling, caching strategies, and offline support. For GraphQL use graphql-frontend; for existing frontend REST code follow the repo's Axios service layer.
 version: 1.0.0
 license: MIT
 ---
 
-# Expo Networking
+# Native Data Fetching
 
-**You MUST use this skill for ANY networking work including API requests, data fetching, caching, or network debugging.**
+Use this skill for mobile/native REST requests, auth/session flows, API configuration, and network debugging. Do not apply it blindly to GraphQL or existing frontend Axios modules.
 
 ## When to Use
 
-Use this router when:
+Use this skill when:
 
 - Implementing API requests
 - Setting up data fetching (React Query, SWR)
@@ -21,9 +21,16 @@ Use this router when:
 - Authentication/token management
 - Configuring API URLs and environment variables
 
+## Repo Alignment
+
+- `frontend/` GraphQL work should follow the `graphql-frontend` skill and Apollo Client patterns.
+- `frontend/` REST/session code may use the existing Axios service layer.
+- `mobile/` auth and native-facing requests currently use `fetch` plus `expo-secure-store`.
+- Do not introduce React Query or SWR when Apollo Client or an existing service module already owns the data flow.
+
 ## Preferences
 
-- Avoid axios, prefer expo/fetch
+- In `mobile/`, prefer platform-native `fetch` unless the local code in that area already standardizes on another client.
 
 ## Common Issues & Solutions
 

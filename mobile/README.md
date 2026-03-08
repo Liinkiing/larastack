@@ -21,9 +21,24 @@ In the output, you'll find options to open the app in:
 - [a development build](https://docs.expo.dev/develop/development-builds/introduction/)
 - [an Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [an iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Expo Go](https://expo.dev/go), a limited sandbox that is fine for basic JS/UI smoke checks but not for native auth or other native-module validation
+
+This app includes native auth modules and config plugins such as Apple Authentication, Google Sign-In, and SecureStore-backed auth flows. Prefer a development build when validating real sign-in flows or any native integration.
 
 You can start developing by editing files in **src/app**. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Common Commands
+
+Run these from the repo root:
+
+```bash
+pnpm --filter @larastack/mobile dev
+pnpm --filter @larastack/mobile expo:doctor
+pnpm --filter @larastack/mobile build:dev:android
+pnpm --filter @larastack/mobile build:dev:ios
+pnpm --filter @larastack/mobile build:prod:android
+pnpm --filter @larastack/mobile build:prod:ios
+```
 
 ## Workflows
 
@@ -31,7 +46,7 @@ This project is configured to use [EAS Workflows](https://docs.expo.dev/eas/work
 
 ### Previews
 
-Run `pnpm run draft` to [publish a preview update](https://docs.expo.dev/eas/workflows/examples/publish-preview-update/) of your project, which can be viewed in Expo Go or in a development build.
+Run `pnpm run draft` to [publish a preview update](https://docs.expo.dev/eas/workflows/examples/publish-preview-update/) of your project, which can be viewed in a development build. Expo Go is only suitable for JS-only smoke checks that do not depend on native modules.
 
 ### Development Builds
 

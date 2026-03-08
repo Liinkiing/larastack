@@ -16,18 +16,20 @@ Welcome to the backend directory of your fullstack application template. This is
 
 - **Laravel Socialite**: A Laravel package that facilitates easy integration with social authentication providers, making it simple to set up user authentication using popular social platforms.
 
-## Installation ⚙️
+## Get Started ⚙️
 
-1. Clone the repository:
+1. Clone the repository and install the shared JavaScript workspace dependencies from the repo root:
 
    ```shell
    git clone https://github.com/Liinkiing/larastack.git
-   cd larastack/backend
+   cd larastack
+   pnpm install
    ```
 
-2. Install dependencies using Docker:
+2. Install PHP dependencies from `backend/`:
 
    ```shell
+   cd backend
    docker run --rm \
        -u "$(id -u):$(id -g)" \
        -v "$(pwd):/app" \
@@ -36,28 +38,37 @@ Welcome to the backend directory of your fullstack application template. This is
        composer install --ignore-platform-reqs
    ```
 
-3. Add an alias for the `sail` command to your shell configuration file (e.g. `~/.bashrc` or `~/.zshrc`):
-
-   ```shell
-   alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
-   ```
-
-4. Copy the example environment file and update your variables:
+3. Copy the environment file:
 
    ```shell
    cp .env.example .env
    ```
 
-5. Start the containers:
+4. Start the Sail services:
 
    ```shell
-   sail up -d
+   ./vendor/bin/sail up -d
    ```
 
-6. Generate a valid `APP_KEY`:
+5. Generate a valid `APP_KEY`:
+
    ```shell
-   sail artisan key:generate
+   ./vendor/bin/sail artisan key:generate
    ```
+
+## Common Commands
+
+Run these from the repo root unless noted otherwise:
+
+```bash
+pnpm --filter @larastack/backend dev
+pnpm --filter @larastack/backend lint
+pnpm --filter @larastack/backend test
+pnpm --filter @larastack/backend typecheck
+pnpm --filter @larastack/backend gql:dump
+```
+
+For direct Sail commands, run them from `backend/`.
 
 ## Learn More 📚
 

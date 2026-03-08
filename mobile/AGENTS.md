@@ -9,6 +9,8 @@
 
 This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
 
+Current repo baseline: Expo SDK 55, Expo Router 55, React 19, React Native 0.83, and Uniwind 1.5.
+
 ## Documentation Resources
 
 When working on this project, **always consult the official Expo documentation** available at:
@@ -67,6 +69,7 @@ pnpm --filter @larastack/mobile development-builds          # Create development
 ```
 
 - Do not run `expo start`/`pnpm --filter @larastack/mobile dev` in the background (no `&`, `nohup`, or detached logging) unless the user explicitly asks for background execution.
+- For this repo, prefer development builds when validating native or auth flows. `mobile/app.json` and `mobile/package.json` include native integrations such as Apple Authentication, Google Sign-In, SecureStore, and Expo Dev Client, so Expo Go is only suitable for lightweight JS/UI smoke checks.
 
 ### Building & Testing
 
@@ -166,9 +169,9 @@ When working with EAS Workflows, **always refer to**:
 
 ## Troubleshooting
 
-### Expo Go Errors & Development Builds
+### Development Builds vs Expo Go
 
-If there are errors in **Expo Go** or the project is not running, create a **development build**. **Expo Go** is a sandbox environment with a limited set of native modules. To create development builds, run `pnpm --filter @larastack/mobile build:dev:ios` and/or `pnpm --filter @larastack/mobile build:dev:android`. Additionally, after installing new packages or adding config plugins, new development builds are often required.
+Prefer a **development build** by default for this repo when validating native integrations, authentication, or config-plugin changes. **Expo Go** is a limited sandbox and should only be used for lightweight JS/UI smoke checks here. To create development builds, run `pnpm --filter @larastack/mobile build:dev:ios` and/or `pnpm --filter @larastack/mobile build:dev:android`. After installing new packages or adding config plugins, new development builds are often required.
 
 ## AI Agent Instructions
 

@@ -1,20 +1,22 @@
 ---
 name: upgrading-expo
-description: Guidelines for upgrading Expo SDK versions and fixing dependency issues
+description: Guidelines for upgrading Expo SDK versions from the current Expo 55 baseline and fixing dependency issues
 version: 1.0.0
 license: MIT
 ---
 
 ## References
 
-- ./references/new-architecture.md -- SDK +53: New Architecture migration guide
-- ./references/react-19.md -- SDK +54: React 19 changes (useContext → use, Context.Provider → Context, forwardRef removal)
-- ./references/react-compiler.md -- SDK +54: React Compiler setup and migration guide
-- ./references/native-tabs.md -- SDK +55: Native tabs changes (Icon/Label/Badge now accessed via NativeTabs.Trigger.\*)
+- ./references/new-architecture.md -- SDK 53+: New Architecture migration guide
+- ./references/react-19.md -- React 19 patterns for the current Expo 55 baseline
+- ./references/react-compiler.md -- React Compiler setup and migration guide for Expo 54+
+- ./references/native-tabs.md -- SDK 55: Native tabs changes (Icon/Label/Badge now accessed via NativeTabs.Trigger.\*)
 - ./references/expo-av-to-audio.md -- Migrate audio playback and recording from expo-av to expo-audio
 - ./references/expo-av-to-video.md -- Migrate video playback from expo-av to expo-video
 
 ## Beta/Preview Releases
+
+Current repo baseline: Expo SDK 55, Expo Router 55, React 19, and React Native 0.83.
 
 Beta versions use `.preview` suffix (e.g., `55.0.0-preview.2`), published under `@next` tag.
 
@@ -70,8 +72,8 @@ This regenerates the `ios` and `android` directories. Ensure the project is not 
 ## Housekeeping
 
 - Review release notes for the target SDK version at https://expo.dev/changelog
-- If using Expo SDK 54 or later, ensure react-native-worklets is installed — this is required for react-native-reanimated to work.
-- Enable React Compiler in SDK 54+ by adding `"experiments": { "reactCompiler": true }` to app.json — it's stable and recommended
+- If using Expo SDK 54 or later, ensure `react-native-worklets` is installed. This repo already includes it because it is required for `react-native-reanimated`.
+- Enable React Compiler in SDK 54+ by adding `"experiments": { "reactCompiler": true }` to `app.json`. This repo already enables it.
 - Delete sdkVersion from `app.json` to let Expo manage it automatically
 - Remove implicit packages from `package.json`: `@babel/core`, `babel-preset-expo`, `expo-constants`.
 - If the babel.config.js only contains 'babel-preset-expo', delete the file
