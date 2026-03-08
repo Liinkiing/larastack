@@ -51,7 +51,7 @@
     "@graphql-codegen/client-preset": "^5.2.4",
     "@graphql-codegen/fragment-matcher": "^6.0.0",
     "@graphql-codegen/introspection": "5.0.1",
-    "@graphql-codegen/typescript-apollo-client-helpers": "^3.0.1",
+    "@graphql-codegen/typescript-apollo-client-helpers": "^4.0.0",
     "@graphql-eslint/eslint-plugin": "^4.4.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@pandacss/dev": "^1.8.2",

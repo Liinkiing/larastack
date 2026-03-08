@@ -1,8 +1,10 @@
 import { ApolloClient, ApolloLink, CombinedGraphQLErrors, HttpLink, InMemoryCache, ServerError } from '@apollo/client'
 import { SetContextLink } from '@apollo/client/link/context'
 import { ErrorLink } from '@apollo/client/link/error'
+import { LocalState } from '@apollo/client/local-state'
 
 import introspection from '~/__generated__/gql/possibleTypes.json'
+import { typePolicies } from '~/apollo/policies'
 import { getPersistedAccessToken } from '~/services/auth'
 import { notifyAuthSessionInvalidated } from '~/services/auth-session'
 
@@ -52,8 +54,10 @@ const sessionInvalidationLink = new ErrorLink(({ error }) => {
 })
 
 export const apolloClient = new ApolloClient({
+  localState: new LocalState(),
   cache: new InMemoryCache({
     possibleTypes: introspection.possibleTypes,
+    typePolicies,
   }),
   dataMasking: true,
   defaultOptions: {

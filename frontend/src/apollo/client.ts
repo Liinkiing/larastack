@@ -2,6 +2,7 @@ import * as http from 'node:http'
 import * as https from 'node:https'
 
 import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client'
+import { LocalState } from '@apollo/client/local-state'
 import UploadHttpLink from 'apollo-upload-client/UploadHttpLink.mjs'
 import Cookies from 'js-cookie'
 
@@ -29,6 +30,7 @@ const httpLink = new UploadHttpLink({
 })
 
 export const apolloClient = new ApolloClient({
+  localState: new LocalState(),
   cache: new InMemoryCache({
     possibleTypes: introspection.possibleTypes,
     typePolicies,
