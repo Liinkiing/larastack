@@ -15,6 +15,10 @@
       "type": "local",
       "command": ["pnpm", "--filter", "frontend", "exec", "panda", "mcp"],
       "enabled": true
+    },
+    "uniwind": {
+      "type": "remote",
+      "url": "https://docs.uniwind.dev/mcp"
     }
   }
 }

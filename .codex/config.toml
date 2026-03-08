@@ -9,3 +9,6 @@ args = ["-y", "@ark-ui/mcp"]
 [mcp_servers.panda]
 command = "pnpm"
 args = ["--filter", "frontend", "exec", "panda", "mcp"]
+
+[mcp_servers.Uniwind]
+url = "https://docs.uniwind.dev/mcp"
