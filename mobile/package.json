@@ -71,7 +71,7 @@
     "rxjs": "^7.3.0",
     "tailwind-merge": "^3.5.0",
     "tailwind-variants": "^3.2.2",
-    "uniwind": "^1.3.2"
+    "uniwind": "^1.5.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^6.1.3",

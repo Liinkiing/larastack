@@ -304,8 +304,8 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(tailwind-merge@3.5.0)(tailwindcss@4.2.1)
       uniwind:
-        specifier: ^1.3.2
-        version: 1.3.2(react-native@0.83.2(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1)
+        specifier: ^1.5.0
+        version: 1.5.0(react-native@0.83.2(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1)
     devDependencies:
       '@graphql-codegen/cli':
         specifier: ^6.1.3
@@ -5211,10 +5211,6 @@ packages:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
     engines: {node: '>= 0.8'}
 
-  enhanced-resolve@5.19.0:
-    resolution: {integrity: sha512-phv3E1Xl4tQOShqSte26C7Fl84EwUdZsyOuSSk9qtAGyyQs2s3jJzComh+Abf4g187lUUAvH+H26omrqia2aGg==}
-    engines: {node: '>=10.13.0'}
-
   enhanced-resolve@5.20.0:
     resolution: {integrity: sha512-/ce7+jQ1PQ6rVXwe+jKEg5hW5ciicHwIQUagZkp6IufBoY3YDgdTTY1azVs0qoRgVmvsNB+rbjLJxDAeHHtwsQ==}
     engines: {node: '>=10.13.0'}
@@ -8571,8 +8567,8 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  uniwind@1.3.2:
-    resolution: {integrity: sha512-DKOa8E5DkTknAshp/mvQMDeIzERq7ntq59ztyEthuXT845zdp7GijpPu4hQwY9BVMKHT3IkmNM09J1kg1Tirvw==}
+  uniwind@1.5.0:
+    resolution: {integrity: sha512-WmUXnGqVI2yf13DjWOj5XGBZDZphor44EbvSHEEuoNoROwIXUtRDrSyMbUvxE+F8dU8+IaugzgGlPSITVvjj/w==}
     peerDependencies:
       react: '>=19.0.0'
       react-native: '>=0.81.0'
@@ -12797,7 +12793,7 @@ snapshots:
   '@tailwindcss/node@4.1.17':
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      enhanced-resolve: 5.19.0
+      enhanced-resolve: 5.20.0
       jiti: 2.6.1
       lightningcss: 1.30.1
       magic-string: 0.30.21
@@ -15097,11 +15093,6 @@ snapshots:
   encodeurl@1.0.2: {}
 
   encodeurl@2.0.0: {}
-
-  enhanced-resolve@5.19.0:
-    dependencies:
-      graceful-fs: 4.2.11
-      tapable: 2.3.0
 
   enhanced-resolve@5.20.0:
     dependencies:
@@ -19076,7 +19067,7 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  uniwind@1.3.2(react-native@0.83.2(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1):
+  uniwind@1.5.0(react-native@0.83.2(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)(tailwindcss@4.2.1):
     dependencies:
       '@tailwindcss/node': 4.1.17
       '@tailwindcss/oxide': 4.1.17
