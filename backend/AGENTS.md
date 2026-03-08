@@ -33,14 +33,14 @@ Run from repo root unless otherwise noted.
 - Reset DB + seed: `pnpm --filter @larastack/backend db:reset`
 - Dump GraphQL schema and sync clients: `pnpm --filter @larastack/backend gql:dump`
 
-### PHPUnit (Sail)
-- All tests: `./vendor/bin/sail phpunit`
-- Single file: `./vendor/bin/sail phpunit tests/Feature/ExampleTest.php`
-- Single method: `./vendor/bin/sail phpunit --filter test_example tests/Feature/ExampleTest.php`
-- Single suite: `./vendor/bin/sail phpunit --testsuite Unit`
+### Pest (Sail)
+- All tests: `./vendor/bin/sail pest`
+- Single file: `./vendor/bin/sail pest tests/Feature/ExampleTest.php`
+- Filter by name: `./vendor/bin/sail pest --filter="health response"`
+- Single suite: `./vendor/bin/sail pest --testsuite=Unit`
 
 ## Backend Standards
-- Run PHP tooling commands (for example `composer`, `artisan`, `phpunit`) through Sail when available.
+- Run PHP tooling commands (for example `composer`, `artisan`, `pest`) through Sail when available.
 - PHP formatting uses Pint (Laravel preset) via Sail.
 - Use Form Requests for validation/authorization.
 - Prefer explicit return types in controllers/resolvers when practical.

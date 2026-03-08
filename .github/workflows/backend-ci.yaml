@@ -29,7 +29,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.5'
-          extensions: mbstring, intl, curl, redis
+          extensions: mbstring, intl, curl, redis, pgsql, pdo_pgsql
 
       - &cache_composer_step
         name: Cache composer dependencies
@@ -44,7 +44,7 @@ jobs:
       - &install_backend_dependencies_step
         name: Install Dependencies
         run: |
-          composer install --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
+          composer install --prefer-dist --no-interaction --no-progress
 
       - name: Run Pint
         run: |
@@ -62,3 +62,50 @@ jobs:
       - name: Run PHPStan
         run: |
           ./vendor/bin/phpstan
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: testing
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d testing"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      APP_ENV: 'testing'
+      APP_KEY: 'base64:6w6fagBiS3A5vvW9QnM7Vj/J6DYqIA3A4j4hSLg1pPE='
+      DB_CONNECTION: 'pgsql'
+      DB_HOST: '127.0.0.1'
+      DB_PORT: '5432'
+      DB_DATABASE: 'testing'
+      DB_USERNAME: 'postgres'
+      DB_PASSWORD: 'postgres'
+      CACHE_STORE: 'array'
+      SESSION_DRIVER: 'array'
+      QUEUE_CONNECTION: 'sync'
+      MAIL_MAILER: 'array'
+      BCRYPT_ROUNDS: '4'
+      TELESCOPE_ENABLED: 'false'
+      PULSE_ENABLED: 'false'
+    steps:
+      - *checkout_step
+      - *setup_php_step
+      - *cache_composer_step
+      - *install_backend_dependencies_step
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+
+      - name: Run Pest
+        run: |
+          ./vendor/bin/pest

@@ -1,34 +1,40 @@
 import * as Haptics from 'expo-haptics'
 import type { ComponentProps, ReactNode } from 'react'
 import { useEffect } from 'react'
-import { type GestureResponderEvent, Pressable, type StyleProp, View, type ViewStyle } from 'react-native'
+import {
+  ActivityIndicator,
+  type GestureResponderEvent,
+  Pressable,
+  type StyleProp,
+  View,
+  type ViewStyle,
+} from 'react-native'
 import { createAnimatedComponent, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
-import type { VariantProps } from '~/tailwind-variants'
-import { cn, tv } from '~/tailwind-variants'
+import { cn, tv, type VariantProps } from '~/tailwind-variants'
 import { IconSymbol } from '~/ui/icon-symbol'
-import { Typography } from '~/ui/typography'
+import { Typography, type TypographyProps } from '~/ui/typography'
 
-type ButtonIcon = ComponentProps<typeof IconSymbol>['name']
+export type ButtonIcon = ComponentProps<typeof IconSymbol>['name']
 
 const buttonStyles = tv({
   slots: {
-    root: 'relative justify-center overflow-hidden rounded-button',
+    root: 'relative justify-center overflow-hidden rounded-button border',
     typography: '',
   },
   variants: {
     variant: {
       primary: {
-        root: 'border-primary bg-primary active:bg-primary-darkened',
+        root: 'border-white/30 bg-primary active:bg-primary-darkened',
       },
       secondary: {
-        root: 'border-secondary bg-secondary active:bg-secondary-darkened',
+        root: 'border-white/20 bg-secondary active:bg-secondary-darkened',
       },
       accent: {
-        root: 'border-accent bg-accent active:bg-accent-darkened',
+        root: 'border-white/20 bg-accent active:bg-accent-darkened',
       },
       destructive: {
-        root: 'border-destructive bg-destructive active:bg-destructive-darkened',
+        root: 'border-white/20 bg-destructive active:bg-destructive-darkened',
       },
     },
     size: {
@@ -40,7 +46,6 @@ const buttonStyles = tv({
       },
       lg: {
         root: 'min-h-16 px-6',
-        typography: 'text-heading',
       },
     },
     disabled: {
@@ -55,7 +60,8 @@ const buttonStyles = tv({
   },
 })
 
-type ButtonVariant = NonNullable<VariantProps<typeof buttonStyles>['variant']>
+export type ButtonVariant = NonNullable<VariantProps<typeof buttonStyles>['variant']>
+type ButtonSize = NonNullable<VariantProps<typeof buttonStyles>['size']>
 
 const AnimatedPressable = createAnimatedComponent(Pressable)
 
@@ -73,14 +79,29 @@ const shadowColorByVariant: Record<ButtonVariant, string> = {
   destructive: '#b12f2a',
 }
 
-type ButtonProps = VariantProps<typeof buttonStyles> & {
-  children: ReactNode
-  onPress?: (event: GestureResponderEvent) => void
-  icon?: ButtonIcon
-  disabled?: boolean
-  className?: string
-  style?: StyleProp<ViewStyle>
+const iconSizeByButtonSize: Record<ButtonSize, number> = {
+  sm: 20,
+  md: 24,
+  lg: 28,
 }
+
+type NativePressableProps = Omit<
+  ComponentProps<typeof Pressable>,
+  'children' | 'onPress' | 'onPressIn' | 'onPressOut' | 'style' | 'className' | 'disabled'
+>
+
+export type ButtonProps = NativePressableProps &
+  Pick<TypographyProps, 'numberOfLines'> &
+  VariantProps<typeof buttonStyles> & {
+    children?: ReactNode
+    onPress?: (event: GestureResponderEvent) => void
+    icon?: ButtonIcon
+    iconSize?: number
+    isLoading?: boolean
+    disabled?: boolean
+    className?: string
+    style?: StyleProp<ViewStyle>
+  }
 
 export function Button({
   children,
@@ -88,21 +109,40 @@ export function Button({
   variant = 'primary',
   size = 'md',
   icon,
+  iconSize,
+  isLoading = false,
   disabled = false,
   className,
   style,
+  accessibilityRole,
+  numberOfLines,
+  ...pressableProps
 }: ButtonProps) {
-  const { root, typography } = buttonStyles({ variant, size, disabled })
+  const isDisabled = disabled || isLoading
+  const { root, typography } = buttonStyles({ variant, size, disabled: isDisabled })
   const iconColor = textColorByVariant[variant]
+  const resolvedIconSize = iconSize ?? iconSizeByButtonSize[size]
+  const hasLabel = children !== undefined && children !== null && children !== ''
+  const hasLeadingVisual = isLoading || Boolean(icon)
   const shadowColor = shadowColorByVariant[variant]
-  const maxShadowOffset = size === 'lg' ? 8 : 6
+  const maxShadowOffset = (() => {
+    if (size === 'lg') {
+      return 8
+    }
+
+    if (size === 'md') {
+      return 6
+    }
+
+    return 4
+  })()
   const shadowOffsetY = useSharedValue(maxShadowOffset)
 
   useEffect(() => {
-    if (disabled) {
+    if (isDisabled) {
       shadowOffsetY.value = maxShadowOffset
     }
-  }, [disabled, shadowOffsetY, maxShadowOffset])
+  }, [isDisabled, shadowOffsetY, maxShadowOffset])
 
   const animatedPressStyle = useAnimatedStyle(
     () => ({
@@ -117,7 +157,7 @@ export function Button({
   )
 
   const handlePressIn = () => {
-    if (disabled) {
+    if (isDisabled) {
       return
     }
 
@@ -135,7 +175,7 @@ export function Button({
   }
 
   const handlePress = (event: GestureResponderEvent) => {
-    if (disabled) {
+    if (isDisabled) {
       return
     }
 
@@ -148,18 +188,28 @@ export function Button({
 
   return (
     <AnimatedPressable
-      disabled={disabled}
+      {...pressableProps}
+      accessibilityRole={accessibilityRole ?? 'button'}
+      disabled={isDisabled}
       onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       className={cn(root(), className)}
       style={[animatedPressStyle, style]}
     >
-      <View className="flex-row items-center justify-center gap-2">
-        {icon ? <IconSymbol name={icon} size={16} color={iconColor} /> : null}
-        <Typography variant="button" className={typography()} style={{ color: iconColor }}>
-          {children}
-        </Typography>
+      <View className={cn('flex-row items-center justify-center', hasLeadingVisual && hasLabel ? 'gap-2' : undefined)}>
+        {isLoading ? <ActivityIndicator size={resolvedIconSize} color={iconColor} /> : null}
+        {!isLoading && icon ? <IconSymbol name={icon} size={resolvedIconSize} color={iconColor} /> : null}
+        {hasLabel ? (
+          <Typography
+            variant="button"
+            className={typography()}
+            style={{ color: iconColor }}
+            numberOfLines={numberOfLines}
+          >
+            {children}
+          </Typography>
+        ) : null}
       </View>
     </AnimatedPressable>
   )
