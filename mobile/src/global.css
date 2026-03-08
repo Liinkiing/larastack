@@ -54,22 +54,26 @@
     --text-subtitle: 1.125rem;
     --text-subtitle--line-height: 1.5rem;
   }
-}
-
-@media android {
   :root {
-    --font-mono: monospace;
-    --font-rounded: normal;
-    --font-serif: serif;
-    --font-sans: normal;
-  }
-}
+    @variant android {
+      --font-mono: 'monospace';
+      --font-rounded: 'sans-serif';
+      --font-serif: 'serif';
+      --font-sans: 'sans-serif';
+    }
 
-@media ios {
-  :root {
-    --font-mono: ui-monospace;
-    --font-serif: ui-serif;
-    --font-sans: system-ui;
-    --font-rounded: ui-rounded;
+    @variant ios {
+      --font-mono: 'SF Mono';
+      --font-rounded: 'SF Pro Rounded';
+      --font-serif: 'New York';
+      --font-sans: 'SF Pro Text';
+    }
+
+    @variant web {
+      --font-mono: 'ui-monospace';
+      --font-rounded: 'ui-rounded';
+      --font-serif: 'ui-serif';
+      --font-sans: 'system-ui';
+    }
   }
 }

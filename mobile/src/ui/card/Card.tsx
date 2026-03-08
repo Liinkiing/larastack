@@ -7,7 +7,7 @@ import { cn, tv } from '~/tailwind-variants'
 
 const cardStyles = tv({
   slots: {
-    root: 'rounded-panel shadow-panel rounded-card border border-card-border bg-card-background',
+    root: 'rounded-card border border-card-border bg-card-background shadow-card',
     header: '',
     body: '',
     footer: '',
