@@ -5,7 +5,7 @@ import { LocalState } from '@apollo/client/local-state'
 
 import introspection from '~/__generated__/gql/possibleTypes.json'
 import { typePolicies } from '~/apollo/policies'
-import { getPersistedAccessToken } from '~/services/auth'
+import { getPersistedAccessToken, setCachedAccessToken } from '~/services/auth'
 import { notifyAuthSessionInvalidated } from '~/services/auth-session'
 
 const graphqlEndpoint = process.env.EXPO_PUBLIC_GRAPHQL_ENDPOINT ?? `${process.env.EXPO_PUBLIC_API_URL}/graphql`
@@ -32,6 +32,7 @@ const authLink = new SetContextLink(async ({ headers }) => {
 
 const sessionInvalidationLink = new ErrorLink(({ error }) => {
   if (ServerError.is(error) && error.statusCode === 401) {
+    setCachedAccessToken(null)
     notifyAuthSessionInvalidated()
     return
   }
@@ -49,6 +50,7 @@ const sessionInvalidationLink = new ErrorLink(({ error }) => {
   })
 
   if (hasUnauthenticatedError) {
+    setCachedAccessToken(null)
     notifyAuthSessionInvalidated()
   }
 })

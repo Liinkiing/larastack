@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store'
 import { getDeviceName } from '~/utils/device'
 
 const ACCESS_TOKEN_KEY = 'larastack.mobile.access-token'
+let accessTokenCache: string | null | undefined
 
 const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL
 
@@ -78,14 +79,26 @@ export async function exchangeAppleIdentityToken(payload: MobileAppleAuthPayload
 
 export async function persistAccessToken(token: string): Promise<void> {
   await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token)
+  accessTokenCache = token
 }
 
 export async function clearAccessToken(): Promise<void> {
   await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY)
+  accessTokenCache = null
 }
 
 export async function getPersistedAccessToken(): Promise<string | null> {
-  return SecureStore.getItemAsync(ACCESS_TOKEN_KEY)
+  if (accessTokenCache !== undefined) {
+    return accessTokenCache
+  }
+
+  accessTokenCache = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY)
+
+  return accessTokenCache
+}
+
+export function setCachedAccessToken(token: string | null): void {
+  accessTokenCache = token
 }
 
 export async function fetchCurrentUser(token: string): Promise<MobileAuthUser> {
