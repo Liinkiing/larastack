@@ -1,5 +1,9 @@
 {
-  "agents": ["cursor", "codex", "claude_code"],
+  "agents": ["cursor", "codex", "claude_code", "opencode"],
   "guidelines": true,
-  "skills": []
+  "herd_mcp": false,
+  "mcp": true,
+  "nightwatch_mcp": false,
+  "sail": true,
+  "skills": ["pest-testing"]
 }

@@ -14,12 +14,13 @@
     "gql:ide-helper": "./vendor/bin/sail artisan lighthouse:ide-helper --omit-built-in"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
     "autoprefixer": "^10.4.27",
-    "axios": "^1.13.6",
+    "axios": "^1.14.0",
     "concurrently": "^9.2.1",
-    "laravel-vite-plugin": "^2.1.0",
+    "laravel-vite-plugin": "^3.0.0",
     "postcss": "^8.5.8",
-    "tailwindcss": "^3.4.13",
-    "vite": "^7.3.1"
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.3"
   }
 }

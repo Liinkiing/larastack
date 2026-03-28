@@ -4,6 +4,8 @@ namespace App\Services\Auth;
 
 use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -59,14 +61,14 @@ class AppleIdTokenVerifier
     }
 
     /**
-     * @return array<string, \Firebase\JWT\Key>
+     * @return array<string, Key>
      *
      * @throws ValidationException
      */
     private function appleKeys(): array
     {
         $jwks = Cache::remember(self::JWKS_CACHE_KEY, now()->addHours(6), function (): array {
-            /** @var \Illuminate\Http\Client\Response $response */
+            /** @var Response $response */
             $response = Http::retry(2, 200)->acceptJson()->get(self::JWKS_URL);
 
             if (! $response->successful()) {
