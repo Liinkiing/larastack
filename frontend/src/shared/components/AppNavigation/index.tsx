@@ -4,48 +4,36 @@ import { routes } from '~app/routes'
 import { AppLink } from '~/shared/components/AppLink'
 import { LogoutButton } from '~/shared/components/LogoutButton'
 import { AuthenticatedGuard } from '~/shared/guards/AuthenticatedGuard'
-import { Box, Flex, HStack } from '~/styled-system/jsx'
 import { Text } from '~/ui/text'
 
 import { AppNavigationItem } from './components/AppNavigationItem'
 
 export const AppNavigation: FC = () => {
   return (
-    <Box position="sticky" pt={{ base: 4, md: 6 }} px={{ base: 4, md: 8 }} top={0} zIndex={10}>
-      <Flex
-        align="center"
-        backdropBlur="6px"
-        backdropFilter="auto"
-        backgroundColor="bg.surface/80"
-        border="1px solid"
-        borderColor="border.subtle"
-        borderRadius="full"
-        gap={2}
-        px={{ base: 4, md: 6 }}
-        py={{ base: 3, md: 4 }}
-      >
-        <HStack gap={3}>
-          <AppLink borderRadius="full" fontWeight="700" href={routes.root} letterSpacing="-0.02em" px={2} py={1}>
-            <HStack gap={1}>
-              <Text as="span" color="text.muted" fontFamily="display">
+    <header className="sticky top-0 z-10 w-full max-w-full min-w-0 px-4 pt-4 md:px-8 md:pt-6">
+      <nav className="flex w-full max-w-full min-w-0 items-center gap-2 overflow-x-auto rounded-full border border-border-subtle bg-surface/80 px-4 py-3 backdrop-blur-md [scrollbar-width:none] md:px-6 md:py-4 [&::-webkit-scrollbar]:hidden">
+        <div className="flex shrink-0 items-center gap-3">
+          <AppLink className="rounded-full px-2 py-1 font-bold tracking-[-0.02em]" href={routes.root}>
+            <span className="flex items-center gap-1">
+              <Text as="span" className="font-display" tone="muted">
                 Lara
               </Text>
-              <Text as="span" color="accent.solid" fontFamily="display">
+              <Text as="span" className="font-display text-accent">
                 stack
               </Text>
-            </HStack>
+            </span>
           </AppLink>
           <AppNavigationItem href={routes.root}>Home</AppNavigationItem>
           <AppNavigationItem href={routes.terms.root}>Terms</AppNavigationItem>
           <AppNavigationItem href={routes.privacyPolicy.root}>Privacy</AppNavigationItem>
-        </HStack>
-        <HStack gap={2} ml="auto">
+        </div>
+        <div className="ml-auto flex shrink-0 items-center gap-2">
           <AuthenticatedGuard fallback={<AppNavigationItem href={routes.auth.login.root}>Login</AppNavigationItem>}>
             <AppNavigationItem href={routes.dashboard.root}>Dashboard</AppNavigationItem>
             <LogoutButton size="sm" variant="soft" />
           </AuthenticatedGuard>
-        </HStack>
-      </Flex>
-    </Box>
+        </div>
+      </nav>
+    </header>
   )
 }

@@ -5,7 +5,8 @@ This is the web frontend part of the Larastack project, a fullstack starter temp
 ## Technologies Used 🛠️
 
 - **Next.js**: A powerful React framework for building server-side rendered and statically generated web applications.
-- **Panda CSS**: A styling engine used for writing CSS-in-JS, providing flexibility and ease of use in styling components.
+- **Tailwind CSS 4**: CSS-first utility styling with project tokens defined in `app/index.css`.
+- **tailwind-variants**: Variant recipes for reusable UI primitives.
 - **Storybook**: A tool for developing UI components in isolation, making it easier to build and test components.
 
 ## Features ✨
@@ -51,7 +52,8 @@ Here's a brief overview of the project structure:
 
 - `app/`: Contains the application's pages and logic.
 - `src/shared/`: Contains reusable logic and shared components.
-- `src/theme/` and `src/ui/`: Contain the Panda theme setup and shared UI primitives.
+- `app/index.css`: Contains Tailwind CSS imports, theme tokens, and base styles.
+- `src/tailwind-variants.ts` and `src/ui/`: Contain shared variant helpers and UI primitives.
 - `src/apollo/`: Contains Apollo Client setup and GraphQL helpers.
 
 ## Learn More 📚
@@ -59,7 +61,7 @@ Here's a brief overview of the project structure:
 To learn more about the technologies used in this project, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Panda CSS Documentation](https://panda-css.com)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 - [Storybook Documentation](https://storybook.js.org/docs/get-started/install)
 

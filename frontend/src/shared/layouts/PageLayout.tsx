@@ -1,18 +1,13 @@
-import type { FC } from 'react'
+import type { ComponentProps, FC } from 'react'
 
-import type { BoxProps } from '~/styled-system/jsx'
-import { Box } from '~/styled-system/jsx'
+import { cn } from '~/tailwind-variants'
 
-export const PageLayout: FC<BoxProps> = props => {
+type Props = ComponentProps<'main'>
+
+export const PageLayout: FC<Props> = ({ className, ...props }) => {
   return (
-    <Box
-      as="main"
-      maxW="1200px"
-      minH="calc(100dvh - 96px)"
-      mx="auto"
-      px={{ base: 5, md: 10 }}
-      py={{ base: 10, md: 16 }}
-      w="full"
+    <main
+      className={cn('mx-auto min-h-[calc(100dvh-96px)] w-full max-w-[1200px] px-5 py-10 md:px-10 md:py-16', className)}
       {...props}
     />
   )

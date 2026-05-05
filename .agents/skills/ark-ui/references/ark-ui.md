@@ -1,31 +1,32 @@
 # Ark UI Component Guidelines
 
-Always use Ark UI for headless component logic paired with Panda CSS recipes for styling. Use MCP tools to discover components, composition, examples, and props before implementing.
+Use Ark UI for headless component logic and Tailwind CSS for styling. Shared reusable component styles should use `tailwind-variants` through `~/tailwind-variants`.
 
 ## Core Principles
 
-- Use Ark UI MCP tools first for component composition and props
-- Pair with Panda CSS recipes: slot recipes for compound components, regular recipes for simple components
-- Use `createStyleContext` for compound components with subcomponents; use `styled()` for simple components
-- Use `Root` by default; `RootProvider` only for hook-based control
-- Use `asChild` for trigger components with semantic components (Button, Link, etc.)
+- Use Ark UI MCP tools first for component composition, props, and examples.
+- Keep behavior in Ark UI primitives and styling in Tailwind class strings or `tv()` variants.
+- Use compound namespace exports for multi-part components.
+- Use `Root` by default; `RootProvider` only for hook-based control.
+- Use `asChild` for trigger components with semantic components such as `Button` and `AppLink`.
+- Merge consumer classes with `cn()` so overrides are deterministic.
 
 ## MCP Tools Workflow
 
-1. `mcp_ark-ui_list_components` - Check available components
-2. `mcp_ark-ui_get_component_props` - Get exact subcomponent names and props
-3. `mcp_ark-ui_list_examples` + `mcp_ark-ui_get_example` - Get implementation examples
-4. `mcp_ark-ui_styling_guide` - Get data attributes for styling
+1. `mcp_ark-ui_list_components` - Check available components.
+2. `mcp_ark-ui_get_component_props` - Get exact subcomponent names and props.
+3. `mcp_ark-ui_list_examples` + `mcp_ark-ui_get_example` - Get implementation examples.
+4. `mcp_ark-ui_styling_guide` - Get data attributes for styling.
 
 ## Component Structure
 
-```
+```text
 component-name/
-  ├── styled.tsx    # Ark UI + Panda CSS recipes
-  └── index.ts      # Namespace exports
+  styled.tsx    # Ark UI + Tailwind variants
+  index.ts      # Namespace exports
 ```
 
-### Compound Component Pattern
+## Compound Component Pattern
 
 ```tsx
 'use client'
@@ -33,211 +34,81 @@ component-name/
 import { ComponentName as ArkComponentName } from '@ark-ui/react/component-name'
 import type { ComponentProps } from 'react'
 
-import { createStyleContext } from '~/styled-system/jsx'
-import { componentName } from '~/styled-system/recipes'
+import { cn, tv, type VariantProps } from '~/tailwind-variants'
 
-const { withProvider, withContext } = createStyleContext(componentName)
+const componentNameStyles = tv({
+  slots: {
+    root: 'relative flex flex-col gap-4 rounded-2xl border border-border-subtle bg-surface p-4',
+    trigger: 'inline-flex items-center justify-center',
+    content: 'rounded-2xl border border-border-subtle bg-surface p-4 shadow-soft',
+  },
+})
 
-export const Root = withProvider(ArkComponentName.Root, 'root')
-export const RootProvider = withContext(ArkComponentName.RootProvider, 'rootProvider')
-export const SubComponent = withContext(ArkComponentName.SubComponent, 'subComponent')
+type RootProps = ComponentProps<typeof ArkComponentName.Root> & VariantProps<typeof componentNameStyles>
+type TriggerProps = ComponentProps<typeof ArkComponentName.Trigger>
+type ContentProps = ComponentProps<typeof ArkComponentName.Content>
 
-export type ComponentNameProps = ComponentProps<typeof Root>
-export type ComponentNameSubComponentProps = ComponentProps<typeof SubComponent>
+export function Root({ className, ...props }: RootProps) {
+  const styles = componentNameStyles()
 
-// index.ts
-export type { ComponentNameProps, ComponentNameSubComponentProps } from './styled'
-export * as ComponentName from './styled'
-```
+  return <ArkComponentName.Root className={cn(styles.root(), className)} {...props} />
+}
 
-### Simple Component Pattern
+export function Trigger({ className, ...props }: TriggerProps) {
+  const styles = componentNameStyles()
 
-```tsx
-'use client'
+  return <ArkComponentName.Trigger className={cn(styles.trigger(), className)} {...props} />
+}
 
-import { ark } from '@ark-ui/react/factory'
-import { styled } from '~/styled-system/jsx'
-import { componentName } from '~/styled-system/recipes'
-import type { ComponentProps } from '~/styled-system/types'
+export function Content({ className, ...props }: ContentProps) {
+  const styles = componentNameStyles()
 
-export type ComponentNameProps = ComponentProps<typeof ComponentName>
-export const ComponentName = styled(ark.button, componentName)
+  return <ArkComponentName.Content className={cn(styles.content(), className)} {...props} />
+}
+
+export const RootProvider = ArkComponentName.RootProvider
+export type ComponentNameProps = RootProps
 
 // index.ts
 export type { ComponentNameProps } from './styled'
-export { ComponentName } from './styled'
+export * as ComponentName from './styled'
 ```
 
-Note: Simple components use `ark.button`, `ark.input`, etc. from `@ark-ui/react/factory`. They do not have `.Root`.
-
-## Recipe Patterns
-
-Use theme tokens; check `mcp_panda_get_semantic_tokens` for available tokens.
-
-### Slot Recipe (Compound Components)
-
-```tsx
-import { defineSlotRecipe } from '@pandacss/dev'
-
-export const componentRecipe = defineSlotRecipe({
-  className: 'component',
-  slots: ['root', 'subComponent'],
-  base: {
-    root: { display: 'flex', padding: 4 },
-    subComponent: { color: 'text' },
-  },
-  variants: {
-    size: {
-      sm: { root: { padding: 2 } },
-      md: { root: { padding: 4 } },
-    },
-  },
-  defaultVariants: { size: 'md' },
-})
-
-// Export in src/theme/recipes/index.ts
-export const slotRecipes = {
-  component: componentRecipe,
-}
-```
-
-### Regular Recipe (Simple Components)
-
-```tsx
-import { defineRecipe } from '@pandacss/dev'
-
-export const componentRecipe = defineRecipe({
-  className: 'component',
-  jsx: ['Component'],
-  base: {
-    display: 'flex',
-    padding: 3,
-    fontSize: 'body.md',
-    color: 'text',
-  },
-  variants: {
-    size: {
-      sm: { padding: 2 },
-      md: { padding: 3 },
-    },
-  },
-})
-```
-
-## Critical Rules
-
-### 1. Use Exact Subcomponent Names
-
-Always use exact names from `mcp_ark-ui_get_component_props`. Match slot names exactly (camelCase).
-
-### 2. Root vs RootProvider
-
-- Use `Root` for standard usage
-- Use `RootProvider` only when using hooks like `useDialog` or `useMenu`
-- Always export both, but default to `Root`
-
-### 3. Use `asChild` for Triggers
-
-```tsx
-// Good
-<Dialog.Trigger asChild>
-  <Button>Open</Button>
-</Dialog.Trigger>
-
-// Bad
-<Dialog.Trigger>
-  <Box as="button">Open</Box>
-</Dialog.Trigger>
-```
-
-### 4. Always Export Types
-
-Export TypeScript types for all component props.
-
-### 5. Use 'use client' Directive
-
-Always include `'use client'` in `styled.tsx` files.
-
-### 6. Use Theme Tokens
-
-- Spacing: `0`, `1`, `2`, `4`, `8`, etc.
-- Sizes: `full` (not `100%`)
-- Colors: token names (not hex or rgb)
-- Check `mcp_panda_get_recipes` before creating new recipes
-
-## Complete Examples
-
-### Dialog (Compound Component)
-
-```tsx
-'use client'
-
-import { Dialog as ArkDialog } from '@ark-ui/react/dialog'
-import type { ComponentProps } from 'react'
-import { createStyleContext } from '~/styled-system/jsx'
-import { dialog } from '~/styled-system/recipes'
-
-const { withProvider, withContext } = createStyleContext(dialog)
-
-export const Root = withProvider(ArkDialog.Root, 'root')
-export const RootProvider = withContext(ArkDialog.RootProvider, 'rootProvider')
-export const Trigger = withContext(ArkDialog.Trigger, 'trigger')
-export const Content = withContext(ArkDialog.Content, 'content')
-export const Title = withContext(ArkDialog.Title, 'title')
-export const Description = withContext(ArkDialog.Description, 'description')
-export const CloseTrigger = withContext(ArkDialog.CloseTrigger, 'closeTrigger')
-
-export type DialogProps = ComponentProps<typeof Root>
-```
-
-```tsx
-import { Dialog } from '~/ui/dialog'
-import { Button } from '~/ui/button'
-;<Dialog.Root>
-  <Dialog.Trigger asChild>
-    <Button>Open</Button>
-  </Dialog.Trigger>
-  <Dialog.Content>
-    <Dialog.Title>Title</Dialog.Title>
-    <Dialog.Description>Description</Dialog.Description>
-    <Dialog.CloseTrigger asChild>
-      <Button>Close</Button>
-    </Dialog.CloseTrigger>
-  </Dialog.Content>
-</Dialog.Root>
-```
-
-### Button (Simple Component)
+## Simple Component Pattern
 
 ```tsx
 'use client'
 
 import { ark } from '@ark-ui/react/factory'
-import { styled } from '~/styled-system/jsx'
-import { button } from '~/styled-system/recipes'
-import type { ComponentProps } from '~/styled-system/types'
+import type { ComponentProps } from 'react'
 
-export type ButtonProps = ComponentProps<typeof Button>
-export const Button = styled(ark.button, button)
+import { cn, tv, type VariantProps } from '~/tailwind-variants'
+
+const componentNameStyles = tv({
+  base: 'inline-flex items-center justify-center rounded-full font-semibold transition-colors',
+  variants: {
+    size: {
+      sm: 'h-8 px-3 text-body-sm',
+      md: 'h-10 px-4 text-body-md',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+})
+
+type ComponentNameProps = ComponentProps<typeof ark.button> & VariantProps<typeof componentNameStyles>
+
+export function ComponentName({ className, size, ...props }: ComponentNameProps) {
+  return <ark.button className={cn(componentNameStyles({ size }), className)} {...props} />
+}
 ```
 
-## Quick Reference
+## Rules
 
-Do:
-
-- Use MCP tools to discover components first
-- Use `Root` for standard usage
-- Use `asChild` with Button or Link for triggers
-- Use exact subcomponent names from Ark UI
-- Use theme tokens for spacing, colors, and sizes
-- Export types for all props
-- Use `'use client'` in `styled.tsx`
-
-Don't:
-
-- Use `RootProvider` unless you need hook-based control
-- Use generic placeholders; use exact names
-- Use `Box as="button"` instead of `asChild` with Button
-- Use `createStyleContext` for simple components
-- Skip MCP tools
-- Create recipes without checking if they exist
+- Use exact subcomponent names from `mcp_ark-ui_get_component_props`.
+- Always export props types for public components.
+- Include `'use client'` in component files using Ark UI primitives.
+- Style states through Tailwind data selectors from the Ark styling guide, for example `data-[state=open]:...`.
+- Prefer tokens defined in `frontend/app/index.css`; avoid raw hex values unless adding a new token first.
+- Do not introduce a second styling runtime or generated style system.

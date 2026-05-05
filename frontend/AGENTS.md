@@ -11,14 +11,15 @@ Operational guide for coding agents working in `frontend/`.
 
 - Next.js 16 App Router
 - Apollo Client
-- Panda CSS
+- Tailwind CSS 4
+- tailwind-variants
 
 ## Key Paths
 
 - `app/` -> route-local App Router pages/layouts/components
 - `src/apollo/` -> Apollo client setup and GraphQL helpers
 - `src/ui/` -> shared UI primitives
-- `src/theme/` -> design tokens and theme setup
+- `src/tailwind-variants.ts` -> shared `tv`/`cn` helpers and Tailwind merge config
 - `src/shared/` -> reusable shared utilities
 
 ## Commands
@@ -45,6 +46,9 @@ Run from repo root.
 ## Frontend Standards
 
 - Use type-only imports in TypeScript (`import type { X } from '...'`).
+- Use `className` and Tailwind CSS utilities for styling.
+- Use `tailwind-variants` for reusable component variants and compound variant APIs.
+- Define design tokens in `app/index.css` with Tailwind CSS v4 `@theme`.
 - Keep import groups ordered: framework -> third-party -> generated -> internal.
 - Aliases:
   - `~/*` -> `frontend/src/*`

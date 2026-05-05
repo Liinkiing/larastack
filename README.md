@@ -13,7 +13,7 @@ Welcome to Larastack, a fullstack starter template that combines Laravel for the
 ### Frontend
 
 - **Next.js**: A powerful React framework for building server-side rendered and statically generated web applications.
-- **Panda CSS**: A styling engine used for writing CSS-in-JS, providing flexibility and ease of use in styling components.
+- **Tailwind CSS 4**: A utility-first styling system for building the web frontend with shared tokens and reusable variants.
 - **Storybook**: A tool for developing UI components in isolation, making it easier to build and test components.
 
 ### Mobile
@@ -84,7 +84,7 @@ To learn more about the technologies used in this project, take a look at the fo
 - [Lighthouse GraphQL Documentation](https://lighthouse-php.com)
 - [Laravel Socialite Documentation](https://laravel.com/docs/socialite)
 - [Next.js Documentation](https://nextjs.org/docs)
-- [Panda CSS Documentation](https://panda-css.com)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Storybook Documentation](https://storybook.js.org/docs)
 - [Expo Documentation](https://docs.expo.dev)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)

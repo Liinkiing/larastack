@@ -28,7 +28,6 @@ export const AppLink: FC<AppLinkProps> = ({
   onClick,
   keepSearchParams,
   children,
-  _hover,
 
   onNavigate,
   ...props
@@ -41,14 +40,7 @@ export const AppLink: FC<AppLinkProps> = ({
   }
 
   return (
-    <Link
-      asChild
-      _hover={{
-        color: 'initial',
-        ..._hover,
-      }}
-      {...props}
-    >
+    <Link asChild {...props}>
       <NextLink
         as={as}
         href={href}

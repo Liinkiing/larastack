@@ -15,7 +15,7 @@ Operational guide for coding agents working in `larastack`.
 - Monorepo manager: `pnpm` workspaces.
 - Optional packages in this template:
   - `backend/` -> Laravel 12, Lighthouse GraphQL, Sail
-  - `frontend/` -> Next.js 16 App Router, Apollo Client, Panda CSS
+  - `frontend/` -> Next.js 16 App Router, Apollo Client, Tailwind CSS 4
   - `mobile/` -> Expo Router, React Native, Uniwind/Tailwind CSS 4
 
 ## Cursor/Copilot Rules

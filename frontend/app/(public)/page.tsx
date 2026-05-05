@@ -1,7 +1,6 @@
 import { AppLink } from '~/shared/components/AppLink'
 import { AuthenticatedGuard } from '~/shared/guards/AuthenticatedGuard'
 import { PageLayout } from '~/shared/layouts/PageLayout'
-import { Box, Flex, Grid, HStack, Stack, VStack } from '~/styled-system/jsx'
 import { Button } from '~/ui/button'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
@@ -9,31 +8,21 @@ import { Text } from '~/ui/text'
 export default function Home() {
   return (
     <PageLayout>
-      <Stack gap={{ base: 10, md: 16 }}>
-        <Grid gap={{ base: 8, md: 12 }} gridTemplateColumns={{ base: '1fr', lg: '1.1fr 0.9fr' }}>
-          <Stack animation="fade-in" gap={{ base: 5, md: 6 }}>
-            <HStack
-              alignItems="center"
-              backgroundColor="bg.surface"
-              border="1px solid"
-              borderColor="border.subtle"
-              borderRadius="999px"
-              gap={3}
-              px={4}
-              py={2}
-              width="fit-content"
-            >
-              <Box backgroundColor="accent.solid" borderRadius="999px" height="10px" width="10px" />
-              <Text color="text.muted" fontSize="body.sm" fontWeight="600" letterSpacing="0.02em">
+      <div className="flex flex-col gap-10 md:gap-16">
+        <div className="grid gap-8 md:gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+          <section className="animate-fade-in space-y-5 md:space-y-6">
+            <div className="flex w-fit items-center gap-3 rounded-full border border-border-subtle bg-surface px-4 py-2">
+              <span className="size-2.5 rounded-full bg-accent" />
+              <Text className="font-semibold tracking-[0.02em]" size="sm" tone="muted">
                 Playful, modern, and ready to ship
               </Text>
-            </HStack>
+            </div>
             <Heading as="h1">Build bold experiences with a gentle, cherry-bright rhythm.</Heading>
-            <Text color="text.muted" fontSize="body.lg" maxW="520px">
+            <Text className="max-w-[520px]" size="lg" tone="muted">
               Larastack pairs Laravel and Next.js in a lively, crafted shell that feels warm, human, and fast. It is
               colorful without shouting, and expressive without the noise.
             </Text>
-            <Stack align={{ base: 'stretch', sm: 'center' }} direction={{ base: 'column', sm: 'row' }} gap={3}>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <AuthenticatedGuard
                 fallback={
                   <>
@@ -53,76 +42,58 @@ export default function Home() {
                   <AppLink href="#">Close your session</AppLink>
                 </Button>
               </AuthenticatedGuard>
-            </Stack>
-            <Stack direction={{ base: 'column', sm: 'row' }} flexWrap="wrap" gap={{ base: 3, sm: 6 }}>
+            </div>
+            <div className="flex flex-col flex-wrap gap-3 sm:flex-row sm:gap-6">
               {['GraphQL-first', 'Zero-friction auth', 'Design tokens baked in'].map(label => (
-                <HStack key={label} gap={2}>
-                  <Box backgroundColor="accent.mint" borderRadius="999px" height="8px" width="8px" />
-                  <Text color="text.muted" fontSize="body.sm">
+                <div className="flex items-center gap-2" key={label}>
+                  <span className="size-2 rounded-full bg-accent-mint" />
+                  <Text size="sm" tone="muted">
                     {label}
                   </Text>
-                </HStack>
+                </div>
               ))}
-            </Stack>
-          </Stack>
-          <Stack animation="fade-in" gap={4} style={{ animationDelay: '120ms' }}>
-            <Box
-              backgroundColor="bg.surface"
-              border="1px solid"
-              borderColor="border.subtle"
-              borderRadius="24px"
-              p={{ base: 5, md: 6 }}
-            >
-              <Stack gap={5}>
-                <HStack justify="space-between">
-                  <Text fontWeight="700">Daily pulse</Text>
-                  <Text color="text.muted" fontSize="body.sm">
+            </div>
+          </section>
+          <section className="animate-fade-in space-y-4 [animation-delay:120ms]">
+            <div className="rounded-[24px] border border-border-subtle bg-surface p-5 md:p-6">
+              <div className="flex flex-col gap-5">
+                <div className="flex justify-between">
+                  <Text bold>Daily pulse</Text>
+                  <Text size="sm" tone="muted">
                     2 min read
                   </Text>
-                </HStack>
+                </div>
                 <Heading as="h3">A softer dashboard for fast teams.</Heading>
-                <Text color="text.muted">
+                <Text tone="muted">
                   Curate your next deploy, see the auth rhythm, and keep teams aligned in a view that feels alive.
                 </Text>
-                <Grid
-                  gap={3}
-                  gridTemplateColumns={{
-                    base: '1fr',
-                    sm: 'repeat(2, minmax(0, 1fr))',
-                  }}
-                >
+                <div className="grid gap-3 sm:grid-cols-2">
                   {[
                     { label: 'Active sessions', value: '128' },
                     { label: 'Build time', value: '4m 12s' },
                     { label: 'Incidents', value: '0' },
                     { label: 'PRs merged', value: '34' },
                   ].map(item => (
-                    <Stack key={item.label} backgroundColor="bg.surface.muted" borderRadius="20px" gap={1} p={4}>
-                      <Text color="text.muted" fontSize="body.sm">
+                    <div className="flex flex-col gap-1 rounded-[20px] bg-surface-muted p-4" key={item.label}>
+                      <Text size="sm" tone="muted">
                         {item.label}
                       </Text>
-                      <Text fontFamily="display" fontSize="body.lg" fontWeight="700">
+                      <Text className="font-display" bold size="lg">
                         {item.value}
                       </Text>
-                    </Stack>
+                    </div>
                   ))}
-                </Grid>
-              </Stack>
-            </Box>
-            <Grid
-              gap={3}
-              gridTemplateColumns={{
-                base: '1fr',
-                sm: 'repeat(2, minmax(0, 1fr))',
-              }}
-            >
+                </div>
+              </div>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
               {[
                 {
                   body: 'Colocated fragments keep data tidy.',
                   title: 'GraphQL ready',
                 },
                 {
-                  body: 'Panda CSS keeps the palette consistent.',
+                  body: 'Tailwind tokens keep the palette consistent.',
                   title: 'Token driven',
                 },
                 {
@@ -134,57 +105,39 @@ export default function Home() {
                   title: 'Motion polish',
                 },
               ].map(card => (
-                <Stack
+                <div
+                  className="flex flex-col gap-2 rounded-[18px] border border-border-subtle bg-surface p-4"
                   key={card.title}
-                  backgroundColor="bg.surface"
-                  border="1px solid"
-                  borderColor="border.subtle"
-                  borderRadius="18px"
-                  gap={2}
-                  p={4}
                 >
-                  <Text fontFamily="display" fontSize="body.md" fontWeight="700">
+                  <Text className="font-display" bold>
                     {card.title}
                   </Text>
-                  <Text color="text.muted" fontSize="body.sm">
+                  <Text size="sm" tone="muted">
                     {card.body}
                   </Text>
-                </Stack>
+                </div>
               ))}
-            </Grid>
-          </Stack>
-        </Grid>
-        <Flex
-          align={{ base: 'flex-start', md: 'center' }}
-          animation="fade-in"
-          backgroundColor="bg.surface"
-          border="1px solid"
-          borderColor="border.subtle"
-          borderRadius="32px"
-          direction={{ base: 'column', lg: 'row' }}
-          gap={{ base: 6, md: 10 }}
-          justify="space-between"
-          p={{ base: 6, md: 10 }}
-          style={{ animationDelay: '200ms' }}
-          wrap="wrap"
-        >
-          <VStack alignItems="flex-start" gap={2} maxW={{ base: '100%', lg: '520px' }}>
+            </div>
+          </section>
+        </div>
+        <section className="flex animate-fade-in flex-col flex-wrap items-start justify-between gap-6 rounded-[32px] border border-border-subtle bg-surface p-6 [animation-delay:200ms] md:gap-10 md:p-10 lg:flex-row lg:items-center">
+          <div className="flex max-w-full flex-col items-start gap-2 lg:max-w-[520px]">
             <Heading as="h2">Turn the skeleton into a studio.</Heading>
-            <Text color="text.muted" fontSize="body.lg">
+            <Text size="lg" tone="muted">
               Swap the placeholder screens for a bold product experience. This kit gives you the rhythm, you decide the
               melody.
             </Text>
-          </VStack>
-          <Stack direction={{ base: 'column', sm: 'row' }} gap={3} width={{ base: 'full', sm: 'auto' }}>
+          </div>
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <Button asChild size="lg" variant="soft">
               <AppLink href="/terms">Read the terms</AppLink>
             </Button>
             <Button asChild size="lg">
               <AppLink href="/auth/login">Join the flow</AppLink>
             </Button>
-          </Stack>
-        </Flex>
-      </Stack>
+          </div>
+        </section>
+      </div>
     </PageLayout>
   )
 }
