@@ -1,30 +1,28 @@
-import type { FC } from 'react'
+import type { ComponentProps, FC } from 'react'
 
 import { FullPageCenterLayout } from '~/shared/layouts/FullpageCenterLayout'
-import type { CenterProps } from '~/styled-system/jsx'
-import { VStack } from '~/styled-system/jsx'
 import { Button } from '~/ui/button'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
 
-type Props = CenterProps & {
+type Props = ComponentProps<typeof FullPageCenterLayout> & {
   message?: string
 }
 
 export const GenericErrorLayout: FC<Props> = ({ message, ...props }) => {
   return (
     <FullPageCenterLayout {...props}>
-      <VStack gap={4} maxW="480px" textAlign="center">
+      <div className="flex max-w-[480px] flex-col items-center gap-4 text-center">
         <Heading as="h1">Something went wrong</Heading>
         {message ? (
-          <Text as="pre" backgroundColor="bg.surface.muted" borderRadius="xl" px={4} py={3} textAlign="left">
+          <Text as="pre" className="rounded-xl bg-surface-muted px-4 py-3 text-left">
             {message}
           </Text>
         ) : null}
         <Button size="lg" onClick={() => globalThis.location.reload()}>
           Reload page
         </Button>
-      </VStack>
+      </div>
     </FullPageCenterLayout>
   )
 }

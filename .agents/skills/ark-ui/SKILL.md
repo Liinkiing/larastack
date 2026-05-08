@@ -1,13 +1,13 @@
 ---
 name: ark-ui
-description: Ark UI component conventions with Panda CSS recipes for the frontend. Use when building or styling headless UI components in frontend/.
+description: Ark UI component conventions with Tailwind CSS and tailwind-variants for the frontend. Use when building or styling headless UI components in frontend/.
 ---
 
 # Ark UI
 
 ## Overview
 
-Use Ark UI for headless component logic and Panda CSS recipes for styling.
+Use Ark UI for headless component logic and Tailwind CSS variants for styling.
 
 ## Guidelines
 

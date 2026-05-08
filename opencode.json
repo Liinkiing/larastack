@@ -11,11 +11,6 @@
       "command": ["npx", "-y", "@ark-ui/mcp"],
       "enabled": true
     },
-    "panda": {
-      "type": "local",
-      "command": ["pnpm", "--filter", "frontend", "exec", "panda", "mcp"],
-      "enabled": true
-    },
     "uniwind": {
       "type": "remote",
       "url": "https://docs.uniwind.dev/mcp"

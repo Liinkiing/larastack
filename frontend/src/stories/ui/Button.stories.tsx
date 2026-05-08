@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { button } from '~/styled-system/recipes'
 import { Button } from '~/ui/button'
-import { generatePandaVariantsArgTypes } from '~/utils/storybook'
+import { generateVariantArgTypes } from '~/utils/storybook'
 
 const meta = {
-  argTypes: generatePandaVariantsArgTypes(button),
+  argTypes: generateVariantArgTypes({
+    size: ['sm', 'md', 'lg'],
+    variant: ['solid', 'soft', 'outline', 'ghost'],
+  }),
   args: {
     children: 'Label',
     size: 'md',
@@ -38,6 +40,6 @@ export const Ghost = {
 
 export const Outline = {
   args: {
-    variant: 'Outline',
+    variant: 'outline',
   },
-}
+} satisfies Story

@@ -1,19 +1,13 @@
-import type { FC } from 'react'
+import type { ComponentProps, FC } from 'react'
 
-import type { CenterProps } from '~/styled-system/jsx'
-import { Center } from '~/styled-system/jsx'
+import { cn } from '~/tailwind-variants'
 
-export const FullPageCenterLayout: FC<CenterProps> = props => {
+type Props = ComponentProps<'main'>
+
+export const FullPageCenterLayout: FC<Props> = ({ className, ...props }) => {
   return (
-    <Center
-      alignItems={{
-        base: 'stretch',
-        md: 'center',
-      }}
-      flexDirection="column"
-      inset={0}
-      position="fixed"
-      px={8}
+    <main
+      className={cn('fixed inset-0 flex flex-col items-stretch justify-center px-8 md:items-center', className)}
       {...props}
     />
   )
