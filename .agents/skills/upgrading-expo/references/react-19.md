@@ -1,12 +1,12 @@
 # React 19
 
-This repo already uses React 19 through Expo SDK 55. React 19 enables several simplifications, but most of them are optional modernizations rather than mandatory rewrites.
+React 19 is included in Expo SDK 54. This release simplifies several common patterns.
 
 ## Context Changes
 
-### useContext and use
+### useContext → use
 
-The `use` hook can read context in React 19, but `useContext` remains valid. Prefer `use` only when it materially improves readability or when conditional context reads are useful:
+The `use` hook replaces `useContext`:
 
 ```tsx
 // Before (React 18)
@@ -21,9 +21,9 @@ const value = use(MyContext);
 - The `use` hook can also read promises, enabling Suspense-based data fetching.
 - `use` can be called conditionally, this simplifies components that consume multiple contexts.
 
-### Context.Provider and Context
+### Context.Provider → Context
 
-Context providers can now omit the `.Provider` suffix, but both forms are valid:
+Context providers no longer need the `.Provider` suffix:
 
 ```tsx
 // Before (React 18)
@@ -41,7 +41,7 @@ Context providers can now omit the `.Provider` suffix, but both forms are valid:
 
 ### Removing forwardRef
 
-Components can now receive `ref` as a regular prop. `forwardRef` still works, so remove it only when the simpler API improves the component:
+Components can now receive `ref` as a regular prop. `forwardRef` is no longer needed:
 
 ```tsx
 // Before (React 18)
@@ -57,7 +57,7 @@ function Input({ ref, ...props }: Props & { ref?: React.Ref<TextInput> }) {
 }
 ```
 
-### Optional modernization steps
+### Migration Steps
 
 1. Remove `forwardRef` wrapper
 2. Add `ref` to the props destructuring
@@ -72,8 +72,8 @@ function Input({ ref, ...props }: Props & { ref?: React.Ref<TextInput> }) {
 
 ## Cleanup Checklist
 
-When reviewing older pre-React-19 patterns:
+When upgrading to SDK 54:
 
-- [ ] Consider replacing `useContext` with `use` where it clearly improves the code
-- [ ] Consider using `<Context value={...}>` where it improves readability
-- [ ] Consider removing `forwardRef` wrappers in simple components
+- [ ] Replace `useContext` with `use`
+- [ ] Remove `.Provider` from Context components
+- [ ] Remove `forwardRef` wrappers, use `ref` prop instead

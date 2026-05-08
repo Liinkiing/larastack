@@ -1,13 +1,22 @@
 ---
 name: native-data-fetching
-description: Use when implementing or debugging mobile/native network requests, API calls, or data fetching. Covers fetch API, auth/session flows, error handling, caching strategies, and offline support. For GraphQL use graphql-frontend; for existing frontend REST code follow the repo's Axios service layer.
+description: Use when implementing or debugging ANY network request, API call, or data fetching. Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders (`useLoaderData`).
 version: 1.0.0
 license: MIT
 ---
 
-# Native Data Fetching
+# Expo Networking
 
-Use this skill for mobile/native REST requests, auth/session flows, API configuration, and network debugging. Do not apply it blindly to GraphQL or existing frontend Axios modules.
+**You MUST use this skill for ANY networking work including API requests, data fetching, caching, or network debugging.**
+
+## References
+
+Consult these resources as needed:
+
+```
+references/
+  expo-router-loaders.md   Route-level data loading with Expo Router loaders (web, SDK 55+)
+```
 
 ## When to Use
 
@@ -15,22 +24,16 @@ Use this skill when:
 
 - Implementing API requests
 - Setting up data fetching (React Query, SWR)
+- Using Expo Router data loaders (`useLoaderData`, web SDK 55+)
 - Debugging network failures
 - Implementing caching strategies
 - Handling offline scenarios
 - Authentication/token management
 - Configuring API URLs and environment variables
 
-## Repo Alignment
-
-- `frontend/` GraphQL work should follow the `graphql-frontend` skill and Apollo Client patterns.
-- `frontend/` REST/session code may use the existing Axios service layer.
-- `mobile/` auth and native-facing requests currently use `fetch` plus `expo-secure-store`.
-- Do not introduce React Query or SWR when Apollo Client or an existing service module already owns the data flow.
-
 ## Preferences
 
-- In `mobile/`, prefer platform-native `fetch` unless the local code in that area already standardizes on another client.
+- Avoid axios, prefer expo/fetch
 
 ## Common Issues & Solutions
 
@@ -415,6 +418,9 @@ useEffect(() => {
 
 ```
 User asks about networking
+  |-- Route-level data loading (web, SDK 55+)?
+  |   \-- Expo Router loaders — see references/expo-router-loaders.md
+  |
   |-- Basic fetch?
   |   \-- Use fetch API with error handling
   |
@@ -496,3 +502,6 @@ User: "How do I configure different API URLs for dev and prod?"
 
 User: "Where should I put my API key?"
 -> Client-safe keys: EXPO*PUBLIC* in .env. Secret keys: non-prefixed env vars in API routes only
+
+User: "How do I load data for a page in Expo Router?"
+-> See references/expo-router-loaders.md for route-level loaders (web, SDK 55+). For native, use React Query or fetch.

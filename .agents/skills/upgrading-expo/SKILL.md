@@ -1,22 +1,21 @@
 ---
 name: upgrading-expo
-description: Guidelines for upgrading Expo SDK versions from the current Expo 55 baseline and fixing dependency issues
+description: Guidelines for upgrading Expo SDK versions and fixing dependency issues
 version: 1.0.0
 license: MIT
 ---
 
 ## References
 
-- ./references/new-architecture.md -- SDK 53+: New Architecture migration guide
-- ./references/react-19.md -- React 19 patterns for the current Expo 55 baseline
-- ./references/react-compiler.md -- React Compiler setup and migration guide for Expo 54+
-- ./references/native-tabs.md -- SDK 55: Native tabs changes (Icon/Label/Badge now accessed via NativeTabs.Trigger.\*)
-- ./references/expo-av-to-audio.md -- Migrate audio playback and recording from expo-av to expo-audio
-- ./references/expo-av-to-video.md -- Migrate video playback from expo-av to expo-video
+- ./references/react-19.md -- SDK +54: React 19 changes (useContext → use, Context.Provider → Context, forwardRef removal)
+- ./references/new-architecture.md -- SDK +53: New Architecture migration guide
+- ./references/react-compiler.md -- SDK +54: React Compiler setup and migration guide
+- ./references/native-tabs.md -- SDK +55: Native tabs changes (Icon/Label/Badge now accessed via NativeTabs.Trigger.\*)
+- ./references/expo-av-to-audio.md -- SDK +55: Migrate audio playback and recording from expo-av to expo-audio
+- ./references/expo-av-to-video.md -- SDK +55: Migrate video playback from expo-av to expo-video
+- ./references/react-navigation-to-expo-router.md -- SDK +56: Migrate `@react-navigation/*` imports to `expo-router` entry points (codemod + manual mapping)
 
 ## Beta/Preview Releases
-
-Current repo baseline: Expo SDK 55, Expo Router 55, React 19, and React Native 0.83.
 
 Beta versions use `.preview` suffix (e.g., `55.0.0-preview.2`), published under `@next` tag.
 
@@ -55,6 +54,8 @@ watchman watch-del-all
 
 ## Prebuild for Native Changes
 
+**First check if `ios/` and `android/` directories exist in the project.** If neither directory exists, the project uses Continuous Native Generation (CNG) and native projects are regenerated at build time — skip this section and "Clear caches for bare workflow" entirely.
+
 If upgrading requires native changes:
 
 ```bash
@@ -65,6 +66,8 @@ This regenerates the `ios` and `android` directories. Ensure the project is not 
 
 ## Clear caches for bare workflow
 
+These steps only apply when `ios/` and/or `android/` directories exist in the project:
+
 - Clear the cocoapods cache for iOS: `cd ios && pod install --repo-update`
 - Clear derived data for Xcode: `npx expo run:ios --no-build-cache`
 - Clear the Gradle cache for Android: `cd android && ./gradlew clean`
@@ -72,8 +75,8 @@ This regenerates the `ios` and `android` directories. Ensure the project is not 
 ## Housekeeping
 
 - Review release notes for the target SDK version at https://expo.dev/changelog
-- If using Expo SDK 54 or later, ensure `react-native-worklets` is installed. This repo already includes it because it is required for `react-native-reanimated`.
-- Enable React Compiler in SDK 54+ by adding `"experiments": { "reactCompiler": true }` to `app.json`. This repo already enables it.
+- If using Expo SDK 54 or later, ensure react-native-worklets is installed — this is required for react-native-reanimated to work.
+- Enable React Compiler in SDK 54+ by adding `"experiments": { "reactCompiler": true }` to app.json — it's stable and recommended
 - Delete sdkVersion from `app.json` to let Expo manage it automatically
 - Remove implicit packages from `package.json`: `@babel/core`, `babel-preset-expo`, `expo-constants`.
 - If the babel.config.js only contains 'babel-preset-expo', delete the file
@@ -121,6 +124,10 @@ Remove redundant metro config options:
 - `EXPO_USE_FAST_RESOLVER=1` is removed in SDK +54.
 - cjs and mjs extensions are supported by default in SDK +50.
 - Expo webpack is deprecated, migrate to [Expo Router and Metro web](https://docs.expo.dev/router/migrate/from-expo-webpack/).
+
+## Hermes engine v1
+
+Since SDK 55, users can opt-in to use Hermes engine v1 for improved runtime performance. This requires setting `useHermesV1: true` in the `expo-build-properties` config plugin, and may require a specific version of the `hermes-compiler` npm package. Hermes v1 will become a default in some future SDK release.
 
 ## New Architecture
 
