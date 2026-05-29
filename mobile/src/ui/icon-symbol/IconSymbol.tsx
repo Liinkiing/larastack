@@ -1,4 +1,4 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import { MaterialIcons } from '@react-native-vector-icons/material-icons'
 import type { SymbolViewProps, SymbolWeight } from 'expo-symbols'
 import type { ComponentProps } from 'react'
 import { type OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native'
