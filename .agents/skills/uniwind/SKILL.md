@@ -1,19 +1,15 @@
 ---
 name: uniwind
 description: >
-  Uniwind — Tailwind CSS v4 styling for React Native. Use when adding, building,
-  or styling components in a React Native project that uses Tailwind with className.
-  Triggers on: className on RN components, Tailwind classes in RN, global.css with
-  @import 'uniwind', withUniwindConfig, withUniwind, metro.config.js with Uniwind,
-  useResolveClassNames, useCSSVariable, getCSSVariable, useUniwind, dark:/light: theming, platform
-  selectors (ios:/android:/native:/web:/tv:), data-[prop=value], responsive breakpoints
-  (sm:/md:/lg:), important utilities (bg-red-500!), tailwind-variants, tv() variants, ScopedTheme, Uniwind.setTheme,
-  Uniwind.updateCSSVariables, @theme, @utility, @variant, CSS variables in RN,
-  colorClassName, tintColorClassName, contentContainerClassName, default styles,
-  default RN component styles, Uniwind Pro (animations, transitions, shadow tree, native insets), safe area utilities,
-  gradients, hairlineWidth(), fontScale(), pixelRatio(), light-dark(), OKLCH,
-  cn, tailwind-merge, HeroUI Native, react-native-reusables, Gluestack.
-  Does NOT handle migration — use migrate-nativewind-to-uniwind skill.
+  Tailwind CSS v4 styling for React Native with Uniwind. Use when adding,
+  building, or styling RN components with className; configuring global.css,
+  @import 'uniwind', Metro, withUniwindConfig, or withUniwind; using
+  useResolveClassNames, useCSSVariable, getCSSVariable, useUniwind, themes,
+  platform/responsive/data variants, important utilities, CSS variables,
+  @theme/@utility/@variant, colorClassName/tintColorClassName props, default
+  RN styles, Uniwind Pro, safe area utilities, gradients, or helpers such as
+  cn, tailwind-merge, tailwind-variants, HeroUI Native, react-native-reusables,
+  and Gluestack. Does not handle migration; use migrate-nativewind-to-uniwind.
 ---
 
 # Uniwind — Complete Reference
