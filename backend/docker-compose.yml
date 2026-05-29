@@ -23,6 +23,7 @@ services:
     networks:
       - app
     depends_on:
+      - pgsql
       - mailpit
       - redis
   pgsql:
