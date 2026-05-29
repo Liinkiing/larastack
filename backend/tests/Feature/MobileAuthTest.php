@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Services\Auth\AppleIdTokenVerifier;
 use App\Services\Auth\GoogleIdTokenVerifier;
+use GraphQL\Validator\Rules\DisableIntrospection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as SocialiteUser;
@@ -130,5 +131,5 @@ it('marks web Google accounts as email verified when the provider email is verif
 
 it('disables GraphiQL and introspection outside local by default', function () {
     expect(config('graphiql.enabled'))->toBeFalse()
-        ->and(config('lighthouse.security.disable_introspection'))->toBe(\GraphQL\Validator\Rules\DisableIntrospection::ENABLED);
+        ->and(config('lighthouse.security.disable_introspection'))->toBe(DisableIntrospection::ENABLED);
 });
