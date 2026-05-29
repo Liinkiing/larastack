@@ -104,6 +104,30 @@ it('does not link web Google accounts using unverified email', function () {
     expect($user->fresh()->google_id)->toBeNull();
 });
 
+it('marks web Google accounts as email verified when the provider email is verified', function () {
+    $user = User::factory()->unverified()->create([
+        'email' => 'verified@example.com',
+    ]);
+
+    Socialite::fake('google', (new SocialiteUser)
+        ->setRaw([
+            'email_verified' => true,
+        ])
+        ->map([
+            'id' => 'google-user-123',
+            'name' => 'Google User',
+            'email' => 'verified@example.com',
+        ])
+        ->setToken('fake-token'));
+
+    $this->get('/auth/google/callback')->assertRedirect(frontend_url('/dashboard'));
+
+    $user->refresh();
+
+    expect($user->google_id)->toBe('google-user-123')
+        ->and($user->email_verified_at)->not->toBeNull();
+});
+
 it('disables GraphiQL and introspection outside local by default', function () {
     expect(config('graphiql.enabled'))->toBeFalse()
         ->and(config('lighthouse.security.disable_introspection'))->toBe(\GraphQL\Validator\Rules\DisableIntrospection::ENABLED);

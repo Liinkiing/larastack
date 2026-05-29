@@ -56,6 +56,7 @@ class OAuthController extends Controller
                 $user->update([
                     'google_id' => $oauthUser->id,
                     'avatar_url' => $avatarUrl,
+                    'email_verified_at' => $user->email_verified_at ?? now(),
                     'google_token' => $oauthUser->token,
                     'google_refresh_token' => $oauthUser->refreshToken,
                 ]);
@@ -64,6 +65,7 @@ class OAuthController extends Controller
                     'name' => $oauthUser->name,
                     'email' => $oauthUser->email,
                     'avatar_url' => $avatarUrl,
+                    'email_verified_at' => now(),
                     'google_id' => $oauthUser->id,
                     'google_token' => $oauthUser->token,
                     'google_refresh_token' => $oauthUser->refreshToken,
