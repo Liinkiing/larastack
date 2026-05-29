@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 uses(RefreshDatabase::class);
 
-it('stores database sessions for ULID users', function () {
+it('authenticates ULID users with database sessions', function () {
     config()->set('session.driver', 'database');
 
     $primaryIndex = collect(Schema::getIndexes('users'))
