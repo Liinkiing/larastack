@@ -25,7 +25,7 @@ class OAuthController extends Controller
     public function callback(): RedirectResponse
     {
         try {
-            /** @var \Laravel\Socialite\Two\User $oauthUser */
+            /** @var SocialiteUser $oauthUser */
             $oauthUser = Socialite::driver('google')->user();
             $avatarUrl = $oauthUser->avatar;
             if (! $oauthUser->email) {
