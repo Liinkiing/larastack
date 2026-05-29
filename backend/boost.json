@@ -1,9 +1,9 @@
 {
   "agents": ["cursor", "codex", "claude_code", "opencode"],
+  "cloud": false,
   "guidelines": true,
-  "herd_mcp": false,
   "mcp": true,
-  "nightwatch_mcp": false,
+  "nightwatch": false,
   "sail": true,
-  "skills": ["pest-testing"]
+  "skills": ["laravel-best-practices", "socialite-development", "pest-testing"]
 }

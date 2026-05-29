@@ -9,7 +9,7 @@
 
 This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
 
-Current repo baseline: Expo SDK 56 stable, Expo Router 56, React 19.2, React Native 0.85, and Uniwind 1.5.
+Current repo baseline: Expo SDK 56 stable, Expo Router 56, React 19.2, React Native 0.85, and Uniwind 1.7.
 
 ## Documentation Resources
 

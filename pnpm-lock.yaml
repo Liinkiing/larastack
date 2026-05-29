@@ -301,8 +301,8 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(tailwind-merge@3.5.0)(tailwindcss@4.2.4)
       uniwind:
-        specifier: ^1.5.0
-        version: 1.6.3(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)(tailwindcss@4.2.4)
+        specifier: ^1.7.0
+        version: 1.7.0(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)(tailwindcss@4.2.4)
     devDependencies:
       '@graphql-codegen/cli':
         specifier: ^6.3.1
@@ -8013,8 +8013,8 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  uniwind@1.6.3:
-    resolution: {integrity: sha512-nwbfzGI4mZmpjv+lhDRV2R9DYR7z6RW+0PgxaFLR+VM1zZbMnf1JpoAt65ObKeCNGcIJTTKeSiZSdgYuJo+7ig==}
+  uniwind@1.7.0:
+    resolution: {integrity: sha512-kIixWI3OprrWf/ypjglV2xubYvzCjtTKk110rQmXn8A3ZA/7z/nK6P/8EMxbfPCxjkdvhLcMniafa4qJcYIhZA==}
     peerDependencies:
       react: '>=19.0.0'
       react-native: '>=0.81.0'
@@ -17711,7 +17711,7 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  uniwind@1.6.3(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)(tailwindcss@4.2.4):
+  uniwind@1.7.0(react-native@0.85.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.14)(react@19.2.3))(react@19.2.3)(tailwindcss@4.2.4):
     dependencies:
       '@tailwindcss/node': 4.2.1
       '@tailwindcss/oxide': 4.2.1
