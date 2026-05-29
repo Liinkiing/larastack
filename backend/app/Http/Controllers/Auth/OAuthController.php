@@ -8,6 +8,7 @@ use Auth;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\User as SocialiteUser;
 use Session;
 
 class OAuthController extends Controller
@@ -30,13 +31,27 @@ class OAuthController extends Controller
             if (! $oauthUser->email) {
                 logger()->alert('User has no email', [
                     'provider' => 'google',
-                    'user' => $oauthUser,
+                    'provider_id' => $oauthUser->id,
                 ]);
 
                 return redirect(frontend_url('/auth/login'));
             }
 
-            $user = User::where('google_id', $oauthUser->id)->orWhere('email', $oauthUser->email)->first();
+            if (! $this->emailIsVerified($oauthUser)) {
+                logger()->warning('User has an unverified provider email', [
+                    'provider' => 'google',
+                    'provider_id' => $oauthUser->id,
+                ]);
+
+                return redirect(frontend_url('/auth/login'));
+            }
+
+            $user = User::query()->where('google_id', $oauthUser->id)->first();
+
+            if (! $user) {
+                $user = User::query()->where('email', $oauthUser->email)->first();
+            }
+
             if ($user) {
                 $user->update([
                     'google_id' => $oauthUser->id,
@@ -81,5 +96,10 @@ class OAuthController extends Controller
 
             return redirect(frontend_url('/auth/login'));
         }
+    }
+
+    private function emailIsVerified(SocialiteUser $oauthUser): bool
+    {
+        return filter_var($oauthUser->getRaw()['email_verified'] ?? false, FILTER_VALIDATE_BOOL);
     }
 }

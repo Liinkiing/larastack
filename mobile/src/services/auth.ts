@@ -24,8 +24,6 @@ export type MobileAuthUser = {
   name: string
   email: string
   avatar_url: string | null
-  google_id: string | null
-  apple_id: string | null
 }
 
 export type MobileOAuthAuthResponse = {

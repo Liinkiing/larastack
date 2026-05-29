@@ -28,7 +28,7 @@ class MobileAppleAuthController extends Controller
             ]);
         }
 
-        $email = $this->resolveEmail($claims, $request->input('email'));
+        $email = $this->resolveEmail(Arr::get($claims, 'email'));
         $name = $this->resolveName(
             $request->input('given_name'),
             $request->input('family_name'),
@@ -40,6 +40,12 @@ class MobileAppleAuthController extends Controller
         $user = User::query()->where('apple_id', $appleId)->first();
 
         if (! $user && $email !== null) {
+            if (! $emailVerified) {
+                throw ValidationException::withMessages([
+                    'identity_token' => 'Apple account email is not verified.',
+                ]);
+            }
+
             $user = User::query()->where('email', $email)->first();
         }
 
@@ -52,7 +58,7 @@ class MobileAppleAuthController extends Controller
         if ($user) {
             $user->update([
                 'apple_id' => $appleId,
-                'email' => $email ?? $user->email,
+                'email' => $email !== null && $emailVerified ? $email : $user->email,
                 'name' => $name ?? $user->name,
                 'email_verified_at' => $emailVerified && $user->email_verified_at === null ? now() : $user->email_verified_at,
             ]);
@@ -75,17 +81,28 @@ class MobileAppleAuthController extends Controller
         return response()->json([
             'token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user,
+            'user' => $this->mobileUser($user),
         ]);
     }
 
-    private function resolveEmail(mixed $emailFromClaims, mixed $emailFromRequest): ?string
+    private function resolveEmail(mixed $emailFromClaims): ?string
     {
-        $rawEmail = is_string($emailFromClaims) && $emailFromClaims !== ''
-            ? $emailFromClaims
-            : (is_string($emailFromRequest) && $emailFromRequest !== '' ? $emailFromRequest : null);
+        $rawEmail = is_string($emailFromClaims) && $emailFromClaims !== '' ? $emailFromClaims : null;
 
         return $rawEmail ? strtolower(trim($rawEmail)) : null;
+    }
+
+    /**
+     * @return array{id: string, name: string, email: string, avatar_url: ?string}
+     */
+    private function mobileUser(User $user): array
+    {
+        return $user->only([
+            'id',
+            'name',
+            'email',
+            'avatar_url',
+        ]);
     }
 
     private function resolveName(mixed $givenName, mixed $familyName, mixed $emailFromClaims, ?string $resolvedEmail): ?string

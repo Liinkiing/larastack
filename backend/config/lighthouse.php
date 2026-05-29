@@ -249,7 +249,7 @@ return [
     'security' => [
         'max_query_complexity' => 450,
         'max_query_depth' => 15,
-        'disable_introspection' => (bool) env('LIGHTHOUSE_SECURITY_DISABLE_INTROSPECTION', false)
+        'disable_introspection' => (bool) env('LIGHTHOUSE_SECURITY_DISABLE_INTROSPECTION', env('APP_ENV', 'production') !== 'local')
             ? DisableIntrospection::ENABLED
             : DisableIntrospection::DISABLED,
     ],

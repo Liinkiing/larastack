@@ -62,5 +62,5 @@ return [
     |
     */
 
-    'enabled' => env('GRAPHIQL_ENABLED', true),
+    'enabled' => env('GRAPHIQL_ENABLED', env('APP_ENV', 'production') === 'local'),
 ];
