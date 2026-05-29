@@ -34,7 +34,7 @@
       "source": "expo/skills",
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/expo-module/SKILL.md",
-      "computedHash": "439263df82d935eb35fa3074b7cc176b1cbc26cd95c619ba8c1f9331242016ec"
+      "computedHash": "6da487764496337c984d86a0ae1fdb35838c40bebbe871d9d773a4cdcc41346a"
     },
     "expo-tailwind-setup": {
       "source": "expo/skills",
