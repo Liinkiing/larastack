@@ -12,7 +12,11 @@ const getApiBaseUrl = (): string => {
     throw new Error('EXPO_PUBLIC_API_URL is not configured for the mobile app.')
   }
 
-  return apiBaseUrl
+  if (apiBaseUrl.endsWith('/')) {
+    return `${apiBaseUrl}api/mobile`
+  }
+
+  return `${apiBaseUrl}/api/mobile`
 }
 
 export type MobileAuthUser = {
@@ -62,13 +66,13 @@ const exchangeMobileOAuth = async (
 }
 
 export async function exchangeGoogleIdToken(idToken: string): Promise<MobileOAuthAuthResponse> {
-  return exchangeMobileOAuth('/api/auth/google/mobile', {
+  return exchangeMobileOAuth('/auth/google', {
     id_token: idToken,
   })
 }
 
 export async function exchangeAppleIdentityToken(payload: MobileAppleAuthPayload): Promise<MobileOAuthAuthResponse> {
-  return exchangeMobileOAuth('/api/auth/apple/mobile', {
+  return exchangeMobileOAuth('/auth/apple', {
     identity_token: payload.identityToken,
     apple_user: payload.appleUser,
     email: payload.email,
@@ -102,7 +106,7 @@ export function setCachedAccessToken(token: string | null): void {
 }
 
 export async function fetchCurrentUser(token: string): Promise<MobileAuthUser> {
-  const response = await fetch(`${getApiBaseUrl()}/api/user`, {
+  const response = await fetch(`${getApiBaseUrl()}/user`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -118,7 +122,7 @@ export async function fetchCurrentUser(token: string): Promise<MobileAuthUser> {
 }
 
 export async function revokeCurrentToken(token: string): Promise<void> {
-  const response = await fetch(`${getApiBaseUrl()}/api/auth/mobile/logout`, {
+  const response = await fetch(`${getApiBaseUrl()}/auth/logout`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
