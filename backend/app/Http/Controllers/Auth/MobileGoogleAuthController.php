@@ -37,14 +37,22 @@ class MobileGoogleAuthController extends Controller
         $avatarUrl = Arr::get($claims, 'picture');
         $emailVerified = filter_var(Arr::get($claims, 'email_verified', false), FILTER_VALIDATE_BOOL);
 
-        $user = User::where('google_id', $googleId)
-            ->orWhere('email', $normalizedEmail)
-            ->first();
+        $user = User::query()->where('google_id', $googleId)->first();
+
+        if (! $user) {
+            if (! $emailVerified) {
+                throw ValidationException::withMessages([
+                    'id_token' => 'Google account email is not verified.',
+                ]);
+            }
+
+            $user = User::query()->where('email', $normalizedEmail)->first();
+        }
 
         if ($user) {
             $user->update([
                 'name' => $name,
-                'email' => $normalizedEmail,
+                'email' => $emailVerified ? $normalizedEmail : $user->email,
                 'google_id' => $googleId,
                 'avatar_url' => is_string($avatarUrl) && $avatarUrl !== '' ? $avatarUrl : $user->avatar_url,
                 'email_verified_at' => $emailVerified && $user->email_verified_at === null ? now() : $user->email_verified_at,
@@ -69,7 +77,20 @@ class MobileGoogleAuthController extends Controller
         return response()->json([
             'token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user,
+            'user' => $this->mobileUser($user),
+        ]);
+    }
+
+    /**
+     * @return array{id: string, name: string, email: string, avatar_url: ?string}
+     */
+    private function mobileUser(User $user): array
+    {
+        return $user->only([
+            'id',
+            'name',
+            'email',
+            'avatar_url',
         ]);
     }
 }

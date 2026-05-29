@@ -6,17 +6,22 @@ use App\Http\Controllers\Auth\MobileTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/auth/apple/mobile', MobileAppleAuthController::class)
-    ->middleware('throttle:30,1');
+Route::group(['prefix' => 'mobile'], static function () {
+    Route::post('/auth/apple', MobileAppleAuthController::class)
+        ->middleware('throttle:30,1');
 
-Route::post('/auth/google/mobile', MobileGoogleAuthController::class)
-    ->middleware('throttle:30,1');
+    Route::post('/auth/google', MobileGoogleAuthController::class)
+        ->middleware('throttle:30,1');
 
-Route::post('/auth/mobile/logout', [MobileTokenController::class, 'destroy'])
-    ->middleware('auth:sanctum');
+    Route::post('/auth/logout', [MobileTokenController::class, 'destroy'])
+        ->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user()->only([
-        'id',
-    ]);
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user()->only([
+            'id',
+            'name',
+            'email',
+            'avatar_url',
+        ]);
+    });
 });

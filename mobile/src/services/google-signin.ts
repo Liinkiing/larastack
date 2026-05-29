@@ -40,8 +40,8 @@ export async function signInWithGoogle(): Promise<string> {
     throw new Error('Google sign-in failed.')
   }
 
-  const idToken = response.data.idToken
-  if (!idToken) {
+  const { idToken } = await GoogleSignin.getTokens()
+  if (!idToken || idToken.split('.').length !== 3) {
     throw new Error('Google sign-in did not return an ID token.')
   }
 
