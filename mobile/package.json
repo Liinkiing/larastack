@@ -41,6 +41,7 @@
     "@react-native-vector-icons/material-icons": "^13.1.1",
     "expo": "56.0.12",
     "expo-apple-authentication": "~56.0.4",
+    "expo-build-properties": "~56.0.19",
     "expo-constants": "~56.0.18",
     "expo-dev-client": "~56.0.20",
     "expo-device": "~56.0.4",
