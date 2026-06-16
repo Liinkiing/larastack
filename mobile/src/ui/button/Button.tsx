@@ -85,6 +85,61 @@ const iconSizeByButtonSize: Record<ButtonSize, number> = {
   lg: 28,
 }
 
+function useButtonPressAnimation({
+  isDisabled,
+  maxShadowOffset,
+  shadowColor,
+}: {
+  isDisabled: boolean
+  maxShadowOffset: number
+  shadowColor: string
+}) {
+  const shadowOffsetY = useSharedValue(maxShadowOffset)
+
+  useEffect(() => {
+    if (isDisabled) {
+      shadowOffsetY.set(maxShadowOffset)
+    }
+  }, [isDisabled, shadowOffsetY, maxShadowOffset])
+
+  const animatedPressStyle = useAnimatedStyle(() => {
+    const currentShadowOffset = shadowOffsetY.get()
+
+    return {
+      boxShadow: `0px ${currentShadowOffset}px 0px ${shadowColor}`,
+      transform: [
+        {
+          translateY: maxShadowOffset - currentShadowOffset,
+        },
+      ],
+    }
+  }, [maxShadowOffset, shadowColor])
+
+  const handlePressIn = () => {
+    if (isDisabled) {
+      return
+    }
+
+    shadowOffsetY.set(
+      withTiming(Math.floor(maxShadowOffset / 2), {
+        duration: 90,
+        easing: Easing.out(Easing.quad),
+      }),
+    )
+  }
+
+  const handlePressOut = () => {
+    shadowOffsetY.set(
+      withTiming(maxShadowOffset, {
+        duration: 140,
+        easing: Easing.out(Easing.quad),
+      }),
+    )
+  }
+
+  return { animatedPressStyle, handlePressIn, handlePressOut }
+}
+
 type NativePressableProps = Omit<
   ComponentProps<typeof Pressable>,
   'children' | 'onPress' | 'onPressIn' | 'onPressOut' | 'style' | 'className' | 'disabled'
@@ -136,43 +191,11 @@ export function Button({
 
     return 4
   })()
-  const shadowOffsetY = useSharedValue(maxShadowOffset)
-
-  useEffect(() => {
-    if (isDisabled) {
-      shadowOffsetY.value = maxShadowOffset
-    }
-  }, [isDisabled, shadowOffsetY, maxShadowOffset])
-
-  const animatedPressStyle = useAnimatedStyle(
-    () => ({
-      boxShadow: `0px ${shadowOffsetY.value}px 0px ${shadowColor}`,
-      transform: [
-        {
-          translateY: maxShadowOffset - shadowOffsetY.value,
-        },
-      ],
-    }),
-    [shadowColor],
-  )
-
-  const handlePressIn = () => {
-    if (isDisabled) {
-      return
-    }
-
-    shadowOffsetY.value = withTiming(Math.floor(maxShadowOffset / 2), {
-      duration: 90,
-      easing: Easing.out(Easing.quad),
-    })
-  }
-
-  const handlePressOut = () => {
-    shadowOffsetY.value = withTiming(maxShadowOffset, {
-      duration: 140,
-      easing: Easing.out(Easing.quad),
-    })
-  }
+  const { animatedPressStyle, handlePressIn, handlePressOut } = useButtonPressAnimation({
+    isDisabled,
+    maxShadowOffset,
+    shadowColor,
+  })
 
   const handlePress = (event: GestureResponderEvent) => {
     if (isDisabled) {
