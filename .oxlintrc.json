@@ -7,7 +7,19 @@
   "env": {
     "builtin": true
   },
-  "ignorePatterns": ["backend/public/vendor/**/*", "uniwind-types.d.ts"],
+  "ignorePatterns": [
+    "**/.agents/skills/**/*",
+    "**/.ai/skills/**/*",
+    "**/.claude/skills/**/*",
+    "**/.cursor/skills/**/*",
+    "**/.factory/skills/**/*",
+    "**/.github/skills/**/*",
+    "**/.junie/skills/**/*",
+    "**/.kiro/skills/**/*",
+    "**/.pi/skills/**/*",
+    "backend/public/vendor/**/*",
+    "uniwind-types.d.ts"
+  ],
   "rules": {
     "constructor-super": "error",
     "for-direction": "error",

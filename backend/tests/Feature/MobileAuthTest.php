@@ -34,6 +34,34 @@ it('does not link Apple accounts using client supplied email', function () {
     expect($user->fresh()->apple_id)->toBeNull();
 });
 
+it('authenticates a verified Apple account and issues a named mobile token', function () {
+    $this->mock(AppleIdTokenVerifier::class, function (MockInterface $mock): void {
+        $mock->shouldReceive('verify')
+            ->once()
+            ->with('valid-token')
+            ->andReturn([
+                'sub' => 'apple-user-123',
+                'email' => 'verified@example.com',
+                'email_verified' => true,
+            ]);
+    });
+
+    $response = $this->postJson('/api/mobile/auth/apple', [
+        'identity_token' => 'valid-token',
+        'apple_user' => 'apple-user-123',
+        'given_name' => 'Verified',
+        'family_name' => 'User',
+        'device_name' => 'Omar iPhone',
+    ])->assertSuccessful();
+
+    $user = User::query()->where('apple_id', 'apple-user-123')->firstOrFail();
+
+    expect($response->json('token'))->toBeString()->not->toBeEmpty()
+        ->and($response->json('user.email'))->toBe('verified@example.com')
+        ->and($user->name)->toBe('Verified User')
+        ->and($user->tokens()->sole()->name)->toBe('Omar iPhone');
+});
+
 it('does not link Google accounts using unverified email', function () {
     $user = User::factory()->create([
         'email' => 'victim@example.com',
@@ -127,6 +155,32 @@ it('marks web Google accounts as email verified when the provider email is verif
 
     expect($user->google_id)->toBe('google-user-123')
         ->and($user->email_verified_at)->not->toBeNull();
+});
+
+it('creates and authenticates a new user from a verified web Google account', function () {
+    Socialite::fake('google', (new SocialiteUser)
+        ->setRaw([
+            'email_verified' => true,
+        ])
+        ->map([
+            'id' => 'new-google-user-123',
+            'name' => 'New Google User',
+            'email' => 'new@example.com',
+            'avatar' => 'https://example.com/avatar.png',
+        ])
+        ->setToken('fake-token')
+        ->setRefreshToken('fake-refresh-token'));
+
+    $this->get('/auth/google/callback')->assertRedirect(frontend_url('/dashboard'));
+
+    $user = User::query()->where('email', 'new@example.com')->firstOrFail();
+
+    $this->assertAuthenticatedAs($user);
+
+    expect($user->google_id)->toBe('new-google-user-123')
+        ->and($user->email_verified_at)->not->toBeNull()
+        ->and($user->google_token)->toBe('fake-token')
+        ->and($user->google_refresh_token)->toBe('fake-refresh-token');
 });
 
 it('disables GraphiQL and introspection outside local by default', function () {

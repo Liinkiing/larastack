@@ -17,6 +17,8 @@ Operational guide for coding agents working in `frontend/`.
 
 - `app/` -> route-local App Router pages/layouts/components
 - `src/apollo/` -> Apollo client setup and GraphQL helpers
+- `src/__generated__/` -> generated GraphQL output; do not edit by hand
+- `src/styled-system/` -> generated Panda CSS output; do not edit by hand
 - `src/ui/` -> shared UI primitives
 - `src/theme/` -> design tokens and theme setup
 - `src/shared/` -> reusable shared utilities
@@ -59,3 +61,4 @@ Run from repo root.
 
 - After operation/fragment changes in `app/**/*.ts(x)` or `src/**/*.ts(x)`, run `pnpm --filter @larastack/frontend gen:gql`.
 - If backend schema changed and `backend/` exists, run `pnpm --filter @larastack/backend gql:dump` first.
+- Treat `src/__generated__/` and `src/styled-system/` as generated output; change their source configuration or schema and regenerate instead of patching generated files.

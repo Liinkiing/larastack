@@ -13,13 +13,14 @@ Operational guide for coding agents working in `backend/`.
 ## Key Paths
 - `app/` -> controllers, requests, models, services, resolvers
 - `graphql/` -> Lighthouse schema modules
-- `tests/` -> PHPUnit Unit/Feature suites
+- `tests/` -> Pest Unit/Feature suites running on PHPUnit
 - `scripts/` -> backend maintenance helpers
 
 ## Setup and Runtime
 Run from `backend/` unless otherwise noted.
 
-- Install PHP deps: `./vendor/bin/sail composer install`
+- First install: if `vendor/bin/sail` is absent, follow the Composer bootstrap container step in `backend/README.md`; Sail cannot install itself.
+- Install PHP deps after Sail exists: `./vendor/bin/sail composer install`
 - Initialize env file: `cp .env.example .env`
 - Start services: `./vendor/bin/sail up -d`
 
@@ -31,9 +32,11 @@ Run from repo root unless otherwise noted.
 - Lint/format PHP (Pint, Laravel preset): `pnpm --filter @larastack/backend lint`
 - Static analysis: `pnpm --filter @larastack/backend typecheck`
 - Reset DB + seed: `pnpm --filter @larastack/backend db:reset`
-- Dump GraphQL schema and sync clients: `pnpm --filter @larastack/backend gql:dump`
+- Dump GraphQL schema and sync client schema files: `pnpm --filter @larastack/backend gql:dump`
 
 ### Pest (Sail)
+Run these from `backend/`.
+
 - All tests: `./vendor/bin/sail pest`
 - Single file: `./vendor/bin/sail pest tests/Feature/ExampleTest.php`
 - Filter by name: `./vendor/bin/sail pest --filter="health response"`
@@ -41,6 +44,7 @@ Run from repo root unless otherwise noted.
 
 ## Backend Standards
 - Run PHP tooling commands (for example `composer`, `artisan`, `pest`) through Sail when available.
+- Repository-specific exception to generated Sail guidance: run JavaScript workspace commands through root `pnpm --filter @larastack/backend ...`; do not run pnpm workspace tooling through Sail.
 - Do not run local cache/optimization commands such as `config:cache`, `route:cache`, `view:cache`, `event:cache`, or `optimize` during development/testing unless explicitly requested; these are deployment steps and can make local tests/config read stale values.
 - If cache/optimization commands are explicitly needed for deployment validation, run `./vendor/bin/sail artisan optimize:clear`, `./vendor/bin/sail artisan lighthouse:clear-schema-cache`, and `./vendor/bin/sail artisan lighthouse:clear-query-cache` immediately after validation.
 - PHP formatting uses Pint (Laravel preset) via Sail.
@@ -60,6 +64,71 @@ Run from repo root unless otherwise noted.
 ===
 
 <laravel-boost-guidelines>
+=== .ai/app.actions rules ===
+
+# Application Actions
+
+This application uses single-purpose Action classes for reusable business operations. Actions are an architectural boundary, not a requirement to wrap every controller line in another class.
+
+## Convention
+
+- Place actions directly in `app/Actions` unless a clear domain subfolder becomes necessary.
+- Name actions with an imperative verb phrase and no `Action` suffix: `CreateUser`, `IssueMobileToken`, `ConnectGoogleAccount`.
+- Give every action one public entry point named `handle()`. If generic guidance shows `execute()`, this project's `handle()` convention wins.
+- Declare actions `final readonly` when their dependencies and state allow it.
+- Inject dependencies through the constructor using private promoted properties. Do not call `app()` or `resolve()` inside production action code.
+- Let actions compose other actions through constructor injection when one business operation contains another.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Actions;
+
+final readonly class CreateFavorite
+{
+    public function __construct(private FavoriteService $favorites)
+    {
+    }
+
+    public function handle(User $user, string $favorite): bool
+    {
+        return $this->favorites->add($user, $favorite);
+    }
+}
+```
+
+## Boundaries
+
+- Keep controllers, GraphQL resolvers, jobs, commands, and other transports focused on transport concerns: authorization, validated input mapping, invoking an action, and formatting the response.
+- Keep actions independent of HTTP and GraphQL types. Accept typed domain values, models, enums, or purpose-built data objects rather than `Request`, `JsonResponse`, or resolver context objects.
+- Return domain results such as models, value objects, enums, or scalars. The caller owns redirects, JSON payloads, status codes, and GraphQL response shape.
+- Keep reusable infrastructure capabilities and external protocol adapters as Services. For example, token verification and an external payment gateway are Services; registering a user or completing a payment is an Action that may use those Services.
+- Do not extract trivial pass-through behavior solely to satisfy the pattern. Extract an Action when the operation represents business intent, coordinates multiple steps, is reused across entry points, contains meaningful branching, or benefits from an explicit transaction boundary.
+
+## Transactions and side effects
+
+- Wrap related database writes in `DB::transaction()` when they must succeed or fail as one operation.
+- Keep slow external network calls outside open database transactions whenever possible.
+- Dispatch events, notifications, broadcasts, and jobs after the transaction commits when consumers require committed state.
+
+## Creating actions
+
+This project does not install a dedicated `make:action` package. Create the class with Sail, then apply the convention above:
+
+```bash
+vendor/bin/sail artisan make:class "Actions/CreateUser" --no-interaction
+```
+
+Do not add a package only to generate this small class shape.
+
+## Testing
+
+- Preserve behavioral coverage through the most useful test boundary.
+- Direct Action tests are optional when feature tests already cover the operation clearly.
+- Add focused Action tests when an action has substantial branching, business invariants, transaction behavior, or reuse across multiple entry points. Do not duplicate feature assertions merely to satisfy the pattern.
+
 === foundation rules ===
 
 # Laravel Boost Guidelines
@@ -185,6 +254,13 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
     - Execute PHP scripts: `vendor/bin/sail php [script]`
 - View all available Sail commands by running `vendor/bin/sail` without arguments.
 
+=== tests rules ===
+
+# Test Enforcement
+
+- Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
+- Run the minimum number of tests needed to ensure code quality and speed. Use `vendor/bin/sail artisan test --compact` with a specific filename or filter.
+
 === laravel/core rules ===
 
 # Do Things the Laravel Way
@@ -214,31 +290,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 ## Vite Error
 
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `vendor/bin/sail npm run build` or ask the user to run `vendor/bin/sail npm run dev` or `vendor/bin/sail composer run dev`.
-
-=== laravel/v13 rules ===
-
-# Laravel 13
-
-- CRITICAL: ALWAYS use `search-docs` tool for version-specific Laravel documentation and updated code examples.
-- Since Laravel 11, Laravel has a new streamlined file structure which this project uses.
-
-## Laravel 13 Structure
-
-- In Laravel 13, middleware are no longer registered in `app/Http/Kernel.php`.
-- Middleware are configured declaratively in `bootstrap/app.php` using `Application::configure()->withMiddleware()`.
-- `bootstrap/app.php` is the file to register middleware, exceptions, and routing files.
-- `bootstrap/providers.php` contains application specific service providers.
-- The `app/Console/Kernel.php` file no longer exists; use `bootstrap/app.php` or `routes/console.php` for console configuration.
-- Console commands in `app/Console/Commands/` are automatically available and do not require manual registration.
-
-## Database
-
-- When modifying a column, the migration must include all of the attributes that were previously defined on the column. Otherwise, they will be dropped and lost.
-- Laravel 13 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
-
-### Models
-
-- Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
 
 === pint/core rules ===
 

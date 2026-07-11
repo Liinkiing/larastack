@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\ConnectGoogleAccount;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Auth;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\RedirectResponse;
@@ -22,7 +22,7 @@ class OAuthController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback(): RedirectResponse
+    public function callback(ConnectGoogleAccount $connectGoogleAccount): RedirectResponse
     {
         try {
             /** @var SocialiteUser $oauthUser */
@@ -46,31 +46,14 @@ class OAuthController extends Controller
                 return redirect(frontend_url('/auth/login'));
             }
 
-            $user = User::query()->where('google_id', $oauthUser->id)->first();
-
-            if (! $user) {
-                $user = User::query()->where('email', $oauthUser->email)->first();
-            }
-
-            if ($user) {
-                $user->update([
-                    'google_id' => $oauthUser->id,
-                    'avatar_url' => $avatarUrl,
-                    'email_verified_at' => $user->email_verified_at ?? now(),
-                    'google_token' => $oauthUser->token,
-                    'google_refresh_token' => $oauthUser->refreshToken,
-                ]);
-            } else {
-                $user = User::create([
-                    'name' => $oauthUser->name,
-                    'email' => $oauthUser->email,
-                    'avatar_url' => $avatarUrl,
-                    'email_verified_at' => now(),
-                    'google_id' => $oauthUser->id,
-                    'google_token' => $oauthUser->token,
-                    'google_refresh_token' => $oauthUser->refreshToken,
-                ]);
-            }
+            $user = $connectGoogleAccount->handle(
+                googleId: $oauthUser->id,
+                name: $oauthUser->name,
+                email: $oauthUser->email,
+                avatarUrl: $avatarUrl,
+                accessToken: $oauthUser->token,
+                refreshToken: $oauthUser->refreshToken,
+            );
 
             $returnTo = Session::get('return_to', '/dashboard');
             Auth::login($user);

@@ -12,20 +12,20 @@ Operational guide for coding agents working in `larastack`.
 - When instructions conflict, prefer the nearest `AGENTS.md` to the files being edited.
 
 ## Workspace Snapshot
-- Monorepo manager: `pnpm` workspaces.
+- Monorepo manager: `pnpm` workspaces. Use the pnpm version pinned by the root `packageManager` field.
 - Optional packages in this template:
   - `backend/` -> Laravel 13, Lighthouse GraphQL, Sail
   - `frontend/` -> Next.js 16 App Router, Apollo Client, Panda CSS
   - `mobile/` -> Expo Router, React Native, Uniwind/Tailwind CSS 4
 
-## Cursor/Copilot Rules
-Checked paths:
+## Tool-Specific Instructions
+Before editing, inspect applicable tool-specific instruction files if they exist, including:
+
 - `.cursor/rules/**`
 - `.cursorrules`
 - `.github/copilot-instructions.md`
 
-Current status: none of these files exist.
-If they are added later, treat them as higher-priority instructions.
+Do not record whether these files currently exist here; that snapshot becomes stale. Apply relevant tool-specific instructions together with the nearest `AGENTS.md`, while user and system instructions retain precedence.
 
 ## Common Commands
 Run from repo root unless explicitly noted.

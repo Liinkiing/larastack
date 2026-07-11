@@ -9,7 +9,7 @@
 
 This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
 
-Current repo baseline: Expo SDK 56 stable, Expo Router 56, React 19.2, React Native 0.85, and Uniwind 1.7.
+Current major baseline: Expo SDK 57, Expo Router 57, React 19, React Native 0.86, and Uniwind 1. Read exact versions from `mobile/package.json`; do not copy version numbers from this file into dependency changes.
 
 ## Documentation Resources
 
@@ -30,7 +30,11 @@ These documentation files are specifically formatted for AI agents and should be
 - Expo SDK modules and their usage
 - Development and deployment processes
 
+Use the relevant repository skills for Expo upgrades, Expo Router, Expo/EAS features, React Native performance, Uniwind, and Uniwind UI components. Skills provide the task workflow; official documentation remains the authority for current APIs and version compatibility.
+
 ## Project Structure
+
+Paths below are relative to `mobile/`.
 
 ```
 /
@@ -39,7 +43,7 @@ These documentation files are specifically formatted for AI agents and should be
 │   │   ├── _layout.tsx            # Root layout
 │   │   ├── (authenticated)/       # Authenticated routes
 │   │   └── (guest)/               # Guest/public routes
-│   ├── screens/                   # Route-specific components grouped by screen
+│   ├── screens/                   # Optional route-specific components, created when needed
 │   ├── apollo/                    # Apollo client and GraphQL setup
 │   ├── __generated__/             # GraphQL codegen output
 │   ├── assets/                    # Static assets (images, fonts)
@@ -100,6 +104,7 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - **Stack Primitives by Default**: Prefer `<HStack />` and `<VStack />` for simple horizontal/vertical layouts instead of raw `<View className="flex-row" />` or `<View className="flex-col" />`. These stack primitives provide sensible defaults and keep layout patterns consistent.
 - **Shadows via Uniwind Classes**: Prefer Tailwind/Uniwind shadow utilities in `className` (for example, `shadow-sm`, `shadow-md`) instead of inline `style` shadow objects (`shadowColor`, `shadowOffset`, `shadowOpacity`, `shadowRadius`, `elevation`) by default.
 - **Self-Documenting Code**: Write clear, readable code that explains itself; only add comments for complex business logic or design decisions
+- **Generated Code**: Do not hand-edit `src/__generated__/`; change the GraphQL operation/schema inputs and run `pnpm --filter @larastack/mobile gen:gql`
 - **React 19 Patterns**: Follow modern React patterns including:
   - Function components with hooks
   - Enable React Compiler
@@ -125,7 +130,7 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - **Images**: `expo-image` for optimized image handling and caching
 - **Animations**: `react-native-reanimated` for performant animations on native thread
 - **Gestures**: `react-native-gesture-handler` for native gesture recognition
-- **Storage**: Use `expo-sqlite` for persistent storage, `expo-sqlite/kv-store` for simple key-value storage
+- **Storage**: When adding persistent storage, prefer `expo-sqlite` for structured data and `expo-sqlite/kv-store` for simple key-value data; install Expo packages with `expo install`
 - **Styling**: `uniwind` for Tailwind className styling in React Native
 - **Variants**: `tailwind-variants` (`tv` + `cn`) for component variants/compound variants
 
@@ -133,7 +138,7 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 
 ### DevTools Integration
 
-- **React Native DevTools**: Use MCP `open_devtools` command to launch debugging tools
+- **React Native DevTools**: Use React Native DevTools or the current Expo/EAS MCP tooling when available
 - **Network Inspection**: Monitor API calls and network requests in DevTools
 - **Element Inspector**: Debug component hierarchy and styles
 - **Performance Profiler**: Identify performance bottlenecks
@@ -146,9 +151,8 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 Developers can configure the Expo MCP server with the following doc: https://docs.expo.dev/eas/ai/mcp/
 
 - **Component Testing**: Add `testID` props to components for automation
-- **Visual Testing**: Use MCP `automation_take_screenshot` to verify UI appearance
-- **Interaction Testing**: Use MCP `automation_tap_by_testid` to simulate user interactions
-- **View Verification**: Use MCP `automation_find_view_by_testid` to validate component rendering
+- **Tool Discovery**: Inspect the connected MCP server's current tool schemas instead of assuming historical command names
+- **Visual and Interaction Testing**: Use the available screenshot, view-query, and interaction tools to verify behavior on a development build
 
 ## EAS Workflows CI/CD
 
@@ -156,7 +160,7 @@ This project is pre-configured with **EAS Workflows** for automating development
 
 When working with EAS Workflows, **always refer to**:
 
-- https://docs.expo.dev/eas/workflows/ for workflow examples
+- https://docs.expo.dev/eas/workflows/introduction/ for the current Workflows documentation
 - The `.eas/workflows/` directory for existing workflow configurations
 - You can check that a workflow YAML is valid using the workflows schema: https://exp.host/--/api/v2/workflows/schema
 
