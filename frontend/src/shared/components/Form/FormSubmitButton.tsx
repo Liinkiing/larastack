@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form'
 import type { ButtonProps } from '~/ui/button'
 import { Button } from '~/ui/button'
 
-type SubmitButtonProps = Omit<ButtonProps, 'disabled' | 'isDisabled'> & {
+type SubmitButtonProps = Omit<ButtonProps, 'disabled'> & {
   forceDisable?: boolean
 }
 

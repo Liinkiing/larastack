@@ -1,10 +1,11 @@
+import type { ComponentPropsWithoutRef } from 'react'
 import type { FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form'
 import { FormProvider } from 'react-hook-form'
 
-import { styled } from '~/styled-system/jsx'
-import type { HTMLStyledProps } from '~/styled-system/types'
-
-export interface FormProps<T extends FieldValues = any> extends Omit<HTMLStyledProps<'form'>, 'onSubmit'> {
+export interface FormProps<T extends FieldValues = FieldValues> extends Omit<
+  ComponentPropsWithoutRef<'form'>,
+  'onSubmit'
+> {
   readonly form: UseFormReturn<T>
   readonly resetValuesAfterSubmit?: boolean
   readonly onSubmit?: SubmitHandler<T>
@@ -19,7 +20,7 @@ export const Form = <T extends FieldValues>({
 }: FormProps<T>) => {
   return (
     <FormProvider {...form}>
-      <styled.form
+      <form
         {...props}
         {...(onSubmit
           ? {
@@ -33,7 +34,7 @@ export const Form = <T extends FieldValues>({
           : {})}
       >
         {children}
-      </styled.form>
+      </form>
     </FormProvider>
   )
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { useQuery } from '@apollo/client/react'
-import { runIfFn } from '@zag-js/utils'
 import type { FC, ReactNode } from 'react'
 import { createContext, useMemo } from 'react'
 
@@ -59,5 +58,9 @@ export const AuthProvider: FC<Props> = ({ children, mode }) => {
     return <GenericErrorLayout message={error?.message} />
   }
 
-  return <AuthContext.Provider value={context}>{runIfFn(children, context.viewer!)}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={context}>
+      {typeof children === 'function' ? children(context.viewer!) : children}
+    </AuthContext.Provider>
+  )
 }

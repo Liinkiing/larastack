@@ -28,6 +28,16 @@
       }
     },
     {
+      "files": ["frontend/**/*"],
+      "options": {
+        "sortTailwindcss": {
+          "stylesheet": "./frontend/app/index.css",
+          "functions": ["clsx", "cn", "cva", "tv"],
+          "preserveWhitespace": true
+        }
+      }
+    },
+    {
       "files": ["backend/**/*"],
       "options": {
         "sortTailwindcss": {

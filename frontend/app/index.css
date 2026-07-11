@@ -1,19 +1,91 @@
-@layer reset, base, tokens, recipes, utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --background: #fff6f1;
+  --foreground: #1b1210;
+  --card: #fff9f6;
+  --card-foreground: #1b1210;
+  --popover: #fff9f6;
+  --popover-foreground: #1b1210;
+  --primary: #d9232e;
+  --primary-foreground: #fff6f1;
+  --primary-soft: #ffd7ce;
+  --primary-warm: #ff7a59;
+  --secondary: #ffe8e1;
+  --secondary-foreground: #1b1210;
+  --muted: #ffe8e1;
+  --muted-foreground: rgb(27 18 16 / 72%);
+  --accent: #ffe8e1;
+  --accent-foreground: #1b1210;
+  --destructive: #d9232e;
+  --destructive-foreground: #fff6f1;
+  --border: rgb(27 18 16 / 12%);
+  --input: rgb(27 18 16 / 18%);
+  --ring: rgb(217 35 46 / 50%);
+  --mint: #9fe3c5;
+  --shadow-color: rgb(27 18 16 / 16%);
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-spline-sans);
+  --font-body: var(--font-spline-sans);
+  --font-display: var(--font-fraunces);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-warm: var(--primary-warm);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-mint: var(--mint);
+
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+  --radius-2xl: calc(var(--radius) + 0.75rem);
+  --radius-3xl: calc(var(--radius) + 1.25rem);
+
+  --animate-fade-in: fade-in 400ms cubic-bezier(0.05, 0.7, 0.1, 1);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
 
 @layer base {
-  :root {
-    color-scheme: light;
-    --c-ink: #1b1210;
-    --c-ink-muted: rgba(27, 18, 16, 0.72);
-    --c-paper: #fff6f1;
-    --c-surface: #fff9f6;
-    --c-blush: #ffd7ce;
-    --c-coral: #ff7a59;
-    --c-cherry: #d9232e;
-    --c-mint: #9fe3c5;
-    --c-sun: #ffc857;
-    --c-border: rgba(27, 18, 16, 0.12);
-    --c-shadow: rgba(27, 18, 16, 0.16);
+  *,
+  ::after,
+  ::before,
+  ::backdrop {
+    border-color: var(--border);
   }
 
   html,
@@ -22,9 +94,9 @@
   }
 
   body {
-    background-color: var(--c-paper);
-    color: var(--c-ink);
-    font-family: var(--font-body);
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body), sans-serif;
     position: relative;
     z-index: 0;
   }
@@ -56,10 +128,15 @@
   }
 
   ::selection {
-    background: rgba(217, 35, 46, 0.2);
+    background: rgb(217 35 46 / 20%);
   }
 
   a {
     color: inherit;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
   }
 }

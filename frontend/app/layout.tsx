@@ -33,12 +33,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={`${fonts.body.variable} ${fonts.display.variable} ${fonts.mono.variable}`} lang="en">
       <body>
-        <CsrfProvider>
-          <AppProviders>
-            <AppNavigation />
-            <TransitionsProvider>{children}</TransitionsProvider>
-          </AppProviders>
-        </CsrfProvider>
+        <div className="isolate min-h-dvh">
+          <CsrfProvider>
+            <AppProviders>
+              <AppNavigation />
+              <TransitionsProvider>{children}</TransitionsProvider>
+            </AppProviders>
+          </CsrfProvider>
+        </div>
       </body>
     </html>
   )

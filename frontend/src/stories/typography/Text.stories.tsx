@@ -1,14 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { VStack } from '~/styled-system/jsx'
-import { text } from '~/styled-system/recipes'
 import { Text } from '~/ui/text'
-import { disableArgTypes, generatePandaVariantsArgTypes } from '~/utils/storybook'
+import { disableArgTypes, generateVariantArgTypes } from '~/utils/storybook'
 
 const meta = {
   argTypes: {
     as: { control: { disable: true }, table: { disable: true } },
-    ...generatePandaVariantsArgTypes(text),
+    ...generateVariantArgTypes({
+      bold: [true, false],
+      italic: [true, false],
+      medium: [true, false],
+      normal: [true, false],
+      semibold: [true, false],
+      size: ['sm', 'md', 'lg'],
+      underline: [true, false],
+      uppercase: [true, false],
+    }),
   },
   args: {
     size: 'md',
@@ -25,7 +32,7 @@ const TEXT = 'The quick brown fox jumps over the lazy dog'
 export const All = {
   argTypes: disableArgTypes(['size']),
   render: args => (
-    <VStack alignItems="flex-start" gap="0">
+    <div className="flex flex-col items-start gap-0">
       <Text {...args} size="lg">
         {TEXT}
       </Text>
@@ -35,7 +42,7 @@ export const All = {
       <Text {...args} size="sm">
         {TEXT}
       </Text>
-    </VStack>
+    </div>
   ),
 } satisfies Story
 

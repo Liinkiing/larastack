@@ -3,8 +3,7 @@
 import { AppLink } from '~/shared/components/AppLink'
 import { useAuth } from '~/shared/hooks/useAuth'
 import { PageLayout } from '~/shared/layouts/PageLayout'
-import { Box, HStack, Stack } from '~/styled-system/jsx'
-import { Button } from '~/ui/button'
+import { Button, buttonVariants } from '~/ui/button'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
 
@@ -13,35 +12,27 @@ export default function LoginPage() {
 
   return (
     <PageLayout>
-      <Box maxW="520px" mx="auto">
-        <Stack
-          animation="fade-in"
-          backgroundColor="bg.surface"
-          border="1px solid"
-          borderColor="border.subtle"
-          borderRadius="28px"
-          gap={5}
-          p={{ base: 6, md: 8 }}
-        >
-          <Stack gap={2}>
+      <div className="mx-auto max-w-130">
+        <section className="flex animate-fade-in flex-col gap-5 rounded-3xl border border-border bg-card p-6 md:p-8">
+          <div className="flex flex-col gap-2">
             <Heading as="h1">Welcome back</Heading>
-            <Text color="text.muted">
+            <Text className="text-muted-foreground">
               Step into your workspace with a quick sign-in. We will keep it light, quick, and secure.
             </Text>
-          </Stack>
+          </div>
           <Button size="lg" onClick={() => loginWithProvider('google')}>
             Continue with Google
           </Button>
-          <HStack justify="space-between">
-            <Text color="text.muted" fontSize="body.sm">
+          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+            <Text size="sm" className="text-muted-foreground">
               By continuing, you agree to our terms.
             </Text>
-            <Button asChild size="sm" variant="ghost">
-              <AppLink href="/terms">See terms</AppLink>
-            </Button>
-          </HStack>
-        </Stack>
-      </Box>
+            <AppLink className={buttonVariants({ size: 'sm', variant: 'ghost' })} href="/terms">
+              See terms
+            </AppLink>
+          </div>
+        </section>
+      </div>
     </PageLayout>
   )
 }

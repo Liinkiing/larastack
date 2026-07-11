@@ -11,16 +11,18 @@ Operational guide for coding agents working in `frontend/`.
 
 - Next.js 16 App Router
 - Apollo Client
-- Panda CSS
+- Tailwind CSS 4 with CSS-first theme tokens
+- Tailwind Variants for typed component variants
+- Base UI primitives and shadcn-compatible open-code components
 
 ## Key Paths
 
 - `app/` -> route-local App Router pages/layouts/components
 - `src/apollo/` -> Apollo client setup and GraphQL helpers
 - `src/__generated__/` -> generated GraphQL output; do not edit by hand
-- `src/styled-system/` -> generated Panda CSS output; do not edit by hand
 - `src/ui/` -> shared UI primitives
-- `src/theme/` -> design tokens and theme setup
+- `app/index.css` -> Tailwind import, semantic design tokens, and global styles
+- `components.json` -> shadcn CLI configuration (Base UI)
 - `src/shared/` -> reusable shared utilities
 
 ## Commands
@@ -61,4 +63,6 @@ Run from repo root.
 
 - After operation/fragment changes in `app/**/*.ts(x)` or `src/**/*.ts(x)`, run `pnpm --filter @larastack/frontend gen:gql`.
 - If backend schema changed and `backend/` exists, run `pnpm --filter @larastack/backend gql:dump` first.
-- Treat `src/__generated__/` and `src/styled-system/` as generated output; change their source configuration or schema and regenerate instead of patching generated files.
+- Treat `src/__generated__/` as generated output; change its GraphQL source configuration or schema and regenerate instead of patching generated files.
+- Use semantic Tailwind utilities backed by `app/index.css`; use `tv()` from `src/tailwind-variants.ts` for reusable variants.
+- Prefer Base UI for accessible interactive behavior and shadcn CLI components when a matching primitive is useful.

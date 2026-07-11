@@ -2,7 +2,6 @@
 
 import { useAuth } from '~/shared/hooks/useAuth'
 import { PageLayout } from '~/shared/layouts/PageLayout'
-import { Box, Grid, HStack, Stack } from '~/styled-system/jsx'
 import { Button } from '~/ui/button'
 import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
@@ -12,22 +11,22 @@ export default function HomePage() {
 
   return (
     <PageLayout>
-      <Stack gap={{ base: 8, md: 12 }}>
-        <Stack gap={3}>
+      <div className="flex flex-col gap-8 md:gap-12">
+        <section className="flex flex-col gap-3">
           <Heading as="h1">Welcome back, {viewer.name}</Heading>
-          <Text color="text.muted" fontSize="body.lg">
+          <Text size="lg" className="text-muted-foreground">
             Your workspace is humming. Here is a quick glance at what is moving today.
           </Text>
-          <HStack flexWrap="wrap" gap={3}>
+          <div className="flex flex-wrap gap-3">
             <Button size="sm" variant="soft">
               New project
             </Button>
             <Button size="sm" variant="outline">
               Invite team
             </Button>
-          </HStack>
-        </Stack>
-        <Grid gap={4} gridTemplateColumns={{ base: '1fr', md: 'repeat(3, minmax(0, 1fr))' }}>
+          </div>
+        </section>
+        <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {[
             { detail: '4 are high priority', label: 'Open tasks', value: '18' },
             {
@@ -37,42 +36,26 @@ export default function HomePage() {
             },
             { detail: 'Up 8% this week', label: 'Sessions', value: '128' },
           ].map(card => (
-            <Stack
-              key={card.label}
-              backgroundColor="bg.surface"
-              border="1px solid"
-              borderColor="border.subtle"
-              borderRadius="24px"
-              gap={2}
-              p={5}
-            >
-              <Text color="text.muted" fontSize="body.sm">
+            <article key={card.label} className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-5">
+              <Text size="sm" className="text-muted-foreground">
                 {card.label}
               </Text>
-              <Text fontFamily="display" fontSize="heading.mobile.md" fontWeight="700">
-                {card.value}
-              </Text>
-              <Text color="text.muted" fontSize="body.sm">
+              <Text className="font-display text-[1.625rem] leading-[1.15] font-bold">{card.value}</Text>
+              <Text size="sm" className="text-muted-foreground">
                 {card.detail}
               </Text>
-            </Stack>
+            </article>
           ))}
-        </Grid>
-        <Box
-          backgroundColor="accent.soft"
-          border="1px solid"
-          borderColor="accent.solid"
-          borderRadius="28px"
-          p={{ base: 6, md: 8 }}
-        >
-          <Stack gap={4}>
+        </section>
+        <section className="rounded-3xl border border-primary bg-primary-soft p-6 md:p-8">
+          <div className="flex flex-col gap-4">
             <Heading as="h3">Your focus for today</Heading>
-            <Text color="text.muted">
+            <Text className="text-muted-foreground">
               Tidy up the onboarding checklist, sync auth flow notes, and ship the next dashboard animation pass.
             </Text>
-          </Stack>
-        </Box>
-      </Stack>
+          </div>
+        </section>
+      </div>
     </PageLayout>
   )
 }

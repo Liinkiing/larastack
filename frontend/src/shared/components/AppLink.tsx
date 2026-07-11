@@ -1,19 +1,20 @@
 'use client'
 
-import type { LinkProps as NextLinkProps } from 'next/link'
 import NextLink from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import type { FC } from 'react'
+import type { ComponentProps } from 'react'
 
-import type { LinkProps } from '~/ui/link'
-import { Link } from '~/ui/link'
+import type { VariantProps } from '~/tailwind-variants'
+import { cn } from '~/tailwind-variants'
+import { linkVariants } from '~/ui/link'
 
-export type AppLinkProps = Omit<LinkProps, keyof NextLinkProps> &
-  NextLinkProps & {
+export type AppLinkProps = Omit<ComponentProps<typeof NextLink>, 'className'> &
+  VariantProps<typeof linkVariants> & {
+    className?: string
     keepSearchParams?: boolean
   }
 
-export const AppLink: FC<AppLinkProps> = ({
+export function AppLink({
   href: userHref,
   as,
   replace,
@@ -27,12 +28,11 @@ export const AppLink: FC<AppLinkProps> = ({
   onTouchStart,
   onClick,
   keepSearchParams,
-  children,
-  _hover,
-
+  className,
+  size,
   onNavigate,
   ...props
-}) => {
+}: AppLinkProps) {
   const params = useSearchParams()
 
   let href = userHref
@@ -41,31 +41,23 @@ export const AppLink: FC<AppLinkProps> = ({
   }
 
   return (
-    <Link
-      asChild
-      _hover={{
-        color: 'initial',
-        ..._hover,
-      }}
+    <NextLink
+      as={as}
+      className={cn(linkVariants({ size }), className)}
+      data-slot="app-link"
+      href={href}
+      legacyBehavior={legacyBehavior}
+      locale={locale}
+      passHref={passHref}
+      prefetch={prefetch}
+      replace={replace}
+      scroll={scroll}
+      shallow={shallow}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onNavigate={onNavigate}
+      onTouchStart={onTouchStart}
       {...props}
-    >
-      <NextLink
-        as={as}
-        href={href}
-        legacyBehavior={legacyBehavior}
-        locale={locale}
-        passHref={passHref}
-        prefetch={prefetch}
-        replace={replace}
-        scroll={scroll}
-        shallow={shallow}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onNavigate={onNavigate}
-        onTouchStart={onTouchStart}
-      >
-        {children}
-      </NextLink>
-    </Link>
+    />
   )
 }

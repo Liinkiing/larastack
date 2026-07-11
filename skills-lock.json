@@ -126,6 +126,12 @@
       "sourceType": "github",
       "computedHash": "eab5d13811440639772e87c342e66ce796c88fb33e12e41849ab1a500aea6c90"
     },
+    "migrate-radix-to-base": {
+      "source": "shadcn/ui",
+      "sourceType": "github",
+      "skillPath": "skills/migrate-radix-to-base/SKILL.md",
+      "computedHash": "e1f2030ee5059be3dff0812ca0e4b995ee9fa3132176f049ebe6c90346a6755e"
+    },
     "pinia": {
       "source": "antfu/skills",
       "sourceType": "github",
@@ -137,6 +143,12 @@
       "sourceType": "github",
       "skillPath": "skills/pnpm/SKILL.md",
       "computedHash": "2ec08c851c6f901d4ed72c21b826416ed074a487db65662b36249418afd728bf"
+    },
+    "shadcn": {
+      "source": "shadcn/ui",
+      "sourceType": "github",
+      "skillPath": "skills/shadcn/SKILL.md",
+      "computedHash": "d81caa0f86aabab65b25e302d454f23a3328760386ed9078345584c0d5c8058e"
     },
     "uniwind": {
       "source": "uni-stack/uniwind",
