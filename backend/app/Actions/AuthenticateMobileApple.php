@@ -16,9 +16,7 @@ final readonly class AuthenticateMobileApple
     public function __construct(
         private AppleIdTokenVerifier $appleIdTokenVerifier,
         private IssueMobileToken $issueMobileToken,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws ValidationException

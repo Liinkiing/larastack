@@ -11,7 +11,5 @@ final readonly class MobileAuthentication
     public function __construct(
         public User $user,
         public string $plainTextToken,
-    )
-    {
-    }
+    ) {}
 }

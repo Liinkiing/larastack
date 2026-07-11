@@ -17,8 +17,7 @@ class MobileGoogleAuthController extends Controller
     public function __invoke(
         MobileGoogleLoginRequest $request,
         AuthenticateMobileGoogle $authenticateMobileGoogle,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $authentication = $authenticateMobileGoogle->handle(
             idToken: $request->string('id_token')->value(),
             deviceName: $request->string('device_name')->value(),

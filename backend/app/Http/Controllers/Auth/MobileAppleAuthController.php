@@ -17,8 +17,7 @@ class MobileAppleAuthController extends Controller
     public function __invoke(
         MobileAppleLoginRequest $request,
         AuthenticateMobileApple $authenticateMobileApple,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $authentication = $authenticateMobileApple->handle(
             identityToken: $request->string('identity_token')->value(),
             appleUser: $request->string('apple_user')->value(),

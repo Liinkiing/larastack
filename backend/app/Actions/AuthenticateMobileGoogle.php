@@ -16,9 +16,7 @@ final readonly class AuthenticateMobileGoogle
     public function __construct(
         private GoogleIdTokenVerifier $googleIdTokenVerifier,
         private IssueMobileToken $issueMobileToken,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws ValidationException
