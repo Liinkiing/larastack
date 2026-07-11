@@ -36,6 +36,8 @@ Welcome to Larastack, a fullstack starter template that combines Laravel for the
    ```shell
    git clone https://github.com/Liinkiing/larastack.git
    cd larastack
+   corepack enable
+   corepack install
    pnpm install
    ```
 
