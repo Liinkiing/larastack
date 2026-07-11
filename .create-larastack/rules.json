@@ -12,13 +12,18 @@
           "type": "remove",
           "paths": [
             "backend/database/migrations/*personal_access_tokens*",
+            "backend/app/Actions/AuthenticateMobileApple.php",
+            "backend/app/Actions/AuthenticateMobileGoogle.php",
+            "backend/app/Actions/IssueMobileToken.php",
+            "backend/app/Data/MobileAuthentication.php",
             "backend/app/Http/Controllers/Auth/MobileAppleAuthController.php",
             "backend/app/Http/Controllers/Auth/MobileGoogleAuthController.php",
             "backend/app/Http/Controllers/Auth/MobileTokenController.php",
             "backend/app/Http/Requests/Auth/MobileAppleLoginRequest.php",
             "backend/app/Http/Requests/Auth/MobileGoogleLoginRequest.php",
             "backend/app/Services/Auth/AppleIdTokenVerifier.php",
-            "backend/app/Services/Auth/GoogleIdTokenVerifier.php"
+            "backend/app/Services/Auth/GoogleIdTokenVerifier.php",
+            "backend/tests/Feature/MobileAuthTest.php"
           ]
         },
         {
@@ -72,9 +77,12 @@
         {
           "type": "remove",
           "paths": [
+            "backend/app/Actions/ConnectGoogleAccount.php",
             "backend/app/Http/Controllers/Auth/OAuthController.php",
             "backend/app/Http/Controllers/Auth/AuthenticatedSessionController.php",
-            "backend/app/Http/Requests/Auth/LoginRequest.php"
+            "backend/app/Http/Requests/Auth/LoginRequest.php",
+            "backend/tests/Feature/SessionLoginTest.php",
+            "backend/tests/Feature/WebOAuthTest.php"
           ]
         },
         {
