@@ -38,6 +38,6 @@ export const Ghost = {
 
 export const Outline = {
   args: {
-    variant: 'Outline',
+    variant: 'outline',
   },
-}
+} satisfies Story

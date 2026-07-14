@@ -8,7 +8,7 @@ const INTERNAL_ERRORS_MESSAGES = new Set(['Internal server error', 'Internal ser
 
 const DENIED_MESSAGE = 'Unauthenticated.'
 
-export default new ErrorLink(({ error, forward, operation }) => {
+export default new ErrorLink(({ error }) => {
   if (CombinedGraphQLErrors.is(error)) {
     const graphQLErrors = error.errors
 
@@ -20,46 +20,49 @@ export default new ErrorLink(({ error, forward, operation }) => {
         .includes(DENIED_MESSAGE) &&
       compilerEnv.__DEV__
     ) {
-      console.warn('Tried to access to a ressource which does not seems to belong to the logged in user. Forbid it.')
+      console.warn('Tried to access a resource that does not belong to the logged-in user. The request was denied.')
     }
 
     if (graphQLErrors.length > 0 && graphQLErrors[0].message) {
       const gqlError = graphQLErrors[0]
-      let message = 'debugMessage' in gqlError ? (gqlError as any).debugMessage : gqlError.message
+      const extensions = gqlError.extensions ?? {}
+      let message = gqlError.message
       if (INTERNAL_ERRORS_MESSAGES.has(message.toLowerCase())) {
         message = INTERNAL_ERROR_FALLBACK_MESSAGE
       }
 
       if (
-        gqlError.extensions &&
-        gqlError.extensions.category === 'validation' &&
-        'validation' in gqlError.extensions &&
-        typeof gqlError.extensions.validation === 'object'
+        extensions.category === 'validation' &&
+        typeof extensions.validation === 'object' &&
+        extensions.validation !== null
       ) {
-        message = Object.entries(gqlError.extensions.validation as Record<string, string>)
-          .flatMap(([, value]) => value)
+        message = Object.values(extensions.validation)
+          .flatMap(value => {
+            if (typeof value === 'string') {
+              return [value]
+            }
+
+            return Array.isArray(value) ? value.filter(item => typeof item === 'string') : []
+          })
           .map(v => v.replace('input.', ''))
           .join('\r\n')
       }
 
-      if (
-        compilerEnv.__DEV__ &&
-        gqlError.extensions &&
-        'debugMessage' in gqlError.extensions &&
-        'trace' in gqlError.extensions
-      ) {
-        const relevantMessages = (gqlError.extensions as any).trace.filter(
-          (t: any) => t.call && t.call.startsWith('App'),
-        )
+      if (compilerEnv.__DEV__ && typeof extensions.debugMessage === 'string' && Array.isArray(extensions.trace)) {
+        const relevantMessages = extensions.trace.filter(traceItem => {
+          if (typeof traceItem !== 'object' || traceItem === null || !('call' in traceItem)) {
+            return false
+          }
+
+          return typeof traceItem.call === 'string' && traceItem.call.startsWith('App')
+        })
         console.error(`GraphQL Error:
-${gqlError.extensions.debugMessage}
+${extensions.debugMessage}
 ${JSON.stringify(relevantMessages, null, 2)}
 `)
-      } else {
+      } else if (typeof window !== 'undefined') {
         window.alert(message)
       }
     }
   }
-
-  return forward(operation)
 })

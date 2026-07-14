@@ -8,7 +8,6 @@
     "expo:doctor": "npx expo-doctor",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
     "gen:gql": "graphql-codegen --config codegen.ts",
     "gen:gql:watch": "graphql-codegen --config codegen.ts --watch",
     "prets:check": "pnpm run gen:gql",

@@ -8,6 +8,8 @@ const config: CodegenConfig = {
     'app/**/*.ts',
     'src/**/*.graphql',
     'app/**/*.graphql',
+    '!src/**/*.{test,spec}.{ts,tsx}',
+    '!app/**/*.{test,spec}.{ts,tsx}',
     '!src/__generated__/gql/**/*',
   ],
   generates: {
@@ -16,7 +18,11 @@ const config: CodegenConfig = {
         avoidOptionals: {
           inputValue: false,
         },
+        customDirectives: {
+          apolloUnmask: true,
+        },
         dedupeFragments: true,
+        inlineFragmentTypes: 'mask',
         nonOptionalTypename: true,
         scalars: {
           Date: 'string',
@@ -32,7 +38,7 @@ const config: CodegenConfig = {
       plugins: [],
       preset: 'client',
       presetConfig: {
-        fragmentMasking: { unmaskFunctionName: 'getFragmentData' },
+        fragmentMasking: false,
       },
     },
     'src/__generated__/gql/apollo-helpers.ts': {

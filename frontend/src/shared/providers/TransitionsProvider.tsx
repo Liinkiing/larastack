@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const TransitionsProvider: FC<Props> = ({ children }) => {
-  const wrapperRef = useRef<HTMLDivElement>(null!)
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const shouldReduceMotion = useReducedMotion()
 
   const runOpacityTransition = useCallback(

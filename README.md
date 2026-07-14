@@ -76,7 +76,7 @@ From the repo root, start the Expo app with:
 pnpm --filter @larastack/mobile dev
 ```
 
-Use the terminal prompts to open the app in an iOS simulator, Android emulator, web, or Expo Go. For native auth and other native-module flows, prefer a development build over Expo Go.
+Open the app in an iOS simulator or Android emulator with a development build. Expo Go cannot boot this configured app because Google Sign-In requires custom native code.
 
 ## Learn More 📚
 

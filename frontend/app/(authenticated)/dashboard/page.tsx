@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuth } from '~/shared/hooks/useAuth'
+import { useViewer } from '~/shared/hooks/useAuth'
 import { PageLayout } from '~/shared/layouts/PageLayout'
 import { Box, Grid, HStack, Stack } from '~/styled-system/jsx'
 import { Button } from '~/ui/button'
@@ -8,7 +8,7 @@ import { Heading } from '~/ui/heading'
 import { Text } from '~/ui/text'
 
 export default function HomePage() {
-  const { viewer } = useAuth()
+  const viewer = useViewer()
 
   return (
     <PageLayout>
@@ -66,7 +66,7 @@ export default function HomePage() {
           p={{ base: 6, md: 8 }}
         >
           <Stack gap={4}>
-            <Heading as="h3">Your focus for today</Heading>
+            <Heading as="h2">Your focus for today</Heading>
             <Text color="text.muted">
               Tidy up the onboarding checklist, sync auth flow notes, and ship the next dashboard animation pass.
             </Text>

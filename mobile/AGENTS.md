@@ -7,7 +7,7 @@
 
 ## Project Overview
 
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+This is a native iOS/Android Expo application. `app.json.platforms` intentionally lists only iOS and Android; retained web configuration and dependencies do not make web a supported deployment target.
 
 Current major baseline: Expo SDK 57, Expo Router 57, React 19, React Native 0.86, and Uniwind 1. Read exact versions from `mobile/package.json`; do not copy version numbers from this file into dependency changes.
 
@@ -73,7 +73,7 @@ pnpm --filter @larastack/mobile development-builds          # Create development
 ```
 
 - Do not run `expo start`/`pnpm --filter @larastack/mobile dev` in the background (no `&`, `nohup`, or detached logging) unless the user explicitly asks for background execution.
-- For this repo, prefer development builds when validating native or auth flows. `mobile/app.json` and `mobile/package.json` include native integrations such as Apple Authentication, Google Sign-In, SecureStore, and Expo Dev Client, so Expo Go is only suitable for lightweight JS/UI smoke checks.
+- This configured app requires a development build. Google Sign-In is imported at startup and depends on custom native code that Expo Go does not include.
 
 ### Building & Testing
 
@@ -83,7 +83,9 @@ pnpm --filter @larastack/mobile ts:check         # Run TypeScript type checking
 pnpm --filter @larastack/mobile test             # Run Vitest in watch mode
 pnpm --filter @larastack/mobile test:ci          # Run Vitest once (CI mode)
 pnpm --filter @larastack/mobile lint             # Run oxlint
-pnpm --filter @larastack/mobile draft            # Publish preview update and website (workflow)
+pnpm --filter @larastack/mobile format:check      # Check oxfmt formatting
+pnpm --filter @larastack/mobile gen:gql           # Regenerate GraphQL artifacts
+pnpm --filter @larastack/mobile draft            # Publish a preview update (workflow)
 ```
 
 ### Production
@@ -105,6 +107,8 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - **Shadows via Uniwind Classes**: Prefer Tailwind/Uniwind shadow utilities in `className` (for example, `shadow-sm`, `shadow-md`) instead of inline `style` shadow objects (`shadowColor`, `shadowOffset`, `shadowOpacity`, `shadowRadius`, `elevation`) by default.
 - **Self-Documenting Code**: Write clear, readable code that explains itself; only add comments for complex business logic or design decisions
 - **Generated Code**: Do not hand-edit `src/__generated__/`; change the GraphQL operation/schema inputs and run `pnpm --filter @larastack/mobile gen:gql`
+- **Public Environment**: `EXPO_PUBLIC_*` values are embedded in the app bundle. They may identify public clients/endpoints but must never contain secrets.
+- **Continuous Native Generation**: `ios/` and `android/` are generated and not committed. Native dependencies or config-plugin changes require a fresh development build.
 - **React 19 Patterns**: Follow modern React patterns including:
   - Function components with hooks
   - Enable React Compiler
@@ -118,6 +122,7 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 - Use **Expo Router** for all navigation
 - Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`
 - Keep route UI/logic in `src/app/**` files by default.
+- Extract a route's growing or reusable UI to `src/screens/<screen>/` while keeping routing and navigation boundaries in `src/app/**`; do not extract tiny one-off screens by ceremony.
 - Do not place test files inside `src/app/**`; keep tests in `src/screens/**`, `src/services/**`, `src/shared/**`, `src/ui/**`, or `src/utils/**`.
 - For components used only by a given route/screen, place them under `src/screens/<screen>/components/`.
 - Name files in `src/screens/<screen>/components/` with PascalCase (for example `OnboardingCarousel.tsx`).
@@ -150,7 +155,7 @@ pnpm --filter @larastack/mobile deploy             # Deploy to production (workf
 
 Developers can configure the Expo MCP server with the following doc: https://docs.expo.dev/eas/ai/mcp/
 
-- **Component Testing**: Add `testID` props to components for automation
+- **Component Testing**: Add stable `testID` props where automation needs a selector; do not blanket every component with IDs.
 - **Tool Discovery**: Inspect the connected MCP server's current tool schemas instead of assuming historical command names
 - **Visual and Interaction Testing**: Use the available screenshot, view-query, and interaction tools to verify behavior on a development build
 
@@ -162,7 +167,8 @@ When working with EAS Workflows, **always refer to**:
 
 - https://docs.expo.dev/eas/workflows/introduction/ for the current Workflows documentation
 - The `.eas/workflows/` directory for existing workflow configurations
-- You can check that a workflow YAML is valid using the workflows schema: https://exp.host/--/api/v2/workflows/schema
+- Validate workflow YAML against the current schema at https://api.expo.dev/v2/workflows/schema (or the repository's EAS workflow validation helper when available).
+- The repository default branch is `master`; keep production triggers and preview channel mappings aligned unless the repository branch changes.
 
 ### Build Profiles (eas.json)
 
@@ -170,12 +176,18 @@ When working with EAS Workflows, **always refer to**:
 - **development-simulator**: Development builds for iOS simulator
 - **preview**: Internal distribution preview builds
 - **production**: Production builds with auto-increment
+- Runtime compatibility uses the app version. Bump `app.json.version` for native-runtime changes before publishing OTA updates; remote build-number auto-increment does not change this version.
+
+### GraphQL and Tests
+
+- Apollo Client runtime data masking is authoritative. Keep Codegen fragment masking disabled, use Apollo's fragment APIs, and regenerate after operation changes.
+- Keep Vitest tests outside `src/app/**`; `test:ci` runs the suite once and should not rely on `passWithNoTests` as a substitute for coverage.
 
 ## Troubleshooting
 
 ### Development Builds vs Expo Go
 
-Prefer a **development build** by default for this repo when validating native integrations, authentication, or config-plugin changes. **Expo Go** is a limited sandbox and should only be used for lightweight JS/UI smoke checks here. To create development builds, run `pnpm --filter @larastack/mobile build:dev:ios` and/or `pnpm --filter @larastack/mobile build:dev:android`. After installing new packages or adding config plugins, new development builds are often required.
+Use a **development build** for this repo; Expo Go cannot boot the configured app because Google Sign-In requires custom native code. Create development builds with `pnpm --filter @larastack/mobile build:dev:ios` and/or `pnpm --filter @larastack/mobile build:dev:android`. After installing native packages or changing config plugins, create a fresh development build.
 
 ## AI Agent Instructions
 

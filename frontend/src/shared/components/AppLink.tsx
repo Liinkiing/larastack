@@ -2,16 +2,12 @@
 
 import type { LinkProps as NextLinkProps } from 'next/link'
 import NextLink from 'next/link'
-import { useSearchParams } from 'next/navigation'
 import type { FC } from 'react'
 
 import type { LinkProps } from '~/ui/link'
 import { Link } from '~/ui/link'
 
-export type AppLinkProps = Omit<LinkProps, keyof NextLinkProps> &
-  NextLinkProps & {
-    keepSearchParams?: boolean
-  }
+export type AppLinkProps = Omit<LinkProps, keyof NextLinkProps> & NextLinkProps
 
 export const AppLink: FC<AppLinkProps> = ({
   href: userHref,
@@ -26,20 +22,12 @@ export const AppLink: FC<AppLinkProps> = ({
   onMouseEnter,
   onTouchStart,
   onClick,
-  keepSearchParams,
   children,
   _hover,
 
   onNavigate,
   ...props
 }) => {
-  const params = useSearchParams()
-
-  let href = userHref
-  if (keepSearchParams && href && typeof href === 'string') {
-    href = href.includes('?') ? `${href}&${params.toString()}` : `${href}?${params.toString()}`
-  }
-
   return (
     <Link
       asChild
@@ -51,7 +39,7 @@ export const AppLink: FC<AppLinkProps> = ({
     >
       <NextLink
         as={as}
-        href={href}
+        href={userHref}
         legacyBehavior={legacyBehavior}
         locale={locale}
         passHref={passHref}

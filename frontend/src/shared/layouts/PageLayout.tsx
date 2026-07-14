@@ -7,6 +7,7 @@ export const PageLayout: FC<BoxProps> = props => {
   return (
     <Box
       as="main"
+      id="main-content"
       maxW="1200px"
       minH="calc(100dvh - 96px)"
       mx="auto"

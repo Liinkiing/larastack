@@ -1,4 +1,5 @@
 import { AppLink } from '~/shared/components/AppLink'
+import { LogoutButton } from '~/shared/components/LogoutButton'
 import { AuthenticatedGuard } from '~/shared/guards/AuthenticatedGuard'
 import { PageLayout } from '~/shared/layouts/PageLayout'
 import { Box, Flex, Grid, HStack, Stack, VStack } from '~/styled-system/jsx'
@@ -49,9 +50,9 @@ export default function Home() {
                 <Button asChild size="lg">
                   <AppLink href="/dashboard">View dashboard</AppLink>
                 </Button>
-                <Button asChild size="lg" variant="outline">
-                  <AppLink href="#">Close your session</AppLink>
-                </Button>
+                <LogoutButton size="lg" variant="outline">
+                  Close your session
+                </LogoutButton>
               </AuthenticatedGuard>
             </Stack>
             <Stack direction={{ base: 'column', sm: 'row' }} flexWrap="wrap" gap={{ base: 3, sm: 6 }}>
@@ -80,7 +81,7 @@ export default function Home() {
                     2 min read
                   </Text>
                 </HStack>
-                <Heading as="h3">A softer dashboard for fast teams.</Heading>
+                <Heading as="h2">A softer dashboard for fast teams.</Heading>
                 <Text color="text.muted">
                   Curate your next deploy, see the auth rhythm, and keep teams aligned in a view that feels alive.
                 </Text>

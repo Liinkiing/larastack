@@ -4,15 +4,15 @@ import { ErrorLink } from '@apollo/client/link/error'
 import { LocalState } from '@apollo/client/local-state'
 
 import introspection from '~/__generated__/gql/possibleTypes.json'
+import { resolveGraphqlEndpoint } from '~/apollo/endpoint'
 import { typePolicies } from '~/apollo/policies'
 import { getPersistedAccessToken, setCachedAccessToken } from '~/services/auth'
 import { notifyAuthSessionInvalidated } from '~/services/auth-session'
 
-const graphqlEndpoint = process.env.EXPO_PUBLIC_GRAPHQL_ENDPOINT ?? `${process.env.EXPO_PUBLIC_API_URL}/graphql`
-
-if (!graphqlEndpoint) {
-  throw new Error('GraphQL endpoint is not configured. Set EXPO_PUBLIC_API_URL or EXPO_PUBLIC_GRAPHQL_ENDPOINT.')
-}
+const graphqlEndpoint = resolveGraphqlEndpoint({
+  apiBaseUrl: process.env.EXPO_PUBLIC_API_URL,
+  graphqlEndpoint: process.env.EXPO_PUBLIC_GRAPHQL_ENDPOINT,
+})
 
 const httpLink = new HttpLink({
   uri: graphqlEndpoint,

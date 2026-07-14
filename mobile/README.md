@@ -16,14 +16,13 @@ Or from this directory (`mobile/`), run:
 pnpm run dev
 ```
 
-In the output, you'll find options to open the app in:
+Run the app with:
 
 - [a development build](https://docs.expo.dev/develop/development-builds/introduction/)
 - [an Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [an iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox that is fine for basic JS/UI smoke checks but not for native auth or other native-module validation
 
-This app includes native auth modules and config plugins such as Apple Authentication, Google Sign-In, and SecureStore-backed auth flows. Prefer a development build when validating real sign-in flows or any native integration.
+This app includes native auth modules and config plugins such as Apple Authentication, Google Sign-In, and SecureStore-backed auth flows. Expo Go cannot boot it because Google Sign-In requires custom native code.
 
 You can start developing by editing files in **src/app**. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
@@ -46,7 +45,7 @@ This project is configured to use [EAS Workflows](https://docs.expo.dev/eas/work
 
 ### Previews
 
-Run `pnpm run draft` to [publish a preview update](https://docs.expo.dev/eas/workflows/examples/publish-preview-update/) of your project, which can be viewed in a development build. Expo Go is only suitable for JS-only smoke checks that do not depend on native modules.
+Run `pnpm run draft` to [publish a preview update](https://docs.expo.dev/eas/workflows/examples/publish-preview-update/) of your project, which can be viewed in a development build.
 
 ### Development Builds
 
@@ -56,16 +55,12 @@ Run `pnpm run development-builds` to [create a development build](https://docs.e
 
 Run `pnpm run deploy` to [deploy to production](https://docs.expo.dev/eas/workflows/examples/deploy-to-production/). Note - you'll need to follow the [Prerequisites](https://docs.expo.dev/eas/workflows/examples/deploy-to-production/#prerequisites) to ensure you're set up to submit to the Apple and Google stores.
 
-## Hosting
-
-Expo offers hosting for websites and API functions via EAS Hosting. See the [Getting Started](https://docs.expo.dev/eas/hosting/get-started/) guide to learn more.
-
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
 
 - [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow Expo's step-by-step introduction, adapting its examples to this app's iOS/Android targets.
 
 ## Join the community
 

@@ -19,7 +19,14 @@ it('authenticates ULID users with database sessions', function () {
     $this->post('/login', [
         'email' => $user->email,
         'password' => 'password',
-    ])->assertNoContent();
+    ])->assertNoContent()
+        ->assertCookie('larastack_logged_in', 'true', false);
 
     $this->assertAuthenticatedAs($user);
+
+    $this->post('/logout')
+        ->assertNoContent()
+        ->assertCookie('larastack_logged_in', 'false', false);
+
+    $this->assertGuest();
 });

@@ -12,6 +12,10 @@ interface Props {
 export const AuthenticatedGuard: FC<Props> = ({ children, fallback }) => {
   const { isAuthenticated } = useAuth()
 
+  if (isAuthenticated === null) {
+    return null
+  }
+
   if (isAuthenticated) {
     return children
   }

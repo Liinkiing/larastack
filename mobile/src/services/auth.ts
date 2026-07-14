@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store'
 import { getDeviceName } from '~/utils/device'
 
 const ACCESS_TOKEN_KEY = 'larastack.mobile.access-token'
+const AUTH_REQUEST_TIMEOUT_MS = 10_000
 let accessTokenCache: string | null | undefined
 
 const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL
@@ -17,6 +18,17 @@ const getApiBaseUrl = (): string => {
   }
 
   return `${apiBaseUrl}/api/mobile`
+}
+
+const fetchAuth = async (input: string, init: RequestInit): Promise<Response> => {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), AUTH_REQUEST_TIMEOUT_MS)
+
+  try {
+    return await fetch(input, { ...init, signal: controller.signal })
+  } finally {
+    clearTimeout(timeout)
+  }
 }
 
 export type MobileAuthUser = {
@@ -40,11 +52,18 @@ export type MobileAppleAuthPayload = {
   familyName: string | null
 }
 
+export class InvalidAccessTokenError extends Error {
+  constructor() {
+    super('The access token is no longer valid.')
+    this.name = 'InvalidAccessTokenError'
+  }
+}
+
 const exchangeMobileOAuth = async (
   path: string,
   body: Record<string, string | null>,
 ): Promise<MobileOAuthAuthResponse> => {
-  const response = await fetch(`${getApiBaseUrl()}${path}`, {
+  const response = await fetchAuth(`${getApiBaseUrl()}${path}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -85,8 +104,8 @@ export async function persistAccessToken(token: string): Promise<void> {
 }
 
 export async function clearAccessToken(): Promise<void> {
-  await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY)
   accessTokenCache = null
+  await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY)
 }
 
 export async function getPersistedAccessToken(): Promise<string | null> {
@@ -104,13 +123,17 @@ export function setCachedAccessToken(token: string | null): void {
 }
 
 export async function fetchCurrentUser(token: string): Promise<MobileAuthUser> {
-  const response = await fetch(`${getApiBaseUrl()}/user`, {
+  const response = await fetchAuth(`${getApiBaseUrl()}/user`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     },
   })
+
+  if (response.status === 401 || response.status === 403) {
+    throw new InvalidAccessTokenError()
+  }
 
   if (!response.ok) {
     throw new Error('Unable to load the authenticated user.')
@@ -120,7 +143,7 @@ export async function fetchCurrentUser(token: string): Promise<MobileAuthUser> {
 }
 
 export async function revokeCurrentToken(token: string): Promise<void> {
-  const response = await fetch(`${getApiBaseUrl()}/auth/logout`, {
+  const response = await fetchAuth(`${getApiBaseUrl()}/auth/logout`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

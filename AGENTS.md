@@ -10,9 +10,13 @@ Operational guide for coding agents working in `larastack`.
   - `frontend/AGENTS.md`
   - `mobile/AGENTS.md`
 - When instructions conflict, prefer the nearest `AGENTS.md` to the files being edited.
+- `AGENTS.md` files inside dependency trees such as `vendor/` or `node_modules/` describe those upstream projects; they do not govern application code.
 
 ## Workspace Snapshot
 - Monorepo manager: `pnpm` workspaces. Use the pnpm version pinned by the root `packageManager` field.
+- Node.js baseline: use `.nvmrc` (currently 22.22.1); `engines.node` defines the compatibility floor (currently >=22.22.1).
+- pnpm workspace/package-manager settings live in `pnpm-workspace.yaml`; use `.npmrc` only for registry and authentication settings.
+- Type checking intentionally uses the native TypeScript 7 compiler while TypeScript 6 remains catalogued for ecosystem compatibility; do not collapse the pair without validating every workspace toolchain.
 - Optional packages in this template:
   - `backend/` -> Laravel 13, Lighthouse GraphQL, Sail
   - `frontend/` -> Next.js 16 App Router, Apollo Client, Panda CSS
@@ -41,7 +45,7 @@ Run from repo root unless explicitly noted.
 ## Shared Standards
 - Make minimal, focused changes; avoid drive-by refactors.
 - Follow local patterns in nearby files before introducing new ones.
-- Never commit secrets (`.env`, tokens, credentials, keys).
+- Never commit secrets (tokens, credentials, private keys, or secret environment values). Client-prefixed environment variables are bundled into frontend/mobile apps and must never contain secrets, even when stored in a tracked `.env` file.
 - Prefer root-cause fixes over temporary workarounds.
 - Use clear names; avoid cryptic abbreviations.
 - Keep logs actionable and never include sensitive data.

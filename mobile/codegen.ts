@@ -1,14 +1,18 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
-  documents: ['src/**/*.tsx', 'src/**/*.ts', '!src/__generated__/gql/**/*'],
+  documents: ['src/**/*.tsx', 'src/**/*.ts', '!src/**/*.{test,spec}.{ts,tsx}', '!src/__generated__/gql/**/*'],
   generates: {
     'src/__generated__/gql/': {
       config: {
         avoidOptionals: {
           inputValue: false,
         },
+        customDirectives: {
+          apolloUnmask: true,
+        },
         dedupeFragments: true,
+        inlineFragmentTypes: 'mask',
         nonOptionalTypename: true,
         scalars: {
           Date: 'string',
@@ -24,7 +28,7 @@ const config: CodegenConfig = {
       plugins: [],
       preset: 'client',
       presetConfig: {
-        fragmentMasking: { unmaskFunctionName: 'getFragmentData' },
+        fragmentMasking: false,
       },
     },
     'src/__generated__/gql/apollo-helpers.ts': {

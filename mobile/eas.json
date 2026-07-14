@@ -22,7 +22,7 @@
     },
     "preview": {
       "distribution": "internal",
-      "channel": "main",
+      "channel": "master",
       "android": {
         "image": "latest"
       },

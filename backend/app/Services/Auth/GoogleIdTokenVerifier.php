@@ -72,8 +72,18 @@ class GoogleIdTokenVerifier
     private function googleKeys(): array
     {
         $jwks = Cache::remember(self::JWKS_CACHE_KEY, now()->addHours(6), function (): array {
-            /** @var Response $response */
-            $response = Http::retry(2, 200)->acceptJson()->get(self::JWKS_URL);
+            try {
+                /** @var Response $response */
+                $response = Http::connectTimeout(3)
+                    ->timeout(5)
+                    ->retry(2, 200, throw: false)
+                    ->acceptJson()
+                    ->get(self::JWKS_URL);
+            } catch (Throwable) {
+                throw ValidationException::withMessages([
+                    'id_token' => 'Unable to verify Google ID token right now. Try again.',
+                ]);
+            }
 
             if (! $response->successful()) {
                 throw ValidationException::withMessages([

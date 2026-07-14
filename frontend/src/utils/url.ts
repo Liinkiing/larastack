@@ -1,11 +1,27 @@
-import { compilerEnv } from '~/shared/env'
+const hasControlCharacter = (value: string): boolean =>
+  [...value].some(character => {
+    const codePoint = character.codePointAt(0)
 
-export const generateApiUrl = (path: string): string => {
-  const baseUrl = compilerEnv.__USE_BACKEND_PROXY__ ? '/api' : (process.env.NEXT_PUBLIC_API_URL ?? '/')
+    return codePoint !== undefined && (codePoint <= 31 || codePoint === 127)
+  })
 
-  if (path.startsWith('/')) {
-    return `${baseUrl}${path}`
+export const resolveSafeReturnPath = (value: string | null | undefined, fallback: string, origin: string): string => {
+  if (
+    !value ||
+    value.length > 2048 ||
+    !value.startsWith('/') ||
+    value.startsWith('//') ||
+    value.includes('\\') ||
+    hasControlCharacter(value)
+  ) {
+    return fallback
   }
 
-  return `${baseUrl}/${path}`
+  try {
+    const url = new URL(value, origin)
+
+    return url.origin === origin ? `${url.pathname}${url.search}${url.hash}` : fallback
+  } catch {
+    return fallback
+  }
 }

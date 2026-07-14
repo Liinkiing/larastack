@@ -28,6 +28,17 @@ export const buttonRecipe = defineRecipe({
     _active: {
       transform: 'translateY(0)',
     },
+    _disabled: {
+      cursor: 'not-allowed',
+      opacity: 0.55,
+      transform: 'none',
+      _active: {
+        transform: 'none',
+      },
+      _hover: {
+        transform: 'none',
+      },
+    },
   },
   variants: {
     variant: {

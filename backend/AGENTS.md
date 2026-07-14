@@ -9,9 +9,14 @@ Operational guide for coding agents working in `backend/`.
 - Laravel 13
 - Lighthouse GraphQL
 - Laravel Sail
+- PHP 8.5, Pest 4, PHPUnit 12, and Larastan 3
 
 ## Key Paths
-- `app/` -> controllers, requests, models, services, resolvers
+- `app/Actions/` -> single-purpose business operations
+- `app/Data/` -> typed transport/domain data objects
+- `app/GraphQL/` -> application directives, queries, mutations, resolvers, and scalars
+- `app/Http/` -> HTTP controllers, middleware, and requests
+- `app/Models/`, `app/Policies/`, `app/Services/` -> persistence, authorization, and reusable infrastructure
 - `graphql/` -> Lighthouse schema modules
 - `tests/` -> Pest Unit/Feature suites running on PHPUnit
 - `scripts/` -> backend maintenance helpers
@@ -21,8 +26,9 @@ Run from `backend/` unless otherwise noted.
 
 - First install: if `vendor/bin/sail` is absent, follow the Composer bootstrap container step in `backend/README.md`; Sail cannot install itself.
 - Install PHP deps after Sail exists: `./vendor/bin/sail composer install`
-- Initialize env file: `cp .env.example .env`
+- Initialize the env file only when absent: `test -f .env || cp .env.example .env`
 - Start services: `./vendor/bin/sail up -d`
+- Generate the application key for a new environment only: `./vendor/bin/sail artisan key:generate` (rotating an existing key invalidates encrypted data and sessions).
 
 ## Commands
 Run from repo root unless otherwise noted.
@@ -31,6 +37,7 @@ Run from repo root unless otherwise noted.
 - Build (Vite): `pnpm --filter @larastack/backend build`
 - Lint/format PHP (Pint, Laravel preset): `pnpm --filter @larastack/backend lint`
 - Static analysis: `pnpm --filter @larastack/backend typecheck`
+- Dependency security audit: from `backend/`, `./vendor/bin/sail composer audit --locked`
 - Reset DB + seed: `pnpm --filter @larastack/backend db:reset`
 - Dump GraphQL schema and sync client schema files: `pnpm --filter @larastack/backend gql:dump`
 
@@ -45,6 +52,7 @@ Run these from `backend/`.
 ## Backend Standards
 - Run PHP tooling commands (for example `composer`, `artisan`, `pest`) through Sail when available.
 - Repository-specific exception to generated Sail guidance: run JavaScript workspace commands through root `pnpm --filter @larastack/backend ...`; do not run pnpm workspace tooling through Sail.
+- Repository-specific guidance above overrides conflicting generated guidance below, especially the root pnpm/Sail exception.
 - Do not run local cache/optimization commands such as `config:cache`, `route:cache`, `view:cache`, `event:cache`, or `optimize` during development/testing unless explicitly requested; these are deployment steps and can make local tests/config read stale values.
 - If cache/optimization commands are explicitly needed for deployment validation, run `./vendor/bin/sail artisan optimize:clear`, `./vendor/bin/sail artisan lighthouse:clear-schema-cache`, and `./vendor/bin/sail artisan lighthouse:clear-query-cache` immediately after validation.
 - PHP formatting uses Pint (Laravel preset) via Sail.
@@ -58,8 +66,8 @@ Run these from `backend/`.
 
 ## GraphQL and Client Sync
 - After schema changes under `backend/graphql/**/*.graphql`, run `pnpm --filter @larastack/backend gql:dump`.
-- If `frontend/` exists, regenerate frontend operations: `pnpm --filter @larastack/frontend gen:gql`.
-- If `mobile/` exists, regenerate mobile operations: `pnpm --filter @larastack/mobile gen:gql`.
+- `gql:dump` prints the Lighthouse schema, copies it into each existing client workspace, and runs that client's GraphQL codegen. Do not rerun the frontend/mobile generators unless debugging or regenerating client-only operation changes.
+- The `<laravel-boost-guidelines>` block below is generated from installed backend dependencies. Refresh it after dependency changes with `./vendor/bin/sail artisan boost:update --no-interaction` instead of manually maintaining its version snapshot.
 
 ===
 

@@ -14,6 +14,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 
 Route::prefix('/auth/{provider}')
     ->where(['provider' => 'google'])
+    ->middleware('throttle:30,1')
     ->group(function () {
         Route::get('/redirect', [OAuthController::class, 'redirect']);
         Route::get('/callback', [OAuthController::class, 'callback']);

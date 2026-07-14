@@ -8,6 +8,7 @@ import {
   exchangeGoogleIdToken,
   fetchCurrentUser,
   getPersistedAccessToken,
+  InvalidAccessTokenError,
   persistAccessToken,
   revokeCurrentToken,
 } from '~/services/auth'
@@ -58,11 +59,20 @@ export function OAuthProvider({ children }: PropsWithChildren) {
           return
         }
 
-        await fetchCurrentUser(token)
-        setAccessToken(token)
-      } catch {
-        await clearAccessToken()
+        try {
+          await fetchCurrentUser(token)
+          setAccessToken(token)
+        } catch (error) {
+          if (error instanceof InvalidAccessTokenError) {
+            setAccessToken(null)
+            await clearAccessToken()
+          } else {
+            setAuthError('Unable to verify your session. Check your connection and try again.')
+          }
+        }
+      } catch (error) {
         setAccessToken(null)
+        setAuthError(error instanceof Error ? error.message : 'Unable to restore the saved session.')
       } finally {
         setIsHydratingSession(false)
       }
@@ -74,10 +84,9 @@ export function OAuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     return onAuthSessionInvalidated(() => {
       const invalidateSession = async () => {
-        await clearAccessToken()
         setAccessToken(null)
         setAuthError('Session expired. Please sign in again.')
-        await apolloClient.clearStore()
+        await Promise.allSettled([clearAccessToken(), apolloClient.clearStore()])
       }
 
       void invalidateSession()
@@ -138,26 +147,29 @@ export function OAuthProvider({ children }: PropsWithChildren) {
     setIsLoading(true)
     setAuthError(null)
 
-    try {
-      if (accessToken) {
-        await revokeCurrentToken(accessToken)
-      }
+    const tokenToRevoke = accessToken
+    const remoteTasks = [signOutFromGoogle()]
+    if (tokenToRevoke) {
+      remoteTasks.push(revokeCurrentToken(tokenToRevoke))
+    }
 
-      await signOutFromGoogle()
-      await clearAccessToken()
-      await apolloClient.clearStore()
-      setAccessToken(null)
-    } catch (error) {
-      if (error instanceof Error && error.message === 'ERR_REVOKE_TOKEN_FAILED') {
-        await signOutFromGoogle()
-        await clearAccessToken()
-        await apolloClient.clearStore()
-        setAccessToken(null)
-      } else {
-        setAuthError(error instanceof Error ? error.message : 'Unable to sign out right now.')
-      }
-    } finally {
-      setIsLoading(false)
+    const remoteCleanup = Promise.allSettled(remoteTasks)
+
+    setAccessToken(null)
+    const localResults = await Promise.allSettled([clearAccessToken(), apolloClient.clearStore()])
+
+    if (localResults.some(result => result.status === 'rejected')) {
+      setAuthError('Signed out in this session, but the saved session could not be fully cleared.')
+    }
+
+    setIsLoading(false)
+
+    const remoteResults = await remoteCleanup
+    if (
+      localResults.every(result => result.status === 'fulfilled') &&
+      remoteResults.some(result => result.status === 'rejected')
+    ) {
+      setAuthError('Signed out locally, but the server or Google session could not be revoked.')
     }
   }
 

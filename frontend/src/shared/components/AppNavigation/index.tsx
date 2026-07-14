@@ -11,7 +11,15 @@ import { AppNavigationItem } from './components/AppNavigationItem'
 
 export const AppNavigation: FC = () => {
   return (
-    <Box position="sticky" pt={{ base: 4, md: 6 }} px={{ base: 4, md: 8 }} top={0} zIndex={10}>
+    <Box
+      as="nav"
+      aria-label="Primary navigation"
+      position="sticky"
+      pt={{ base: 4, md: 6 }}
+      px={{ base: 4, md: 8 }}
+      top={0}
+      zIndex={10}
+    >
       <Flex
         align="center"
         backdropBlur="6px"

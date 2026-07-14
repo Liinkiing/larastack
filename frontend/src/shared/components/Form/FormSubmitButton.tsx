@@ -15,12 +15,10 @@ export const FormSubmitButton: FC<SubmitButtonProps> = ({ children, forceDisable
     throw new Error('<SubmitButton/> must be used within a <Form/> component')
   }
 
-  const { isDirty, isValid, isSubmitting } = form.formState
-
-  const isDisabled = !isDirty || !isValid || isSubmitting
+  const { isSubmitting } = form.formState
 
   return (
-    <Button type="submit" {...props} disabled={forceDisable ? true : isDisabled}>
+    <Button type="submit" {...props} disabled={forceDisable || isSubmitting}>
       {children}
     </Button>
   )

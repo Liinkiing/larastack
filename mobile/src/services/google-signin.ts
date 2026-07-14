@@ -49,6 +49,10 @@ export async function signInWithGoogle(): Promise<string> {
 }
 
 export async function signOutFromGoogle(): Promise<void> {
+  if (!process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID) {
+    return
+  }
+
   configureGoogleSignin()
 
   try {

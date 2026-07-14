@@ -1,6 +1,7 @@
 'use client'
 
 import type { FC, ReactNode } from 'react'
+import { useState } from 'react'
 
 import type { ButtonProps } from '~/ui/button'
 import { Button } from '~/ui/button'
@@ -11,18 +12,32 @@ interface Props extends ButtonProps {
   children?: ReactNode
 }
 
-export const LogoutButton: FC<Props> = ({ children, onClick, ...props }) => {
+export const LogoutButton: FC<Props> = ({ children, disabled, onClick, ...props }) => {
   const { logout } = useAuth()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   return (
     <Button
-      onClick={e => {
-        onClick?.(e)
-        logout()
-      }}
       {...props}
+      aria-busy={isLoggingOut}
+      disabled={disabled || isLoggingOut}
+      onClick={async event => {
+        onClick?.(event)
+        if (event.defaultPrevented) {
+          return
+        }
+
+        setIsLoggingOut(true)
+
+        try {
+          await logout()
+        } catch {
+          window.alert('Unable to sign out right now. Please retry.')
+          setIsLoggingOut(false)
+        }
+      }}
     >
-      {children ?? 'Logout'}
+      {isLoggingOut ? 'Signing out…' : (children ?? 'Logout')}
     </Button>
   )
 }

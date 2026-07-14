@@ -6,12 +6,15 @@ use Auth;
 use Closure;
 use Cookie;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class SetLoggedInCookieMiddleware
+final class SetLoggedInCookieMiddleware
 {
-    /** @phpstan-ignore missingType.return */
-    public function handle(Request $request, Closure $next)
+    /** @param Closure(Request): Response $next */
+    public function handle(Request $request, Closure $next): Response
     {
+        $response = $next($request);
+
         Cookie::queue(
             Cookie::forever(
                 config('session.logged_in_cookie_key'),
@@ -22,6 +25,6 @@ class SetLoggedInCookieMiddleware
             )
         );
 
-        return $next($request);
+        return $response;
     }
 }

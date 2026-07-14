@@ -21,8 +21,12 @@ export const linkRecipe = deepmerge(
       transitionProperty: 'color, text-decoration-color, background',
       transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
       _disabled: {
-        _hover: 'text.disabled',
-        base: 'text.disabled',
+        color: 'text.disabled',
+        cursor: 'not-allowed',
+        _hover: {
+          color: 'text.disabled',
+          textDecoration: 'none',
+        },
       },
       _hover: {
         color: 'accent.solid',

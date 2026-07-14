@@ -170,6 +170,7 @@ export function Button({
   className,
   style,
   accessibilityRole,
+  accessibilityState,
   numberOfLines,
   ...pressableProps
 }: ButtonProps) {
@@ -213,6 +214,7 @@ export function Button({
     <AnimatedPressable
       {...pressableProps}
       accessibilityRole={accessibilityRole ?? 'button'}
+      accessibilityState={{ ...accessibilityState, busy: isLoading, disabled: isDisabled }}
       disabled={isDisabled}
       onPress={handlePress}
       onPressIn={handlePressIn}

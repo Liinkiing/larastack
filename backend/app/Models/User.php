@@ -20,7 +20,17 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'email',
+        'avatar_url',
+        'email_verified_at',
+        'password',
+        'google_id',
+        'google_token',
+        'google_refresh_token',
+        'apple_id',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,6 +55,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'google_token' => 'encrypted',
             'google_refresh_token' => 'encrypted',
+            'is_admin' => 'boolean',
             'password' => 'hashed',
         ];
     }

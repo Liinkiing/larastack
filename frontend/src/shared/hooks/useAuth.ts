@@ -3,12 +3,12 @@ import { use, useCallback, useMemo } from 'react'
 import { graphql } from '~/__generated__/gql'
 import type { AuthProvider } from '~/services/auth'
 import { AuthService } from '~/services/auth'
-import type { Viewer } from '~/shared/providers/AuthProvider'
+import type { AuthenticationState, Viewer } from '~/shared/providers/AuthProvider'
 import { AuthContext } from '~/shared/providers/AuthProvider'
 
-type Return<T = Viewer> = {
-  isAuthenticated: boolean
-  viewer: T
+type Return = {
+  isAuthenticated: AuthenticationState
+  viewer: Viewer | null
   loginWithProvider: typeof AuthService.loginWithProvider
   login: (args: { email: string; password: string }) => Promise<void>
   logout: typeof AuthService.logout
@@ -36,14 +36,24 @@ export const useAuth = (): Return => {
 
   return useMemo<Return>(
     () => ({
-      isAuthenticated: AuthService.isLoggedIn,
+      isAuthenticated: context.isAuthenticated,
       login,
       loginWithProvider,
       logout,
-      viewer: context.viewer as NonNullable<Viewer>,
+      viewer: context.viewer,
     }),
-    [context.viewer, login, loginWithProvider, logout],
+    [context.isAuthenticated, context.viewer, login, loginWithProvider, logout],
   )
+}
+
+export const useViewer = (): Viewer => {
+  const { viewer } = useAuth()
+
+  if (!viewer) {
+    throw new Error('useViewer must only be called from an authenticated route with a loaded viewer.')
+  }
+
+  return viewer
 }
 
 graphql(`

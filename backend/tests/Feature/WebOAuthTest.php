@@ -77,3 +77,62 @@ it('creates and authenticates a new user from a verified web Google account', fu
         ->and($user->google_token)->toBe('fake-token')
         ->and($user->google_refresh_token)->toBe('fake-refresh-token');
 });
+
+it('rejects unsafe OAuth return paths', function (mixed $returnTo) {
+    Socialite::fake('google', (new SocialiteUser)
+        ->setRaw([
+            'email_verified' => true,
+        ])
+        ->map([
+            'id' => 'safe-redirect-user',
+            'name' => 'Safe Redirect User',
+            'email' => 'safe-redirect@example.com',
+        ])
+        ->setToken('fake-token'));
+
+    $this->withSession(['return_to' => $returnTo])
+        ->get('/auth/google/callback')
+        ->assertRedirect(frontend_url('/dashboard'))
+        ->assertSessionMissing('return_to');
+})->with([
+    'credential-like authority' => '@evil.example/path',
+    'absolute URL' => 'https://evil.example/path',
+    'protocol-relative URL' => '//evil.example/path',
+    'backslash authority' => '/\\evil.example/path',
+    'array input' => [['https://evil.example/path']],
+]);
+
+it('preserves a safe OAuth return path', function () {
+    Socialite::fake('google', (new SocialiteUser)
+        ->setRaw([
+            'email_verified' => true,
+        ])
+        ->map([
+            'id' => 'safe-return-user',
+            'name' => 'Safe Return User',
+            'email' => 'safe-return@example.com',
+        ])
+        ->setToken('fake-token'));
+
+    $this->withSession(['return_to' => '/dashboard?tab=security#tokens'])
+        ->get('/auth/google/callback')
+        ->assertRedirect(frontend_url('/dashboard?tab=security#tokens'))
+        ->assertSessionMissing('return_to');
+});
+
+it('falls back to the email when the provider profile has no name', function () {
+    Socialite::fake('google', (new SocialiteUser)
+        ->setRaw([
+            'email_verified' => true,
+        ])
+        ->map([
+            'id' => 'nameless-user',
+            'name' => null,
+            'email' => 'nameless@example.com',
+        ])
+        ->setToken('fake-token'));
+
+    $this->get('/auth/google/callback')->assertRedirect(frontend_url('/dashboard'));
+
+    expect(User::query()->where('email', 'nameless@example.com')->firstOrFail()->name)->toBe('nameless');
+});

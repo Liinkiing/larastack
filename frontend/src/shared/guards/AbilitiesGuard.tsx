@@ -3,7 +3,7 @@
 import type { FC, ReactNode } from 'react'
 
 import type { ViewerQuery } from '~/__generated__/gql/graphql'
-import { useAuth } from '~/shared/hooks/useAuth'
+import { useViewer } from '~/shared/hooks/useAuth'
 
 type UserAbilities = NonNullable<ViewerQuery['viewer']>['abilities']
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const AbilitiesGuard: FC<Props> = ({ abilities, children, fallback }) => {
-  const { viewer } = useAuth()
+  const viewer = useViewer()
 
   const keys = Object.keys(abilities) as Array<keyof typeof abilities>
 
