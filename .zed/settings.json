@@ -193,6 +193,7 @@
       "prettier": {
         "allowed": false
       },
+      "language_servers": ["typescript-ls", "!vtsls", "!typescript-language-server"],
       "formatter": [
         {
           "language_server": {
@@ -206,6 +207,7 @@
       "prettier": {
         "allowed": false
       },
+      "language_servers": ["typescript-ls", "!vtsls", "!typescript-language-server"],
       "formatter": [
         {
           "language_server": {
