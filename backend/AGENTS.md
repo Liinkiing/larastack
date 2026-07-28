@@ -9,7 +9,7 @@ Operational guide for coding agents working in `backend/`.
 - Laravel 13
 - Lighthouse GraphQL
 - Laravel Sail
-- PHP 8.5, Pest 4, PHPUnit 12, and Larastan 3
+- PHP 8.5, Pest 5, PHPUnit 13, and Larastan 3
 
 ## Key Paths
 - `app/Actions/` -> single-purpose business operations
@@ -159,8 +159,8 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
 - laravel/telescope (TELESCOPE) - v5
-- pestphp/pest (PEST) - v4
-- phpunit/phpunit (PHPUNIT) - v12
+- pestphp/pest (PEST) - v5
+- phpunit/phpunit (PHPUNIT) - v13
 
 ## Skills Activation
 

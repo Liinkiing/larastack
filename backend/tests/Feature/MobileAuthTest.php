@@ -8,6 +8,16 @@ use Mockery\MockInterface;
 
 uses(RefreshDatabase::class);
 
+it('rejects undeclared mobile authentication fields', function (string $endpoint, array $payload) {
+    $this->postJson($endpoint, [
+        ...$payload,
+        'unexpected' => 'value',
+    ])->assertInvalid(['unexpected']);
+})->with([
+    'Apple' => ['/api/mobile/auth/apple', ['identity_token' => 'valid-token']],
+    'Google' => ['/api/mobile/auth/google', ['id_token' => 'valid-token']],
+]);
+
 it('does not link Apple accounts using client supplied email', function () {
     $user = User::factory()->create([
         'email' => 'victim@example.com',

@@ -1,5 +1,5 @@
 <?php
 
-it('knows true is true', function () {
-    expect(true)->toBeTrue();
+it('runs on the supported PHP version', function () {
+    expect(PHP_VERSION_ID)->toBeGreaterThanOrEqual(80500);
 });
