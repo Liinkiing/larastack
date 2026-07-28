@@ -4,8 +4,12 @@ packages:
   - mobile
 
 catalog:
-  '@typescript/native': npm:typescript@^7.0.2
-  typescript: ~6.0.3
+  '@typescript/native': npm:typescript@7.0.2
+  typescript: 6.0.3
+
+packageConfigs:
+  '@larastack/frontend':
+    saveExact: true
 
 allowBuilds:
   esbuild: true
