@@ -10,6 +10,8 @@ catalog:
 packageConfigs:
   '@larastack/frontend':
     saveExact: true
+  '@larastack/mobile':
+    saveExact: true
 
 allowBuilds:
   esbuild: true
