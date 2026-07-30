@@ -3,7 +3,7 @@ name: eas-simulator
 description: "EAS service (paid). Run and control a user's app on a remote iOS/Android simulator hosted on EAS cloud. Read before running any `eas simulator:*` commands - it has the current syntax for this experimental API. Use whenever the user needs a simulator they can't run locally - 'run my app on a cloud simulator', 'use eas simulator to run/install/screenshot my app', 'I'm on Linux/Cursor and need an iOS device', 'no sim on this box / headless CI', 'let an agent click through my app and screenshot it', 'test my dev build on a remote sim with live reload', 'stream a sim to my browser' - even when they don't say 'EAS Simulator' or 'cloud'. On a host WITHOUT a local simulator (Linux, CI, cloud sandbox) it's the default; on macOS, do NOT auto-trigger for a plain 'run on the simulator' - use it only for a cloud/remote/shareable sim, an iOS version they lack, or an agent-driven session. NOT for local sims (expo run:ios, Xcode, Android Studio), EAS Build/Update, web preview, or physical devices."
 version: 1.0.0
 license: MIT
-allowed-tools: "Bash(npx *eas-cli@*), Bash(npx *agent-device@*), Bash(npx expo *), Bash(eas *), Bash(expo *), Bash(xcodebuild*), Bash(pod*)"
+allowed-tools: "Bash(npx *eas-cli@*), Bash(npx *agent-device@*), Bash(npx expo *), Bash(eas *), Bash(expo *), Bash(xcodebuild*), Bash(pod*), Bash(argent *)"
 ---
 
 # EAS Simulator
@@ -20,7 +20,7 @@ The frontmatter `description` carries the trigger phrases. In short: use this to
 
 ## Cloud vs local: decide this first
 
-- **Non-macOS** (Linux / CI / cloud sandbox like Cursor Cloud, detect via `uname -s` ≠ `Darwin`): the only way to get a sim — **just proceed.**
+- **Non-macOS** (Linux / CI / cloud sandbox like Cursor Cloud, detect via `uname -s` ≠ `Darwin`): the only way to get a sim — **proceed, once you've confirmed access** (see *Check availability first* below).
 - **macOS:** local sims exist and a cloud session costs money + latency, so **ask first** ("a remote cloud sim — to share a live preview, offload, or test an iOS version you lack — or just run locally?") unless the user explicitly said cloud/remote/shareable.
 - Always honor an explicit choice; for "run it locally" hand off to `expo run:ios` / Xcode.
 
@@ -41,6 +41,23 @@ fi
 - A controller to drive the device. This skill uses **agent-device** (open source, MIT), run on demand via `npx agent-device@latest` — nothing globally installed. **argent** is an alternative (`--type argent` in `simulator:start`); see [references/controllers.md](./references/controllers.md).
 - **`.env.eas-simulator`** is written/managed by eas-cli (not this skill): it holds the session id (`EAS_SIMULATOR_SESSION_ID`) + the daemon URL/**token**, so `get`/`stop`/`exec` default to that session (usually **omit `--id`**; pass `--id <id>` to target another). It carries a **token → keep it gitignored** (eas-cli marks it "do not commit" but may not add the ignore rule, and a fresh app's `.gitignore` won't cover it — add `.env.eas-simulator` if missing).
 - `--max-duration-minutes` is paid-plan only; otherwise a default applies.
+- **The command blocks assume a POSIX shell** (bash/zsh) — `printf`, `lsof`, `$(seq …)` loops won't run in cmd/PowerShell. On Windows, run them in WSL or Git Bash, or translate as you go (the `eas-cli`/`agent-device` invocations themselves are cross-platform).
+
+## Check availability first
+
+EAS Simulator is a **limited-access** EAS feature that is still rolling out, so it isn't enabled on every account. Confirm access **before** starting a session — this is a read-only check: no session, no billing.
+
+```bash
+npx --yes eas-cli@latest simulator:availability --json
+# → {"available": true, ...}  enabled → continue to the core loop
+# → {"available": false, ...} not enabled → do NOT start a session
+```
+
+If it's **not** available, don't call `simulator:start` (it will fail). Instead, hand off gracefully so you keep making progress without this skill:
+- Tell the user EAS Simulator isn't available on their account yet — it's coming soon.
+- Fall back to their normal local path for the actual goal — `expo run:ios` / Xcode / Android Studio for a local sim/emulator, an EAS Build, or whatever else fits. Don't dead-end on the cloud sim; the request was almost never "use EAS Simulator specifically."
+
+(If `simulator:availability` isn't recognized, the CLI is too old — upgrade, or treat a `not enabled for this account` error from `simulator:start` the same way: stop and fall back.)
 
 ## The core loop (always the same)
 
@@ -76,7 +93,7 @@ To **watch** it live, hand the user the `webPreviewUrl` that `start` prints (an 
 
 | Command | Purpose |
 |---|---|
-| `npx --yes eas-cli@latest simulator:start --platform ios\|android [--type agent-device\|argent\|serve-sim] [--package-version X] [--max-duration-minutes N] [--non-interactive] [--json]` | Create a session; boot the sim + controller; write `.env.eas-simulator`; print `webPreviewUrl` + job-run URL |
+| `npx --yes eas-cli@latest simulator:start --platform ios\|android [--type agent-device\|argent\|serve-sim] [--package-version X] [--max-duration-minutes N] [--non-interactive] [--json]` | Create a session; boot the sim + controller; write `.env.eas-simulator`; print `webPreviewUrl` + job-run URL. **`--json` suppresses the `.env.eas-simulator` write** — omit it for the `exec` flow, or set the env yourself from `remoteConfig`. |
 | `npx --yes eas-cli@latest simulator:exec <cmd> [args…]` | Load `.env.eas-simulator`, then run `<cmd>` with that env. The bridge to the controller. |
 | `npx --yes eas-cli@latest simulator:get [--id] [--json]` | Session status + connection details. **Use this to confirm readiness** (see *Operating principles*). |
 | `npx --yes eas-cli@latest simulator:list [--status …] [--type …] [--platform …]` | List an app's sessions |
@@ -109,10 +126,10 @@ Quick decision — **default to C; A and B are explicit-only:**
 
 | Verb | Does |
 |---|---|
-| `apps --platform ios` | List installed apps (the blank sim shows none) |
+| `apps --platform ios` | List user-installed apps (the blank sim shows none); add `--all` to include system apps |
 | `install <appId> <path> --platform ios` | Install a local `.app` (uploads it) |
 | `install-from-source <url> --platform ios` | Install from a URL — the VM downloads it (use for EAS artifacts) |
-| `open <appId\|deep-link> --platform ios` | Launch an app (bundle id) or follow an app **deep link** (`exp+slug://…`). **Not** for the `webPreviewUrl` — that's a browser preview for the user, never the device. |
+| `open <appId\|deep-link> --platform ios` | Launch an app (bundle id) or follow an app **deep link** (`exp+slug://…`). A first-time deep link raises a system **"Open in '<app>'?"** dialog — expect it (don't burn a snapshot discovering it) and `press 'label="Open"'` to hand off; it can be slow, so bound it with agent-device's own `--timeout` (e.g. `press 'label="Open"' --timeout 120000`) — **not** a shell `timeout` wrapper (macOS has no `timeout` binary). (Mode C sidesteps this dialog for the Metro-connect link via "Enter URL manually" — see run-your-app.md.) **Not** for the `webPreviewUrl` — that's a browser preview for the user, never the device. |
 | `snapshot -i` | Interactive accessibility tree → `@e1`-style refs |
 | `press <ref\|selector>` | Tap (e.g. `press @e2` or `press 'label="Open"'`) — **the tap verb is `press`, not `tap`** |
 | `fill <ref> "text"` | Type into a field |
@@ -149,8 +166,15 @@ printf '# managed by eas-cli\n' > .env.eas-simulator   # clear the stale session
 
 ## References
 
-- [references/run-your-app.md](./references/run-your-app.md) — full tested command sequences for modes A, B, and C (read before running a mode).
+- [references/run-your-app.md](./references/run-your-app.md) — full command sequences for modes A, B, and C (read before running a mode).
 - [references/controllers.md](./references/controllers.md) — agent-device verb reference and the `argent` alternative.
 - [references/troubleshooting.md](./references/troubleshooting.md) — concrete errors and fixes.
 
 Source of truth: Expo docs and the `eas` / `agent-device` CLIs (`npx --yes eas-cli@latest simulator:* --help`, `agent-device --help`). This skill teaches how to apply them; it doesn't replace them.
+
+## Submitting Feedback
+If you encounter errors, misleading or outdated information in this skill, report it so Expo can improve:
+```bash
+npx --yes submit-expo-feedback@latest --category skills --subject "eas-simulator" "<actionable feedback>"
+```
+Only submit when you have something specific and actionable to report. Include as much relevant context as possible.

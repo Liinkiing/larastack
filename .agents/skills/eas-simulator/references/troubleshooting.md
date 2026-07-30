@@ -4,15 +4,16 @@ Concrete errors seen while validating this flow, and the fix.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `Command simulator:start not found` | `eas-cli` too old (commands are hidden but present from ≥ 20.3.0) | Run via `npx eas-cli@latest …`, or upgrade `eas-cli`. |
+| `Command simulator:start not found` | `eas-cli` too old (commands are hidden but present from ≥ 20.3.0) | Run via `npx --yes eas-cli@latest …`, or upgrade `eas-cli`. |
 | `An Expo user account is required` / `whoami` shows logged-out | No browser login on a cloud/CI/headless box, or `EXPO_TOKEN` unset/invalid | Set **`EXPO_TOKEN`** (expo.dev → Account → Access Tokens) in the env; verify `npx --yes eas-cli@latest whoami`. (Interactive machines can `eas login`.) |
 | `simulator:start`/`build`: no linked project / missing `projectId` | A fresh `create-expo-app` isn't linked to EAS | `npx --yes eas-cli@latest init` to create/link it (writes `extra.eas.projectId`). |
 | `prebuild`/`eas build` prompts for or fails on a missing **iOS bundle identifier** | A fresh app often has no `ios.bundleIdentifier` | Set it in app config (e.g. `dev.<owner>.<slug>`); confirm via `npx expo config --json` (may live in `app.config.js`). |
-| `--max-duration-minutes` rejected, or `simulator:start` denied / not-allowlisted / quota error | The flag is **paid-plan only**, or the experimental feature isn't enabled for the account | Drop `--max-duration-minutes` for the default; check the plan / that EAS Simulator is enabled for the account. |
+| `--max-duration-minutes` rejected | The flag is **paid-plan only** | Drop `--max-duration-minutes` to use the default. |
+| `simulator:start` fails with `not enabled for this account` / not-allowlisted | EAS Simulator is limited-access and isn't enabled for this account | Don't retry. Confirm with `simulator:availability`, then hand off gracefully — tell the user and fall back to a local sim / EAS Build (see SKILL.md *Check availability first*). |
 | `start` keeps "Waiting for … session to be ready" but it never returns | `start`'s readiness poll can miss a session that's actually live | Don't rely on it — poll `npx --yes eas-cli@latest simulator:get --id <id> --json` for `status: IN_PROGRESS` + a populated `remoteConfig`. |
 | `ERR_NGROK_3200` / endpoint offline; `Remote daemon is unavailable` | The session's tunnel/daemon dropped — left idle and timed out, or the VM was torn down | A drop invalidates the **whole** session (installed app, `@e` refs, Metro). **Don't retry the failed verb** — start a fresh session, reset the dotenv, and re-run install→open→drive from the top, acting immediately. |
 | Two sessions running / orphaned session / surprise double billing | A second `start` (e.g. to "retry" a slow boot) creates a second billed session and overwrites the dotenv id, orphaning the first | Never `start` again to retry — poll the existing session instead. Find orphans with `simulator:list --status IN_PROGRESS` and stop each with `simulator:stop --id <id>`. |
-| A device verb hangs (no return for a minute+) | Slow daemon; `press`/`screenshot` can block ~90s | Wrap verbs in `timeout 120 …`; on timeout `snapshot -i` to see if the action landed before retrying (taps can double-fire). Don't blind-retry. |
+| A device verb hangs (no return for a minute+) | Slow daemon; `press`/`screenshot` can block ~90s | Bound it with agent-device's own `--timeout <ms>` (e.g. `--timeout 120000`) — **not** a shell `timeout` wrapper (macOS has no `timeout` binary, so `timeout 120 …` fails with `command not found` and skips the verb). On timeout `snapshot -i` to see if the action landed before retrying (taps can double-fire). Don't blind-retry. |
 | `install requires an active session or an explicit device selector` | `install` can't infer the device | Pass `--platform ios` (or `open` something first to establish a session). |
 | `Unknown command: tap` | The tap verb is `press` | Use `press <ref\|selector>` (e.g. `press @e2` or `press 'label="Open"'`). |
 | `SESSION_NOT_FOUND: No active session. Run open first.` | A verb (e.g. `screenshot`) ran before any app/session was opened | `open <app\|url>` first (or pass `--platform ios`). |
@@ -29,6 +30,7 @@ Concrete errors seen while validating this flow, and the fix.
 | `expo start --tunnel` errors for a robot/`EXPO_TOKEN` user | The ngrok robot-user guard | Use tunnel v2: `EXPO_UNSTABLE_TUNNEL_V2=1 expo start --tunnel`. |
 | Unexpected charges / a session you forgot | `start --non-interactive` does NOT auto-stop | Always `npx --yes eas-cli@latest simulator:stop --id <id>`. List leftovers with `npx --yes eas-cli@latest simulator:list`. |
 | Screenshot shows **old content** / my recent edits don't appear | Running a **release build (Mode A/B)** whose JS was baked in *before* your edits — typically a reused/stale build | A/B reflect code at build time, not now. **Rebuild** (ensure the build's fingerprint matches current source), or use **Mode C** (dev + Metro) so live edits show via Fast Refresh. The screenshot itself is fresh — it's the build that's stale. (`9:41` in the status bar is the sim default, not staleness.) |
+| (argent) Every `argent run`/`tools` call returns `401 Unauthorized` right after linking | `argent link` without `--yes` no-ops on an already-linked URL ("Already linked. No changes."), keeping a stale token from a previous session | Re-link with `--yes` so the new token is written — see the link command in [controllers.md](./controllers.md). |
 
 ## Performance expectations
 
