@@ -63,8 +63,9 @@ Run these from the repo root unless noted otherwise:
 ```bash
 pnpm --filter @larastack/backend dev
 pnpm --filter @larastack/backend lint
+pnpm --filter @larastack/backend lint:fix
 pnpm --filter @larastack/backend test
-pnpm --filter @larastack/backend typecheck
+pnpm --filter @larastack/backend types:check
 pnpm --filter @larastack/backend gql:dump
 ```
 

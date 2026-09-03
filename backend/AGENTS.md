@@ -35,11 +35,18 @@ Run from repo root unless otherwise noted.
 
 - Dev (Vite): `pnpm --filter @larastack/backend dev`
 - Build (Vite): `pnpm --filter @larastack/backend build`
-- Lint/format PHP (Pint, Laravel preset): `pnpm --filter @larastack/backend lint`
-- Static analysis: `pnpm --filter @larastack/backend typecheck`
+- Dev processes (queue worker + Pail, via `artisan dev`): from `backend/`, `./vendor/bin/sail composer run dev`
+- Check PHP formatting (Pint, Laravel preset): `pnpm --filter @larastack/backend lint`
+- Fix PHP formatting: `pnpm --filter @larastack/backend lint:fix`
+- Static analysis: `pnpm --filter @larastack/backend types:check`
+- Full CI gate (Pint + PHPStan + Pest): `pnpm --filter @larastack/backend test:ci`
 - Dependency security audit: from `backend/`, `./vendor/bin/sail composer audit --locked`
 - Reset DB + seed: `pnpm --filter @larastack/backend db:reset`
 - Dump GraphQL schema and sync client schema files: `pnpm --filter @larastack/backend gql:dump`
+
+The PHP tooling flags live in `backend/composer.json` (`lint`, `lint:check`, `types:check`,
+`test`, `ci:check`), mirroring the official Laravel skeleton and starter kits. The npm scripts
+above are thin Sail wrappers around them, so change the flags in `composer.json` only.
 
 ### Pest (Sail)
 Run these from `backend/`.
@@ -56,6 +63,10 @@ Run these from `backend/`.
 - Do not run local cache/optimization commands such as `config:cache`, `route:cache`, `view:cache`, `event:cache`, or `optimize` during development/testing unless explicitly requested; these are deployment steps and can make local tests/config read stale values.
 - If cache/optimization commands are explicitly needed for deployment validation, run `./vendor/bin/sail artisan optimize:clear`, `./vendor/bin/sail artisan lighthouse:clear-schema-cache`, and `./vendor/bin/sail artisan lighthouse:clear-query-cache` immediately after validation.
 - PHP formatting uses Pint (Laravel preset) via Sail.
+- `laravel/pao` rewrites Pest/PHPUnit/PHPStan and Artisan output to compact JSON whenever an
+  agent is detected (`AI_AGENT`, `CLAUDECODE`, `CURSOR_AGENT`, ...). The JSON is the tool's real
+  result, not a degraded view. Set `PAO_DISABLE=1` to get the human renderer back when you need
+  Pest's code frames, and `PAO_FORCE=1` to see the agent output from a normal shell.
 - Use Form Requests for validation/authorization.
 - Prefer explicit return types in controllers/resolvers when practical.
 - Prefer explicit imports over implicit aliases.
@@ -67,7 +78,40 @@ Run these from `backend/`.
 ## GraphQL and Client Sync
 - After schema changes under `backend/graphql/**/*.graphql`, run `pnpm --filter @larastack/backend gql:dump`.
 - `gql:dump` prints the Lighthouse schema, copies it into each existing client workspace, and runs that client's GraphQL codegen. Do not rerun the frontend/mobile generators unless debugging or regenerating client-only operation changes.
-- The `<laravel-boost-guidelines>` block below is generated from installed backend dependencies. Refresh it after dependency changes with `./vendor/bin/sail artisan boost:update --no-interaction` instead of manually maintaining its version snapshot.
+- The generated Boost block at the end of this file is derived from the installed backend
+  dependencies. Refresh it after dependency changes with
+  `./vendor/bin/sail artisan boost:update --no-interaction` rather than editing it by hand.
+- Boost installs its skills into the workspace root at `<repo>/.agents/skills`, not into
+  `backend/`, because agents only discover skills at the repository root. The paths and the
+  `tailwindcss-development` exclusion live in `backend/config/boost.php`; the `../.agents`
+  bind mount in `backend/docker-compose.yml` is what makes those paths resolve the same way
+  inside Sail as they do on the host. Do not edit `boost.json`'s `skills` array by hand --
+  Boost regenerates it from package discovery on every update.
+- After Boost adds a new skill, mirror it for Claude Code the way every other skill in this
+  repository is mirrored: `ln -s ../../.agents/skills/<name> .claude/skills/<name>` from the
+  repository root.
+- `backend/.ai/guidelines/*.md` still works normally: those fragments are composed into the
+  Boost block of `backend/AGENTS.md` and `backend/CLAUDE.md`, which are correctly
+  backend-scoped. Only skills were relocated to the workspace root.
+- The Boost MCP server is wired for Claude Code in the workspace-root `.mcp.json`, mirroring the
+  `laravel-boost` entry in `opencode.json`. Both shell out to
+  `docker exec -i larastack-app-1 php /var/www/html/artisan boost:mcp`, so the Sail app container
+  must be running (`./vendor/bin/sail up -d`) before the tools resolve. Keep that file by hand:
+  `boost:install` would write `backend/.mcp.json`, which agents running from the repository root
+  never read.
+- Boost project rules are disabled (`rules.enabled => false` in `backend/config/boost.php`), so the
+  `record-rule` MCP tool is not registered and the generated guidelines carry no `.ai/rules`
+  section. The rule repository is hard-coded to the Laravel application root, so it would have
+  written to `backend/.ai/rules/` while instructing agents to read `@.ai/rules/index.md` at the
+  workspace root. Record durable backend decisions in this file instead.
+- Do not author custom skills in `backend/.ai/skills`. Boost symlinks those into the skills
+  path using a path relative to the application root, and the application root is
+  `/var/www/html` inside Sail but `<repo>/backend` on the host, so the resulting link is
+  broken on the host. Author skills directly in `<repo>/.agents/skills` like every other
+  skill here.
+- Never write the Boost block's opening marker tag inside this hand-written section:
+  `boost:update` splits the file on the first literal occurrence of that tag and discards
+  everything after it, so a prose mention silently truncates this guide.
 
 ===
 
@@ -145,22 +189,11 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 ## Foundational Context
 
-This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
+This application is a Laravel application running on PHP 8.5. You are an expert with the Laravel ecosystem. Always use the APIs that match the installed major version of each package — do not assume a version.
 
-- php - 8.5
-- laravel/framework (LARAVEL) - v13
-- laravel/prompts (PROMPTS) - v0
-- laravel/sanctum (SANCTUM) - v4
-- laravel/socialite (SOCIALITE) - v5
-- larastan/larastan (LARASTAN) - v3
-- laravel/boost (BOOST) - v2
-- laravel/mcp (MCP) - v0
-- laravel/pail (PAIL) - v1
-- laravel/pint (PINT) - v1
-- laravel/sail (SAIL) - v1
-- laravel/telescope (TELESCOPE) - v5
-- pestphp/pest (PEST) - v5
-- phpunit/phpunit (PHPUNIT) - v13
+Before relying on a package's API, confirm its installed version:
+- PHP packages: run `composer show --direct` to list direct dependencies with versions, or `composer show <vendor/package>` for a single package.
+- JS packages: check `package.json` for the installed versions.
 
 ## Skills Activation
 
@@ -207,7 +240,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 ## Searching Documentation (IMPORTANT)
 
-- Always use `search-docs` before making code changes. Do not skip this step. It returns version-specific docs based on installed packages automatically.
+- Use `search-docs` before changes that depend on Laravel ecosystem APIs, behavior, configuration, or version-specific syntax. Skip it for copy-only edits and other changes where package documentation is irrelevant. Reuse sufficient results already in context instead of searching again.
 - Pass a `packages` array to scope results when you know which packages are relevant.
 - Use multiple broad, topic-based queries: `['rate limiting', 'routing rate limiting', 'routing']`. Expect the most relevant results first.
 - Do not add package names to queries because package info is already shared. Use `test resource table`, not `filament 4 test resource table`.

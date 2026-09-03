@@ -23,6 +23,7 @@
     "larastan/larastan": "^3.10",
     "laravel/boost": "^2.4.13",
     "laravel/pail": "^1.2.7",
+    "laravel/pao": "^1.0.6",
     "laravel/pint": "^1.29.3",
     "laravel/sail": "^1.64",
     "laravel/telescope": "^5.21",
@@ -51,6 +52,35 @@
     }
   },
   "scripts": {
+    "setup": [
+      "composer install",
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "@php artisan key:generate",
+      "@php artisan migrate --force"
+    ],
+    "dev": [
+      "Composer\\Config::disableProcessTimeout",
+      "@php artisan dev"
+    ],
+    "lint": [
+      "pint --parallel"
+    ],
+    "lint:check": [
+      "pint --parallel --test"
+    ],
+    "types:check": [
+      "phpstan analyse"
+    ],
+    "test": [
+      "@php artisan config:clear --ansi @no_additional_args",
+      "@lint:check @no_additional_args",
+      "@types:check @no_additional_args",
+      "@php artisan test"
+    ],
+    "ci:check": [
+      "Composer\\Config::disableProcessTimeout",
+      "@test"
+    ],
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover --ansi"
@@ -64,9 +94,8 @@
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi"
     ],
-    "dev": [
-      "Composer\\Config::disableProcessTimeout",
-      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
+    "pre-package-uninstall": [
+      "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
     ]
   },
   "extra": {

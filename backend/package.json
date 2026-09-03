@@ -4,11 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
     "dev": "vite",
-    "lint": "./vendor/bin/sail pint",
+    "build": "vite build",
+    "setup": "./vendor/bin/sail composer run setup",
+    "lint": "./vendor/bin/sail composer run lint:check",
+    "lint:fix": "./vendor/bin/sail composer run lint",
+    "types:check": "./vendor/bin/sail composer run types:check",
     "test": "./vendor/bin/sail pest",
-    "typecheck": "./vendor/bin/sail bin phpstan",
+    "test:ci": "./vendor/bin/sail composer run ci:check",
     "db:reset": "./vendor/bin/sail artisan migrate:fresh --seed",
     "gql:dump": "./vendor/bin/sail artisan lighthouse:print-schema --write && ./scripts/sync-gql-schema.sh",
     "gql:ide-helper": "./vendor/bin/sail artisan lighthouse:ide-helper --omit-built-in"
@@ -17,10 +20,13 @@
     "@tailwindcss/postcss": "^4.2.2",
     "autoprefixer": "^10.4.27",
     "axios": "^1.14.0",
-    "concurrently": "^9.2.1",
-    "laravel-vite-plugin": "^3.0.0",
+    "concurrently": "^10.0.3",
+    "laravel-vite-plugin": "^3.1.0",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.3"
+  },
+  "optionalDependencies": {
+    "@laravel/multiplex": "^0.4.1"
   }
 }

@@ -20,6 +20,8 @@ services:
       IGNITION_LOCAL_SITES_PATH: '${PWD}'
     volumes:
       - '.:/var/www/html'
+      # Lets `boost:update` resolve its '../.agents/skills' path to the workspace root.
+      - '../.agents:/var/www/.agents'
     networks:
       - app
     depends_on:
