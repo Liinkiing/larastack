@@ -16,9 +16,10 @@ final class SetLoggedInCookieMiddleware
         $response = $next($request);
 
         Cookie::queue(
-            Cookie::forever(
-                config('session.logged_in_cookie_key'),
-                Auth::check() ? 'true' : 'false',
+            Cookie::make(
+                name: config('session.logged_in_cookie_key'),
+                value: Auth::check() ? 'true' : 'false',
+                minutes: config('session.lifetime'),
                 secure: config('session.secure'),
                 httpOnly: false,
                 sameSite: config('session.same_site')
