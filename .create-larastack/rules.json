@@ -23,6 +23,9 @@
             "backend/app/Http/Requests/Auth/MobileGoogleLoginRequest.php",
             "backend/app/Services/Auth/AppleIdTokenVerifier.php",
             "backend/app/Services/Auth/GoogleIdTokenVerifier.php",
+            "backend/app/Services/Auth/IdTokenSigningKeys.php",
+            "backend/lang/en/mobile_auth.php",
+            "backend/tests/Feature/IdTokenVerifierTest.php",
             "backend/tests/Feature/MobileAuthTest.php"
           ]
         },
