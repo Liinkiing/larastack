@@ -2,13 +2,8 @@
 
 namespace App\Services\Auth;
 
-use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
@@ -20,6 +15,8 @@ class AppleIdTokenVerifier
 
     private const ISSUER = 'https://appleid.apple.com';
 
+    public function __construct(private readonly IdTokenSigningKeys $signingKeys) {}
+
     /**
      * @return array<string, mixed>
      *
@@ -27,83 +24,37 @@ class AppleIdTokenVerifier
      */
     public function verify(string $identityToken): array
     {
-        $keys = $this->appleKeys();
+        $keys = $this->signingKeys->forToken($identityToken, self::JWKS_URL, self::JWKS_CACHE_KEY, 'apple', 'identity_token');
 
         try {
             $payload = (array) JWT::decode($identityToken, $keys);
         } catch (Throwable) {
             throw ValidationException::withMessages([
-                'identity_token' => 'Invalid Apple identity token.',
+                'identity_token' => __('mobile_auth.apple.token_invalid'),
             ]);
         }
 
         $issuer = Arr::get($payload, 'iss');
         if (! is_string($issuer) || $issuer !== self::ISSUER) {
             throw ValidationException::withMessages([
-                'identity_token' => 'Invalid Apple token issuer.',
+                'identity_token' => __('mobile_auth.apple.issuer_invalid'),
             ]);
         }
 
         if (! $this->audienceIsAllowed(Arr::get($payload, 'aud'))) {
             throw ValidationException::withMessages([
-                'identity_token' => 'Apple token audience is not allowed.',
+                'identity_token' => __('mobile_auth.apple.audience_invalid'),
             ]);
         }
 
         $subject = Arr::get($payload, 'sub');
         if (! is_string($subject) || $subject === '') {
             throw ValidationException::withMessages([
-                'identity_token' => 'Apple token subject is missing.',
+                'identity_token' => __('mobile_auth.apple.subject_missing'),
             ]);
         }
 
         return $payload;
-    }
-
-    /**
-     * @return array<string, Key>
-     *
-     * @throws ValidationException
-     */
-    private function appleKeys(): array
-    {
-        $jwks = Cache::remember(self::JWKS_CACHE_KEY, now()->addHours(6), function (): array {
-            try {
-                /** @var Response $response */
-                $response = Http::connectTimeout(3)
-                    ->timeout(5)
-                    ->retry(2, 200, throw: false)
-                    ->acceptJson()
-                    ->get(self::JWKS_URL);
-            } catch (Throwable) {
-                throw ValidationException::withMessages([
-                    'identity_token' => 'Unable to verify Apple identity token right now. Try again.',
-                ]);
-            }
-
-            if (! $response->successful()) {
-                throw ValidationException::withMessages([
-                    'identity_token' => 'Unable to verify Apple identity token right now. Try again.',
-                ]);
-            }
-
-            $jwks = $response->json();
-            if (! is_array($jwks)) {
-                throw ValidationException::withMessages([
-                    'identity_token' => 'Invalid Apple key response.',
-                ]);
-            }
-
-            return $jwks;
-        });
-
-        try {
-            return JWK::parseKeySet($jwks, 'RS256');
-        } catch (Throwable) {
-            throw ValidationException::withMessages([
-                'identity_token' => 'Invalid Apple key set.',
-            ]);
-        }
     }
 
     private function audienceIsAllowed(mixed $audience): bool

@@ -80,8 +80,9 @@ pnpm --filter @larastack/mobile development-builds          # Create development
 ```bash
 pnpm --filter @larastack/mobile expo:doctor      # Check project health and dependencies
 pnpm --filter @larastack/mobile ts:check         # Run TypeScript type checking
-pnpm --filter @larastack/mobile test             # Run Vitest in watch mode
-pnpm --filter @larastack/mobile test:ci          # Run Vitest once (CI mode)
+pnpm --filter @larastack/mobile test             # Watch all unit and native component tests
+pnpm --filter @larastack/mobile test:ci          # Run the same complete suite once
+pnpm --filter @larastack/mobile test:watch       # Explicit watch mode for the complete suite
 pnpm --filter @larastack/mobile lint             # Run oxlint
 pnpm --filter @larastack/mobile format:check      # Check oxfmt formatting
 pnpm --filter @larastack/mobile gen:gql           # Regenerate GraphQL artifacts
@@ -181,7 +182,7 @@ When working with EAS Workflows, **always refer to**:
 ### GraphQL and Tests
 
 - Apollo Client runtime data masking is authoritative. Keep Codegen fragment masking disabled, use Apollo's fragment APIs, and regenerate after operation changes.
-- Keep Vitest tests outside `src/app/**`; `test:ci` runs the suite once and should not rely on `passWithNoTests` as a substitute for coverage.
+- Keep Vitest tests outside `src/app/**`; follow `TESTING.md` for the unit, shared-component, and iOS/Android native test naming matrix.
 
 ## Troubleshooting
 

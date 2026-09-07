@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Services\Auth\AppleIdTokenVerifier;
 use App\Services\Auth\GoogleIdTokenVerifier;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Mockery\MockInterface;
 
 uses(RefreshDatabase::class);
@@ -117,4 +118,24 @@ it('returns an explicit mobile user payload after Google login', function () {
         'email',
         'avatar_url',
     ]);
+});
+
+it('revokes only the current mobile personal access token', function () {
+    $user = User::factory()->create();
+    $otherToken = $user->createToken('Other device')->accessToken;
+    $currentToken = $user->createToken('Current device');
+
+    $this->withToken($currentToken->plainTextToken)
+        ->postJson('/api/mobile/auth/logout')
+        ->assertNoContent();
+
+    expect($currentToken->accessToken->fresh())->toBeNull()
+        ->and($otherToken->fresh())->not->toBeNull();
+});
+
+it('rejects stateful sessions on the mobile token logout endpoint', function () {
+    $user = User::factory()->create();
+    Sanctum::actingAs($user);
+
+    $this->postJson('/api/mobile/auth/logout')->assertUnauthorized();
 });

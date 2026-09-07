@@ -139,6 +139,12 @@
       "skillPath": "skills/pnpm/SKILL.md",
       "computedHash": "2ec08c851c6f901d4ed72c21b826416ed074a487db65662b36249418afd728bf"
     },
+    "react-native-testing": {
+      "source": "callstack/react-native-testing-library",
+      "sourceType": "github",
+      "skillPath": "skills/react-native-testing/SKILL.md",
+      "computedHash": "bb30ad4660a42c71178c91d7a3f2e88556add9dba2213ee26f099dbe352fd649"
+    },
     "uniwind": {
       "source": "uni-stack/uniwind",
       "sourceType": "github",

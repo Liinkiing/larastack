@@ -72,5 +72,5 @@ Run from repo root.
 ## Type Checking and Tests
 
 - `ts:check` uses the native TypeScript 7 compiler; TypeScript 6 remains installed for tools that have not adopted the native compiler. Validate codegen, Next.js, Storybook, and Vitest before changing that split.
-- Add focused Vitest tests beside testable utilities and behavior. `test:ci` is the non-watch validation command.
+- Add focused Vitest tests beside testable utilities and behavior. `test:ci` is the non-watch validation command; follow `TESTING.md` for conventions.
 - Test React component behavior with React Testing Library and user-visible queries. Use direct React DOM APIs only for renderer-level fixtures such as producing server HTML for an explicit hydration test.

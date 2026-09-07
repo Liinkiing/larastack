@@ -2,13 +2,8 @@
 
 namespace App\Services\Auth;
 
-use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
@@ -24,6 +19,8 @@ class GoogleIdTokenVerifier
         'https://accounts.google.com',
     ];
 
+    public function __construct(private readonly IdTokenSigningKeys $signingKeys) {}
+
     /**
      * @return array<string, mixed>
      *
@@ -31,83 +28,37 @@ class GoogleIdTokenVerifier
      */
     public function verify(string $idToken): array
     {
-        $keys = $this->googleKeys();
+        $keys = $this->signingKeys->forToken($idToken, self::JWKS_URL, self::JWKS_CACHE_KEY, 'google', 'id_token');
 
         try {
             $payload = (array) JWT::decode($idToken, $keys);
         } catch (Throwable) {
             throw ValidationException::withMessages([
-                'id_token' => 'Invalid Google ID token.',
+                'id_token' => __('mobile_auth.google.token_invalid'),
             ]);
         }
 
         $issuer = Arr::get($payload, 'iss');
         if (! is_string($issuer) || ! in_array($issuer, self::ISSUERS, true)) {
             throw ValidationException::withMessages([
-                'id_token' => 'Invalid Google token issuer.',
+                'id_token' => __('mobile_auth.google.issuer_invalid'),
             ]);
         }
 
         if (! $this->audienceIsAllowed(Arr::get($payload, 'aud'))) {
             throw ValidationException::withMessages([
-                'id_token' => 'Google token audience is not allowed.',
+                'id_token' => __('mobile_auth.google.audience_invalid'),
             ]);
         }
 
         $subject = Arr::get($payload, 'sub');
         if (! is_string($subject) || $subject === '') {
             throw ValidationException::withMessages([
-                'id_token' => 'Google token subject is missing.',
+                'id_token' => __('mobile_auth.google.subject_missing'),
             ]);
         }
 
         return $payload;
-    }
-
-    /**
-     * @return array<string, Key>
-     *
-     * @throws ValidationException
-     */
-    private function googleKeys(): array
-    {
-        $jwks = Cache::remember(self::JWKS_CACHE_KEY, now()->addHours(6), function (): array {
-            try {
-                /** @var Response $response */
-                $response = Http::connectTimeout(3)
-                    ->timeout(5)
-                    ->retry(2, 200, throw: false)
-                    ->acceptJson()
-                    ->get(self::JWKS_URL);
-            } catch (Throwable) {
-                throw ValidationException::withMessages([
-                    'id_token' => 'Unable to verify Google ID token right now. Try again.',
-                ]);
-            }
-
-            if (! $response->successful()) {
-                throw ValidationException::withMessages([
-                    'id_token' => 'Unable to verify Google ID token right now. Try again.',
-                ]);
-            }
-
-            $jwks = $response->json();
-            if (! is_array($jwks)) {
-                throw ValidationException::withMessages([
-                    'id_token' => 'Invalid Google key response.',
-                ]);
-            }
-
-            return $jwks;
-        });
-
-        try {
-            return JWK::parseKeySet($jwks, 'RS256');
-        } catch (Throwable) {
-            throw ValidationException::withMessages([
-                'id_token' => 'Invalid Google key set.',
-            ]);
-        }
     }
 
     private function audienceIsAllowed(mixed $audience): bool
