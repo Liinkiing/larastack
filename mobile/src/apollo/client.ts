@@ -6,7 +6,7 @@ import { LocalState } from '@apollo/client/local-state'
 import introspection from '~/__generated__/gql/possibleTypes.json'
 import { resolveGraphqlEndpoint } from '~/apollo/endpoint'
 import { typePolicies } from '~/apollo/policies'
-import { getPersistedAccessToken, setCachedAccessToken } from '~/services/auth'
+import { getPersistedAccessToken, invalidateCachedAccessToken } from '~/services/auth'
 import { notifyAuthSessionInvalidated } from '~/services/auth-session'
 
 const graphqlEndpoint = resolveGraphqlEndpoint({
@@ -22,6 +22,7 @@ const authLink = new SetContextLink(async ({ headers }) => {
   const token = await getPersistedAccessToken()
 
   return {
+    authSessionToken: token,
     headers: {
       ...headers,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -30,27 +31,18 @@ const authLink = new SetContextLink(async ({ headers }) => {
   }
 })
 
-const sessionInvalidationLink = new ErrorLink(({ error }) => {
-  if (ServerError.is(error) && error.statusCode === 401) {
-    setCachedAccessToken(null)
-    notifyAuthSessionInvalidated()
-    return
-  }
+const sessionInvalidationLink = new ErrorLink(({ error, operation }) => {
+  const isUnauthenticated =
+    (ServerError.is(error) && error.statusCode === 401) ||
+    (CombinedGraphQLErrors.is(error) &&
+      error.errors.some(
+        graphqlError =>
+          graphqlError.extensions?.code === 'UNAUTHENTICATED' ||
+          graphqlError.message.toLowerCase().includes('unauthenticated'),
+      ))
+  const token = operation.getContext().authSessionToken
 
-  if (!CombinedGraphQLErrors.is(error)) {
-    return
-  }
-
-  const hasUnauthenticatedError = error.errors.some(graphqlError => {
-    if (graphqlError.extensions?.code === 'UNAUTHENTICATED') {
-      return true
-    }
-
-    return graphqlError.message.toLowerCase().includes('unauthenticated')
-  })
-
-  if (hasUnauthenticatedError) {
-    setCachedAccessToken(null)
+  if (isUnauthenticated && typeof token === 'string' && invalidateCachedAccessToken(token)) {
     notifyAuthSessionInvalidated()
   }
 })

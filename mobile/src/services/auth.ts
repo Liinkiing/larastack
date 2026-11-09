@@ -5,6 +5,7 @@ import { getDeviceName } from '~/utils/device'
 const ACCESS_TOKEN_KEY = 'larastack.mobile.access-token'
 const AUTH_REQUEST_TIMEOUT_MS = 10_000
 let accessTokenCache: string | null | undefined
+let tokenStorageOperation = Promise.resolve()
 
 const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL
 
@@ -98,14 +99,25 @@ export async function exchangeAppleIdentityToken(payload: MobileAppleAuthPayload
   })
 }
 
-export async function persistAccessToken(token: string): Promise<void> {
-  await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token)
-  accessTokenCache = token
+function writeAccessToken(write: () => Promise<void>): Promise<void> {
+  const result = tokenStorageOperation.then(write)
+  tokenStorageOperation = result.catch(() => undefined)
+  return result
 }
 
-export async function clearAccessToken(): Promise<void> {
+export async function persistAccessToken(token: string): Promise<void> {
+  const result = writeAccessToken(() => SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token))
+  const pendingWrite = tokenStorageOperation
+  await result
+
+  if (tokenStorageOperation === pendingWrite) {
+    accessTokenCache = token
+  }
+}
+
+export function clearAccessToken(): Promise<void> {
   accessTokenCache = null
-  await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY)
+  return writeAccessToken(() => SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY))
 }
 
 export async function getPersistedAccessToken(): Promise<string | null> {
@@ -113,13 +125,21 @@ export async function getPersistedAccessToken(): Promise<string | null> {
     return accessTokenCache
   }
 
-  accessTokenCache = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY)
+  const storedToken = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY)
+  if (accessTokenCache === undefined) {
+    accessTokenCache = storedToken
+  }
 
   return accessTokenCache
 }
 
-export function setCachedAccessToken(token: string | null): void {
-  accessTokenCache = token
+export function invalidateCachedAccessToken(token: string): boolean {
+  if (token !== accessTokenCache) {
+    return false
+  }
+
+  accessTokenCache = null
+  return true
 }
 
 export async function fetchCurrentUser(token: string): Promise<MobileAuthUser> {

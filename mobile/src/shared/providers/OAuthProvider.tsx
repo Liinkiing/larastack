@@ -1,4 +1,5 @@
-import { createContext, type PropsWithChildren, use, useEffect, useState } from 'react'
+import { createContext, type PropsWithChildren, use, useEffect, useEffectEvent, useRef, useState } from 'react'
+import { AppState } from 'react-native'
 
 import { apolloClient } from '~/apollo/client'
 import { isAppleSignInAvailable, signInWithApple } from '~/services/apple-signin'
@@ -35,6 +36,11 @@ export function OAuthProvider({ children }: PropsWithChildren) {
   const [isHydratingSession, setIsHydratingSession] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [isAppleLoginAvailable, setIsAppleLoginAvailable] = useState(false)
+  const [shouldRetrySession, setShouldRetrySession] = useState(false)
+  const isRestoringSession = useRef(false)
+  const isChangingSession = useRef(false)
+  const sessionGeneration = useRef(0)
+  const sessionCleanup = useRef(Promise.resolve())
 
   useEffect(() => {
     if (process.env.EXPO_OS !== 'ios') {
@@ -49,103 +55,139 @@ export function OAuthProvider({ children }: PropsWithChildren) {
     void resolveAppleAvailability()
   }, [])
 
-  useEffect(() => {
-    const hydrateSession = async () => {
-      try {
-        const token = await getPersistedAccessToken()
-
-        if (!token) {
-          setAccessToken(null)
-          return
-        }
-
-        try {
-          await fetchCurrentUser(token)
-          setAccessToken(token)
-        } catch (error) {
-          if (error instanceof InvalidAccessTokenError) {
-            setAccessToken(null)
-            await clearAccessToken()
-          } else {
-            setAuthError('Unable to verify your session. Check your connection and try again.')
-          }
-        }
-      } catch (error) {
-        setAccessToken(null)
-        setAuthError(error instanceof Error ? error.message : 'Unable to restore the saved session.')
-      } finally {
-        setIsHydratingSession(false)
-      }
+  const restoreSession = useEffectEvent(async () => {
+    if (isRestoringSession.current || isChangingSession.current) {
+      return
     }
 
-    void hydrateSession()
+    isRestoringSession.current = true
+    const generation = sessionGeneration.current
+
+    try {
+      const token = await getPersistedAccessToken()
+      if (generation !== sessionGeneration.current) {
+        return
+      }
+
+      if (token) {
+        await fetchCurrentUser(token)
+      }
+
+      if (generation === sessionGeneration.current) {
+        setAccessToken(token)
+        setShouldRetrySession(false)
+        setAuthError(null)
+      }
+    } catch (error) {
+      if (generation !== sessionGeneration.current) {
+        return
+      }
+
+      if (error instanceof InvalidAccessTokenError) {
+        setAccessToken(null)
+        setShouldRetrySession(false)
+        setAuthError('Session expired. Please sign in again.')
+        try {
+          await clearAccessToken()
+        } catch {
+          if (generation === sessionGeneration.current) {
+            setAuthError('The saved session could not be cleared. Please sign in again.')
+          }
+        }
+      } else {
+        setShouldRetrySession(true)
+        setAuthError('Unable to verify your session. Check your connection and try again.')
+      }
+    } finally {
+      isRestoringSession.current = false
+    }
+  })
+
+  const retrySessionOnForeground = useEffectEvent(() => {
+    if (shouldRetrySession) {
+      void restoreSession()
+    }
+  })
+
+  useEffect(() => {
+    if (!isRestoringSession.current) {
+      void restoreSession().finally(() => setIsHydratingSession(false))
+    }
+
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === 'active') {
+        retrySessionOnForeground()
+      }
+    })
+
+    return () => subscription.remove()
   }, [])
 
   useEffect(() => {
     return onAuthSessionInvalidated(() => {
-      const invalidateSession = async () => {
-        setAccessToken(null)
-        setAuthError('Session expired. Please sign in again.')
-        await Promise.allSettled([clearAccessToken(), apolloClient.clearStore()])
-      }
-
-      void invalidateSession()
+      sessionGeneration.current += 1
+      setAccessToken(null)
+      setShouldRetrySession(false)
+      setAuthError('Session expired. Please sign in again.')
+      sessionCleanup.current = Promise.allSettled([clearAccessToken(), apolloClient.clearStore()]).then(() => undefined)
     })
   }, [])
 
-  const loginWithGoogle = async () => {
+  const login = async (getToken: () => Promise<string>, isCancelled: (error: unknown) => boolean) => {
+    if (isChangingSession.current) {
+      return
+    }
+
+    isChangingSession.current = true
+    const generation = ++sessionGeneration.current
     setIsLoading(true)
     setAuthError(null)
 
     try {
-      const idToken = await signInWithGoogle()
-      const { token } = await exchangeGoogleIdToken(idToken)
-
-      await persistAccessToken(token)
-      setAccessToken(token)
+      const token = await getToken()
+      await sessionCleanup.current
       await apolloClient.clearStore()
-    } catch (error) {
-      if (error instanceof Error && error.message === 'Google sign-in was cancelled.') {
+      if (generation !== sessionGeneration.current) {
         return
       }
 
-      setAuthError(error instanceof Error ? error.message : 'Authentication failed. Please try again.')
+      await persistAccessToken(token)
+      if (generation === sessionGeneration.current) {
+        setAccessToken(token)
+        setShouldRetrySession(false)
+      }
+    } catch (error) {
+      if (generation === sessionGeneration.current && !isCancelled(error)) {
+        setAuthError(error instanceof Error ? error.message : 'Authentication failed. Please try again.')
+      }
     } finally {
+      isChangingSession.current = false
       setIsLoading(false)
     }
   }
 
-  const loginWithApple = async () => {
-    setIsLoading(true)
-    setAuthError(null)
+  const loginWithGoogle = () =>
+    login(
+      async () => (await exchangeGoogleIdToken(await signInWithGoogle())).token,
+      error => error instanceof Error && error.message === 'Google sign-in was cancelled.',
+    )
 
-    try {
-      const applePayload = await signInWithApple()
-      const { token } = await exchangeAppleIdentityToken(applePayload)
-
-      await persistAccessToken(token)
-      setAccessToken(token)
-      await apolloClient.clearStore()
-    } catch (error) {
-      const cancelled =
-        typeof error === 'object' &&
-        error !== null &&
-        'code' in error &&
-        (error as { code?: string }).code === 'ERR_REQUEST_CANCELED'
-
-      if (cancelled) {
-        return
-      }
-
-      setAuthError(error instanceof Error ? error.message : 'Authentication failed. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const loginWithApple = () =>
+    login(
+      async () => (await exchangeAppleIdentityToken(await signInWithApple())).token,
+      error => typeof error === 'object' && error !== null && 'code' in error && error.code === 'ERR_REQUEST_CANCELED',
+    )
 
   const logout = async () => {
+    if (isChangingSession.current) {
+      return
+    }
+
+    isChangingSession.current = true
+    const generation = ++sessionGeneration.current
     setIsLoading(true)
     setAuthError(null)
+    setShouldRetrySession(false)
 
     const tokenToRevoke = accessToken
     const remoteTasks = [signOutFromGoogle()]
@@ -162,10 +204,12 @@ export function OAuthProvider({ children }: PropsWithChildren) {
       setAuthError('Signed out in this session, but the saved session could not be fully cleared.')
     }
 
+    isChangingSession.current = false
     setIsLoading(false)
 
     const remoteResults = await remoteCleanup
     if (
+      generation === sessionGeneration.current &&
       localResults.every(result => result.status === 'fulfilled') &&
       remoteResults.some(result => result.status === 'rejected')
     ) {
