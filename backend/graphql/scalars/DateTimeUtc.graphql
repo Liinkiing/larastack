@@ -1,0 +1,2 @@
+"An ISO 8601 UTC timestamp with microsecond precision, for example `2026-01-01T12:00:00.000000Z`."
+scalar DateTimeUtc @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeUtc")

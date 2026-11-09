@@ -8,7 +8,7 @@ These guidelines apply to all GraphQL schema and resolver files in the `backend`
 backend/graphql/
 ├── schema.graphql      # Root schema with imports
 ├── types/              # Type definitions (User.graphql)
-├── scalars/            # Custom scalars (DateTime.graphql, HTML.graphql)
+├── scalars/            # Scalar definitions (DateTimeUtc.graphql, HTML.graphql)
 ├── interfaces/         # Shared interfaces (Timestampable.graphql)
 └── enums/              # Enum definitions
 ```
@@ -32,10 +32,10 @@ type Quiz implements Timestampable {
   coverUrl: URI @rename(attribute: "cover_url")
 
   "When the quiz was created."
-  createdAt: DateTime! @rename(attribute: "created_at")
+  createdAt: DateTimeUtc! @rename(attribute: "created_at")
 
   "When the quiz was last updated."
-  updatedAt: DateTime! @rename(attribute: "updated_at")
+  updatedAt: DateTimeUtc! @rename(attribute: "updated_at")
 }
 ```
 
@@ -67,7 +67,7 @@ extend type Mutation {
 | `@auth`                            | Inject authenticated user          |
 | `@canModel(ability, model)`        | Policy authorization               |
 | `@field(resolver: "...")`          | Custom resolver class              |
-| `@private`                         | Hide field from unauthorized users |
+| `@canRoot(ability)`                | Authorize a field against its root model |
 
 ## Resolvers
 
@@ -108,5 +108,5 @@ This prints the schema, copies it to `frontend/schema.graphql`, and runs fronten
 - All fields have documentation strings
 - Using `@rename` for snake_case model attributes
 - Using `@globalId` on ID fields
-- Authorization via `@guard`, `@canModel`, or `@private`
+- Authorization via `@guard`, `@canModel`, or `@canRoot`
 - Ran `pnpm run gql:dump` after changes

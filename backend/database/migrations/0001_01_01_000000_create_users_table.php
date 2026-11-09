@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->boolean('is_admin')->default(false);
             $table->string('avatar_url')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestampTz('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestampsTz();
 
             $table->string('google_id')->nullable()->unique();
             $table->text('google_token')->nullable();
@@ -32,7 +32,7 @@ return new class extends Migration
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
-            $table->timestamp('created_at')->nullable();
+            $table->timestampTz('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {

@@ -72,6 +72,10 @@ pnpm --filter @larastack/backend gql:dump
 
 For direct Sail commands, run them from `backend/`.
 
+## Timestamps
+
+Laravel and PostgreSQL sessions use UTC. Account timestamps use timezone-aware PostgreSQL columns, and GraphQL returns `DateTimeUtc` strings such as `2026-01-01T12:00:00.000000Z`. Convert instants to the desired timezone at the display boundary.
+
 ## Queue workers and scheduler
 
 Start Sail first to build the app image. For an existing checkout, set `QUEUE_CONNECTION=redis` in `backend/.env` to enable async jobs. Run these commands from the repository root:

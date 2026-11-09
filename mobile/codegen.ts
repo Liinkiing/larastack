@@ -16,8 +16,7 @@ const config: CodegenConfig = {
         nonOptionalTypename: true,
         scalars: {
           Date: 'string',
-          DateTime: 'string',
-          DateTimeUTC: 'string',
+          DateTimeUtc: 'string',
           HTML: 'string',
           HexColor: 'string',
           Time: 'string',

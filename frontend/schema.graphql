@@ -3,8 +3,8 @@ type Query {
   viewer: User
 }
 
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime
+"An ISO 8601 UTC timestamp with microsecond precision, for example `2026-01-01T12:00:00.000000Z`."
+scalar DateTimeUtc
 
 "Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec"
 scalar FileUpload
@@ -14,10 +14,10 @@ scalar URI
 
 interface Timestampable {
   "When the node was created."
-  createdAt: DateTime!
+  createdAt: DateTimeUtc!
 
   "When the node was updated."
-  updatedAt: DateTime!
+  updatedAt: DateTimeUtc!
 }
 
 "Abilities of the user."
@@ -40,10 +40,10 @@ type User implements Timestampable {
   avatarUrl: URI
 
   "When the account was created."
-  createdAt: DateTime!
+  createdAt: DateTimeUtc!
 
   "When the account was last updated."
-  updatedAt: DateTime!
+  updatedAt: DateTimeUtc!
 
   "Abilities of the user."
   abilities: UserAbilities!

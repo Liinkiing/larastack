@@ -12,19 +12,19 @@ type User implements Timestampable {
   name: String!
 
   "Unique email address."
-  email: String! @private
+  email: String! @canRoot(ability: "viewPrivateFields")
 
   "Avatar URL."
   avatarUrl: URI @rename(attribute: "avatar_url")
 
   "When the account was created."
-  createdAt: DateTime! @rename(attribute: "created_at")
+  createdAt: DateTimeUtc! @rename(attribute: "created_at")
 
   "When the account was last updated."
-  updatedAt: DateTime! @rename(attribute: "updated_at")
+  updatedAt: DateTimeUtc! @rename(attribute: "updated_at")
 
   "Abilities of the user."
-  abilities: UserAbilities! @private @field(resolver: "App\\GraphQL\\Resolvers\\User\\UserAbilitiesResolver")
+  abilities: UserAbilities! @canRoot(ability: "viewPrivateFields") @field(resolver: "App\\GraphQL\\Resolvers\\User\\UserAbilitiesResolver")
 }
 
 extend type Query {
