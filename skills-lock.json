@@ -31,6 +31,12 @@
       "skillPath": "plugins/expo/skills/eas-simulator/SKILL.md",
       "computedHash": "77b920821d1aba217cd8a6b7442995b50bca6fea139c6e4964748bfe50b84a90"
     },
+    "eas-update": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/eas-update/SKILL.md",
+      "computedHash": "0d434ae35de68bfab06735187ce80f3fe221328dd7ed457eeb2d4272c8abe238"
+    },
     "eas-update-insights": {
       "source": "expo/skills",
       "sourceType": "github",

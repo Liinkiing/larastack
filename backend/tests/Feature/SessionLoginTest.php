@@ -13,7 +13,7 @@ it('authenticates ULID users with database sessions', function () {
     config()->set('session.secure', true);
 
     $primaryIndex = collect(Schema::getIndexes('users'))
-        ->first(fn (array $index): bool => ($index['primary'] ?? false) === true);
+        ->first(fn (array $index): bool => $index['primary']);
 
     expect($primaryIndex['columns'] ?? [])->toBe(['id']);
 

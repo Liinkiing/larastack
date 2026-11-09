@@ -7,6 +7,12 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "environment": "development",
+      "env": {
+        "APP_VARIANT": "development",
+        "EAS_USE_CACHE": "1",
+        "EAS_GRADLE_CACHE": "1"
+      },
       "android": {
         "image": "latest"
       },
@@ -20,9 +26,15 @@
         "simulator": true
       }
     },
-    "preview": {
-      "distribution": "internal",
-      "channel": "master",
+    "internal": {
+      "distribution": "store",
+      "channel": "internal",
+      "environment": "preview",
+      "autoIncrement": true,
+      "env": {
+        "EAS_USE_CACHE": "1",
+        "EAS_GRADLE_CACHE": "1"
+      },
       "android": {
         "image": "latest"
       },
@@ -31,8 +43,14 @@
       }
     },
     "production": {
+      "distribution": "store",
       "channel": "production",
+      "environment": "production",
       "autoIncrement": true,
+      "env": {
+        "EAS_USE_CACHE": "1",
+        "EAS_GRADLE_CACHE": "1"
+      },
       "android": {
         "image": "latest"
       },
@@ -42,6 +60,16 @@
     }
   },
   "submit": {
-    "production": {}
+    "internal": {
+      "android": {
+        "track": "internal"
+      }
+    },
+    "production": {
+      "android": {
+        "track": "production",
+        "releaseStatus": "draft"
+      }
+    }
   }
 }

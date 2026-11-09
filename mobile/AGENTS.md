@@ -9,7 +9,7 @@
 
 This is a native iOS/Android Expo application. `app.json.platforms` intentionally lists only iOS and Android; retained web configuration and dependencies do not make web a supported deployment target.
 
-Current major baseline: Expo SDK 57, Expo Router 57, React 19, React Native 0.86, and Uniwind 1. Read exact versions from `mobile/package.json`; do not copy version numbers from this file into dependency changes.
+Current major baseline: Expo SDK 58, Expo Router 58, React 19, React Native 0.88, and Uniwind 1. Read exact versions from `mobile/package.json`; do not copy version numbers from this file into dependency changes.
 
 ## Documentation Resources
 
@@ -86,7 +86,6 @@ pnpm --filter @larastack/mobile test:watch       # Explicit watch mode for the c
 pnpm --filter @larastack/mobile lint             # Run oxlint
 pnpm --filter @larastack/mobile format:check      # Check oxfmt formatting
 pnpm --filter @larastack/mobile gen:gql           # Regenerate GraphQL artifacts
-pnpm --filter @larastack/mobile draft            # Publish a preview update (workflow)
 ```
 
 ### Production
@@ -94,7 +93,8 @@ pnpm --filter @larastack/mobile draft            # Publish a preview update (wor
 ```bash
 pnpm --filter @larastack/mobile build:prod:ios     # Build iOS production app
 pnpm --filter @larastack/mobile build:prod:android # Build Android production app
-pnpm --filter @larastack/mobile deploy             # Deploy to production (workflow)
+pnpm --filter @larastack/mobile release:internal  # Submit a store build or publish an internal OTA
+pnpm --filter @larastack/mobile release:production # Submit a release candidate or publish a production OTA
 ```
 
 ## Development Guidelines
@@ -169,15 +169,16 @@ When working with EAS Workflows, **always refer to**:
 - https://docs.expo.dev/eas/workflows/introduction/ for the current Workflows documentation
 - The `.eas/workflows/` directory for existing workflow configurations
 - Validate workflow YAML against the current schema at https://api.expo.dev/v2/workflows/schema (or the repository's EAS workflow validation helper when available).
-- The repository default branch is `master`; keep production triggers and preview channel mappings aligned unless the repository branch changes.
+- Release workflows use `workflow_dispatch`. Keep production manual. OTA channels are independent of the Git branch.
 
 ### Build Profiles (eas.json)
 
-- **development**: Development builds with dev client
-- **development-simulator**: Development builds for iOS simulator
-- **preview**: Internal distribution preview builds
-- **production**: Production builds with auto-increment
-- Runtime compatibility uses the app version. Bump `app.json.version` for native-runtime changes before publishing OTA updates; remote build-number auto-increment does not change this version.
+- **development**: Device dev client using `APP_VARIANT=development` and the `development` EAS environment. The `.dev` identifiers and `-dev` scheme allow installation alongside a store build.
+- **development-simulator**: Inherits the development variant for iOS simulators.
+- **internal**: Store distribution to Play internal testing and TestFlight, `preview` environment, `internal` OTA channel.
+- **production**: Store release candidates, `production` environment and OTA channel. Both store profiles share the app identity and use remote auto-increment.
+- Runtime compatibility uses the native `fingerprint`. The release workflows look up a matching build per platform, profile, and channel before choosing between OTA and build plus submit.
+- Keep `app.json` as the scaffold's static source of identity. `app.config.ts` derives the development identity and uses the linked project ID for the EAS Update URL.
 
 ### GraphQL and Tests
 

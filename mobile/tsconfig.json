@@ -7,5 +7,13 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "uniwind-types.d.ts", "env.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "vitest.config.mts",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "uniwind-types.d.ts",
+    "env.d.ts"
+  ]
 }

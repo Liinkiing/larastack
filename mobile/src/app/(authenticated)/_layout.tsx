@@ -1,4 +1,4 @@
-import { NativeTabs } from 'expo-router/unstable-native-tabs'
+import { NativeTabs } from 'expo-router/native-tabs'
 import { PlatformColor as platformColor } from 'react-native'
 
 import { MobileAuthViewerDocument } from '~/__generated__/gql/graphql'

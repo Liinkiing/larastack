@@ -58,6 +58,8 @@ cp .env.example .env
 ./vendor/bin/sail artisan key:generate
 ```
 
+See the [backend guide](./backend/README.md#queue-workers-and-scheduler) for queue workers, the scheduler, and local S3 storage.
+
 ### Frontend
 
 From the repo root, start the web app with:
@@ -77,6 +79,8 @@ pnpm --filter @larastack/mobile dev
 ```
 
 Open the app in an iOS simulator or Android emulator with a development build. Expo Go cannot boot this configured app because Google Sign-In requires custom native code.
+
+See the [mobile guide](./mobile/README.md#eas-setup) to link your EAS project and release to internal testers or production.
 
 ## Learn More 📚
 

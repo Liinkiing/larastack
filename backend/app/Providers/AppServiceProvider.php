@@ -29,13 +29,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Tailor the processes started by "artisan dev" to this repository's layout.
      *
-     * The Sail container already supervises "artisan serve" on port 80, and Vite is
-     * driven from the host through the pnpm workspace (backend/node_modules only
-     * contains symlinks into the repository root, which is not mounted into the
-     * container), so both processes are dropped here.
+     * Sail runs the HTTP server and the workers profile owns queues and scheduling.
+     * Run Vite from the host workspace and use "artisan dev" to stream Pail logs.
      */
     private function configureDevCommands(): void
     {
-        DevCommands::except('server', 'vite');
+        DevCommands::only('logs');
     }
 }

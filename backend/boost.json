@@ -5,5 +5,11 @@
   "mcp": true,
   "nightwatch": false,
   "sail": true,
-  "skills": ["infer-conventions", "laravel-best-practices", "socialite-development", "pest-testing"]
+  "skills": [
+    "infer-conventions",
+    "laravel-best-practices",
+    "testing-best-practices",
+    "socialite-development",
+    "telescope-debugging"
+  ]
 }

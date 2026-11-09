@@ -1,4 +1,4 @@
-import { cnMerge, createTV } from 'tailwind-variants'
+import { cnMerge, createTV } from 'tailwind-variants/config'
 
 export type { VariantProps } from 'tailwind-variants'
 

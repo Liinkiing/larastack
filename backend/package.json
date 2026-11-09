@@ -14,19 +14,23 @@
     "test:ci": "./vendor/bin/sail composer run ci:check",
     "db:reset": "./vendor/bin/sail artisan migrate:fresh --seed",
     "gql:dump": "./vendor/bin/sail artisan lighthouse:print-schema --write && ./scripts/sync-gql-schema.sh",
-    "gql:ide-helper": "./vendor/bin/sail artisan lighthouse:ide-helper --omit-built-in"
+    "gql:ide-helper": "./vendor/bin/sail artisan lighthouse:ide-helper --omit-built-in",
+    "workers:up": "./vendor/bin/sail up -d --force-recreate queue realtime scheduler",
+    "workers:down": "./vendor/bin/sail rm -sf queue realtime scheduler",
+    "workers:logs": "./vendor/bin/sail logs -f queue realtime scheduler",
+    "workers:reload": "./vendor/bin/sail artisan reload"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.2.2",
-    "autoprefixer": "^10.4.27",
-    "axios": "^1.14.0",
-    "concurrently": "^10.0.3",
-    "laravel-vite-plugin": "^3.1.0",
+    "@tailwindcss/postcss": "4.3.4",
+    "autoprefixer": "^10.6.2",
+    "axios": "^1.21.0",
+    "concurrently": "10.0.6",
+    "laravel-vite-plugin": "^3.2.0",
     "postcss": "^8.5.8",
-    "tailwindcss": "^4.2.2",
-    "vite": "^8.0.3"
+    "tailwindcss": "4.3.4",
+    "vite": "^8.3.5"
   },
   "optionalDependencies": {
-    "@laravel/multiplex": "^0.4.1"
+    "@laravel/multiplex": "^0.4.5"
   }
 }

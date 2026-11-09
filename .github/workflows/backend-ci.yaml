@@ -105,6 +105,12 @@ jobs:
         run: |
           cp .env.example .env
 
+      - name: Validate GraphQL schema and check client copies
+        run: |
+          php artisan lighthouse:validate-schema
+          php artisan lighthouse:print-schema --write
+          bash scripts/sync-gql-schema.sh --check
+
       - name: Run Pest
         run: |
           ./vendor/bin/pest

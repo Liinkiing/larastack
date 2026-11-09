@@ -19,7 +19,7 @@ async function fetchSchema() {
 }
 
 function createValidator(schema) {
-  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  const ajv = new Ajv2020({ allErrors: true, strict: true, allowUnionTypes: true });
   addFormats(ajv);
   return ajv.compile(schema);
 }

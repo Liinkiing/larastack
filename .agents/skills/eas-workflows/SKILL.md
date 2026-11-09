@@ -78,7 +78,13 @@ When generating or editing workflows:
 
 ## Validation
 
-After generating or editing a workflow file, validate it against the schema:
+For a linked Expo project with an authenticated CLI session, validate each file from the Expo project root:
+
+```sh
+npx -y eas-cli@latest workflow:validate .eas/workflows/<workflow.yml> --non-interactive
+```
+
+The CLI also checks references to profiles in `eas.json`. On an unlinked starter, validate the YAML against the schema locally and check the profile references separately:
 
 ```sh
 # Install dependencies if missing

@@ -8,6 +8,8 @@ catalog:
   typescript: 6.0.3
 
 packageConfigs:
+  '@larastack/workspace':
+    saveExact: true
   '@larastack/frontend':
     saveExact: true
   '@larastack/mobile':
@@ -17,19 +19,18 @@ allowBuilds:
   esbuild: true
   sharp: true
 
-minimumReleaseAgeExclude:
-  - shell-quote@1.10.0
-
 overrides:
   '@react-native/dev-middleware>ws': 7.5.11
-  brace-expansion@5: 5.0.7
-  fast-uri: 3.1.2
+  brace-expansion@5: 5.0.9
+  fast-uri: 3.1.5
+  js-yaml@4: 4.3.1
   lightningcss: 1.30.1
   'metro>ws': 7.5.11
-  postcss: 8.5.19
+  nanoid@3: 3.3.18
+  postcss: 8.5.26
   'react-devtools-core>ws': 7.5.11
   'react-native>ws': 7.5.11
-  shell-quote: 1.10.0
+  shell-quote: 1.12.0
 packageExtensions:
   '@react-native-google-signin/google-signin@*':
     dependencies:

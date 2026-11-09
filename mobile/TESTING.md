@@ -22,7 +22,7 @@ The same conventions apply to `.spec` files. Shared component tests should asser
 
 Component projects use pinned `vitest-native` with `engine: 'native'`: real React Native JavaScript with mocked native boundaries. This community plugin is currently beta, so check compatibility when upgrading Expo, React Native, or Vitest. Jest, jsdom, and DOM matchers are not needed.
 
-`test-renderer` imports are aliased to its CommonJS entry so they share the instance required by Testing Library. The setup filters only the known duplicate-resolution and eager deprecated-export warnings from `vitest-native` 0.13; other warnings remain visible. Revisit these filters when upgrading the plugin.
+`test-renderer` imports are aliased to its CommonJS entry so they share the instance required by Testing Library. The native test engine supplies mocks for Reanimated, Worklets, and vector icons.
 
 ## Component test conventions
 

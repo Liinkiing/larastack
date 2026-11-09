@@ -76,7 +76,7 @@ final readonly class AuthenticateMobileGoogle
                     'email' => $normalizedEmail,
                     'google_id' => $googleId,
                     'avatar_url' => is_string($avatarUrl) && $avatarUrl !== '' ? $avatarUrl : null,
-                    'email_verified_at' => $emailVerified ? now() : null,
+                    'email_verified_at' => now(),
                 ]);
             }
 

@@ -1,5 +1,8 @@
 name: Create development builds
 
+on:
+  workflow_dispatch: {}
+
 jobs:
   android_development_build:
     name: Build Android

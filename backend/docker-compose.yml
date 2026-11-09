@@ -28,6 +28,66 @@ services:
       - pgsql
       - mailpit
       - redis
+      - seaweedfs
+  queue:
+    image: 'sail-8.5/app'
+    profiles:
+      - workers
+    command: sh docker/queue-worker.sh redis --sleep=0 --timeout=60
+    working_dir: /var/www/html
+    restart: 'on-failure:3'
+    stop_grace_period: 90s
+    environment:
+      WWWUSER: '${WWWUSER}'
+      LARAVEL_SAIL: 1
+    volumes:
+      - '.:/var/www/html'
+    networks:
+      - app
+    depends_on:
+      pgsql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  realtime:
+    image: 'sail-8.5/app'
+    profiles:
+      - workers
+    command: sh docker/queue-worker.sh redis --queue=realtime --sleep=0 --timeout=60 --tries=3 --backoff=5 --max-time=3600
+    working_dir: /var/www/html
+    restart: 'on-failure:3'
+    stop_grace_period: 90s
+    environment:
+      WWWUSER: '${WWWUSER}'
+      LARAVEL_SAIL: 1
+    volumes:
+      - '.:/var/www/html'
+    networks:
+      - app
+    depends_on:
+      pgsql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  scheduler:
+    image: 'sail-8.5/app'
+    profiles:
+      - workers
+    command: php artisan schedule:work
+    working_dir: /var/www/html
+    restart: 'on-failure:3'
+    environment:
+      WWWUSER: '${WWWUSER}'
+      LARAVEL_SAIL: 1
+    volumes:
+      - '.:/var/www/html'
+    networks:
+      - app
+    depends_on:
+      pgsql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
   pgsql:
     image: 'postgres:18-alpine'
     ports:
@@ -65,6 +125,24 @@ services:
       test: ['CMD', 'redis-cli', 'ping']
       retries: 3
       timeout: 5s
+  seaweedfs:
+    image: 'chrislusf/seaweedfs:4.41'
+    ports:
+      - '127.0.0.1:${FORWARD_SEAWEEDFS_PORT:-8333}:8333'
+      - '127.0.0.1:${FORWARD_SEAWEEDFS_ADMIN_PORT:-23646}:23646'
+    environment:
+      AWS_ACCESS_KEY_ID: '${AWS_ACCESS_KEY_ID:-sail}'
+      AWS_SECRET_ACCESS_KEY: '${AWS_SECRET_ACCESS_KEY:-password}'
+      S3_BUCKET: '${AWS_BUCKET:-larastack-local}'
+    volumes:
+      - 'seaweedfs:/data'
+    networks:
+      - app
+    healthcheck:
+      test: ['CMD', 'curl', '--fail', '--silent', 'http://127.0.0.1:9333/cluster/status']
+      interval: 5s
+      retries: 10
+      timeout: 5s
 networks:
   app:
     driver: bridge
@@ -72,4 +150,6 @@ volumes:
   redis:
     driver: local
   pgsql:
+    driver: local
+  seaweedfs:
     driver: local

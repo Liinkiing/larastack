@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { AppState, type AppStateStatus } from 'react-native'
+import { AppState } from 'react-native'
 
 export function useAppOnFocus(onFocus: () => void): void {
   const onFocusRef = useRef(onFocus)
@@ -9,7 +9,7 @@ export function useAppOnFocus(onFocus: () => void): void {
   }, [onFocus])
 
   useEffect(() => {
-    let previousAppState: AppStateStatus = AppState.currentState
+    let previousAppState = AppState.currentState
 
     const subscription = AppState.addEventListener('change', nextAppState => {
       const wasInBackground = previousAppState === 'background' || previousAppState === 'inactive'

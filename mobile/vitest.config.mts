@@ -16,7 +16,7 @@ function nativeProject(name: 'components' | 'ios' | 'android', platform: 'ios' |
     resolve: {
       alias: [
         { find: '~', replacement: resolve.alias['~'] },
-        // React Native Testing Library and direct imports must share one renderer instance.
+        // Share the renderer instance that React Native Testing Library loads via CommonJS.
         { find: /^test-renderer$/, replacement: testRendererPath },
       ],
     },
