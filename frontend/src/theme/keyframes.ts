@@ -33,6 +33,25 @@ export const keyframes = defineKeyframes({
     '0%': { transform: 'translateX(0%)' },
     '100%': { transform: 'translateX(100%)' },
   },
+  // Placement-based entry for overlays, composed with `fade-in` by the `slide-fade-in` animation
+  // style. Each one starts offset on the side it is named after and settles toward the trigger, so
+  // they only touch `transform` and leave opacity to `fade-in`.
+  'slide-from-top': {
+    '0%': { transform: 'translateY(-8px)' },
+    '100%': { transform: 'translateY(0)' },
+  },
+  'slide-from-bottom': {
+    '0%': { transform: 'translateY(8px)' },
+    '100%': { transform: 'translateY(0)' },
+  },
+  'slide-from-left': {
+    '0%': { transform: 'translateX(-8px)' },
+    '100%': { transform: 'translateX(0)' },
+  },
+  'slide-from-right': {
+    '0%': { transform: 'translateX(8px)' },
+    '100%': { transform: 'translateX(0)' },
+  },
   'collapse-in': {
     '0%': { height: '0' },
     '100%': { height: 'var(--height)' },
