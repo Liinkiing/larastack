@@ -1,3 +1,4 @@
+import type { SubmitEvent } from 'react'
 import type { FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form'
 import { FormProvider } from 'react-hook-form'
 
@@ -27,12 +28,13 @@ export const Form = <TInput extends FieldValues, TContext = unknown, TOutput ext
         {...props}
         {...(onSubmit
           ? {
-              onSubmit: form.handleSubmit(async (data, event) => {
-                await onSubmit(data, event)
-                if (resetValuesAfterSubmit) {
-                  form.reset(form.getValues())
-                }
-              }),
+              onSubmit: (formEvent: SubmitEvent<HTMLFormElement>) =>
+                void form.handleSubmit(async (data, event) => {
+                  await onSubmit(data, event)
+                  if (resetValuesAfterSubmit) {
+                    form.reset(form.getValues())
+                  }
+                })(formEvent),
             }
           : {})}
       >

@@ -51,7 +51,7 @@ Run from repo root unless explicitly noted.
 - Keep logs actionable and never include sensitive data.
 
 ## Linting and Formatting
-- JS/TS linting uses `oxlint`.
+- JS/TS linting uses `oxlint`, with type-aware rules enabled by `options.typeAware` in the root `.oxlintrc.json` and run by `oxlint-tsgolint`. Type-aware results depend on generated code, so regenerate it (for example `gen:gql` in `frontend/` or `mobile/`) before trusting a lint run.
 - JS/TS formatting uses `oxfmt`.
 - Pre-commit (`lint-staged`) runs:
   - `oxlint --fix` on `*.{js,jsx,ts,tsx}`

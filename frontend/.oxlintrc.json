@@ -152,6 +152,20 @@
     {
       "files": ["**/*.{ts,tsx,d.ts}"],
       "rules": {
+        "typescript/await-thenable": "error",
+        "typescript/no-deprecated": "error",
+        "typescript/no-misused-promises": "error",
+        "typescript/no-unnecessary-type-assertion": "error",
+        "typescript/only-throw-error": [
+          "error",
+          { "allow": [{ "from": "package", "package": "@apollo/client", "name": "ErrorLike" }] }
+        ],
+        "typescript/switch-exhaustiveness-check": ["error", { "considerDefaultExhaustiveForUnions": true }],
+        "typescript/no-unsafe-argument": "warn",
+        "typescript/no-unsafe-assignment": "warn",
+        "typescript/no-unsafe-call": "warn",
+        "typescript/no-unsafe-member-access": "warn",
+        "typescript/no-unsafe-return": "warn",
         "typescript/consistent-type-imports": [
           "error",
           {
@@ -381,6 +395,13 @@
         "storybook/no-uninstalled-addons": "error"
       },
       "jsPlugins": ["eslint-plugin-storybook"]
+    },
+    {
+      "files": ["**/*.test.{ts,tsx}"],
+      "rules": {
+        "typescript/unbound-method": "off"
+      },
+      "plugins": ["typescript"]
     }
   ]
 }

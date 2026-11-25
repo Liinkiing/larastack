@@ -60,8 +60,8 @@ describe('ensureXsrfCookie', () => {
       .mockResolvedValueOnce(new Response(null, { status: 200 }))
 
     const response = await fetchWithXsrf('/graphql', { method: 'POST' })
-    const firstRequestOptions = request.mock.calls.at(0)?.[1] as RequestInit | undefined
-    const secondRequestOptions = request.mock.calls.at(1)?.[1] as RequestInit | undefined
+    const firstRequestOptions = request.mock.calls.at(0)?.[1]
+    const secondRequestOptions = request.mock.calls.at(1)?.[1]
 
     expect(response.status).toBe(200)
     expect(primeCsrf).toHaveBeenCalledOnce()

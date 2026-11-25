@@ -17,6 +17,6 @@ describe('resolveGraphqlEndpoint', () => {
   })
 
   it('fails fast when neither endpoint is configured', () => {
-    expect(() => resolveGraphqlEndpoint({})).toThrowError('GraphQL endpoint is not configured')
+    expect(() => resolveGraphqlEndpoint({})).toThrow('GraphQL endpoint is not configured')
   })
 })

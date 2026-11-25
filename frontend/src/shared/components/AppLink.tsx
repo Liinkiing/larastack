@@ -7,7 +7,7 @@ import type { FC } from 'react'
 import type { LinkProps } from '~/ui/link'
 import { Link } from '~/ui/link'
 
-export type AppLinkProps = Omit<LinkProps, keyof NextLinkProps> & NextLinkProps
+export type AppLinkProps = Omit<LinkProps, keyof NextLinkProps> & Omit<NextLinkProps, 'legacyBehavior'>
 
 export const AppLink: FC<AppLinkProps> = ({
   href: userHref,
@@ -18,7 +18,6 @@ export const AppLink: FC<AppLinkProps> = ({
   passHref,
   prefetch = true,
   locale,
-  legacyBehavior,
   onMouseEnter,
   onTouchStart,
   onClick,
@@ -40,7 +39,6 @@ export const AppLink: FC<AppLinkProps> = ({
       <NextLink
         as={as}
         href={userHref}
-        legacyBehavior={legacyBehavior}
         locale={locale}
         passHref={passHref}
         prefetch={prefetch}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useQuery } from '@apollo/client/react'
+import { skipToken, useQuery } from '@apollo/client/react'
 import type { FC, ReactNode } from 'react'
 import { createContext, useEffect, useMemo, useSyncExternalStore } from 'react'
 
@@ -39,11 +39,10 @@ export const AuthProvider: FC<Props> = ({ children, mode }) => {
   )
   // Root consumers only need the navigation hint; route-local providers verify protected/guest sessions.
   const shouldVerifySession = mode !== 'all' && hasLoggedInHint === true
-  const { data, error, loading } = useQuery(ViewerDocument, {
-    errorPolicy: 'all',
-    fetchPolicy: 'cache-and-network',
-    skip: !shouldVerifySession,
-  })
+  const { data, error, loading } = useQuery(
+    ViewerDocument,
+    shouldVerifySession ? { errorPolicy: 'all', fetchPolicy: 'cache-and-network' } : skipToken,
+  )
 
   const sessionRejected = shouldVerifySession && !loading && data !== undefined && !data.viewer
   const isAuthenticated =

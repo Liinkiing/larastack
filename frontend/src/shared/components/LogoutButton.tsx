@@ -16,25 +16,29 @@ export const LogoutButton: FC<Props> = ({ children, disabled, onClick, ...props 
   const { logout } = useAuth()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
+  const signOut = async () => {
+    setIsLoggingOut(true)
+
+    try {
+      await logout()
+    } catch {
+      window.alert('Unable to sign out right now. Please retry.')
+      setIsLoggingOut(false)
+    }
+  }
+
   return (
     <Button
       {...props}
       aria-busy={isLoggingOut}
       disabled={disabled || isLoggingOut}
-      onClick={async event => {
+      onClick={event => {
         onClick?.(event)
         if (event.defaultPrevented) {
           return
         }
 
-        setIsLoggingOut(true)
-
-        try {
-          await logout()
-        } catch {
-          window.alert('Unable to sign out right now. Please retry.')
-          setIsLoggingOut(false)
-        }
+        void signOut()
       }}
     >
       {isLoggingOut ? 'Signing out…' : (children ?? 'Logout')}
