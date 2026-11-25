@@ -1,5 +1,6 @@
 import { defineSemanticTokens } from '@pandacss/dev'
-import { toRem } from '@pandacss/shared'
+
+import { toRem } from '~/theme/to-rem'
 
 export const semanticTokensColors = defineSemanticTokens.colors({
   bg: {
@@ -49,24 +50,24 @@ export const semanticTokensColors = defineSemanticTokens.colors({
 
 export const semanticTokensFontSizes = defineSemanticTokens.fontSizes({
   body: {
-    lg: { value: toRem('18px')! },
-    md: { value: toRem('16px')! },
-    sm: { value: toRem('14px')! },
+    lg: { value: toRem('18px') },
+    md: { value: toRem('16px') },
+    sm: { value: toRem('14px') },
   },
   heading: {
     desktop: {
-      '2xl': { value: toRem('56px')! },
-      lg: { value: toRem('42px')! },
-      md: { value: toRem('34px')! },
-      sm: { value: toRem('26px')! },
-      xs: { value: toRem('22px')! },
+      '2xl': { value: toRem('56px') },
+      lg: { value: toRem('42px') },
+      md: { value: toRem('34px') },
+      sm: { value: toRem('26px') },
+      xs: { value: toRem('22px') },
     },
     mobile: {
-      '2xl': { value: toRem('40px')! },
-      lg: { value: toRem('32px')! },
-      md: { value: toRem('26px')! },
-      sm: { value: toRem('22px')! },
-      xs: { value: toRem('20px')! },
+      '2xl': { value: toRem('40px') },
+      lg: { value: toRem('32px') },
+      md: { value: toRem('26px') },
+      sm: { value: toRem('22px') },
+      xs: { value: toRem('20px') },
     },
   },
 })

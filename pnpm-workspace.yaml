@@ -16,6 +16,7 @@ packageConfigs:
     saveExact: true
 
 allowBuilds:
+  '@parcel/watcher': false
   esbuild: true
   sharp: true
 
@@ -35,3 +36,18 @@ packageExtensions:
   '@react-native-google-signin/google-signin@*':
     dependencies:
       '@expo/config-plugins': '*'
+minimumReleaseAgeExclude:
+  - '@storybook/addon-docs@10.6.9'
+  - '@storybook/builder-vite@10.6.9'
+  - '@storybook/nextjs-vite@10.6.9'
+  - '@storybook/react-dom-shim@10.6.9'
+  - '@storybook/react-vite@10.6.9'
+  - '@storybook/react@10.6.9'
+  - '@types/node@26.6.10'
+  - '@types/react@19.3.2'
+  - '@vitest/mocker@5.1.2'
+  - '@vitest/spy@5.1.2'
+  - eslint-plugin-storybook@10.6.9
+  - storybook@10.6.9
+  - vite-plugin-storybook-nextjs@10.6.9
+  - vitest@5.1.2

@@ -12,8 +12,8 @@ Operational guide for coding agents working in `frontend/`.
 - Next.js 16 App Router
 - React 19 with React Compiler enabled
 - Apollo Client 4 with runtime data masking
-- Panda CSS 1 and Storybook 10
-- Vitest 4
+- Panda CSS 2 (Rust/Oxc engine, ESM-only) and Storybook 10
+- Vitest 5
 
 ## Key Paths
 
@@ -61,6 +61,8 @@ Run from repo root.
 - Co-locate route-specific UI in `app/`; keep reusable UI in shared directories.
 - React Compiler is enabled; avoid defensive `useMemo`, `useCallback`, and `memo` unless identity is required for correctness or profiling proves a benefit.
 - Public `NEXT_PUBLIC_*` values are embedded in browser bundles. Never place secrets in them or in the tracked frontend `.env` defaults.
+- `panda.config.ts` lists `presets` explicitly and keeps `include` globs relative; absolute globs match nothing. `optimize.removeUnusedTokens`/`removeUnusedKeyframes` emit only what extraction can see, and `smartCompoundVariants` needs a `staticCss.recipes` entry for any recipe whose variants are chosen at runtime.
+- Panda lint rules come from `@pandacss/eslint-plugin/oxlint` and resolve the Panda project from the working directory, so run them through the `lint` script in `frontend/`. Pre-commit runs oxlint from the repo root, which is why `.lintstagedrc.js` sets `PANDA_CONFIG_PATH` and the cwd-dependent `file-not-included` rule stays off.
 
 ## GraphQL Workflow
 

@@ -313,6 +313,20 @@
       "rules": {}
     },
     {
+      "files": ["**/*.{js,jsx,ts,tsx}"],
+      "rules": {
+        "@pandacss/extraction-diagnostics": "warn",
+        "@pandacss/no-debug": "warn",
+        "@pandacss/no-deprecated": "warn",
+        "@pandacss/no-dynamic-styling": "warn",
+        "@pandacss/no-invalid-nesting": "error",
+        "@pandacss/no-invalid-token-paths": "error",
+        "@pandacss/no-unsafe-token-fn-usage": "warn",
+        "@pandacss/prefer-token": ["warn", { "categories": ["colors"] }]
+      },
+      "jsPlugins": ["@pandacss/eslint-plugin/oxlint"]
+    },
+    {
       "files": ["**/*.graphql"],
       "rules": {
         "@graphql-eslint/executable-definitions": "error",

@@ -18,9 +18,17 @@ export default defineConfig({
   exclude: [],
   include: ['./src/**/*.{js,jsx,ts,tsx}', './app/**/*.{js,jsx,ts,tsx}'],
   jsxFramework: 'react',
-  lightningcss: true,
+  optimize: {
+    removeUnusedKeyframes: true,
+    removeUnusedTokens: true,
+    // Prunes compound variants down to the extracted combinations; a recipe whose variants are
+    // only ever chosen at runtime needs a `staticCss.recipes` entry to keep its compounds.
+    smartCompoundVariants: true,
+  },
   outdir: './src/styled-system',
   preflight: true,
+  // v2 no longer injects these implicitly; without them there are no base utilities, tokens or conditions.
+  presets: ['@pandacss/preset-base', '@pandacss/preset-panda'],
   theme: {
     extend: {
       animationStyles,

@@ -1,9 +1,11 @@
-export const conditions = {
+import { defineConditions } from '@pandacss/dev'
+
+export const conditions = defineConditions({
   extend: {
     collapsed: '&:is([aria-collapsed=true], [data-collapsed], [data-state="collapsed"])',
     current: '&:is([data-current])',
     hidden: '&:is([hidden])',
-    hover: ['@media (hover: hover) and (pointer: fine)', '&:is(:hover, [data-hover])'],
+    hover: { '@media (hover: hover) and (pointer: fine)': { '&:is(:hover, [data-hover])': '@slot' } },
     indeterminate: '&:is(:indeterminate, [data-indeterminate], [aria-checked=mixed], [data-state=indeterminate])',
     off: '&:is([data-state="off"])',
     on: '&:is([data-state="on"])',
@@ -13,4 +15,4 @@ export const conditions = {
     light: ':root &, .light &',
     invalid: '&:is([aria-invalid])',
   },
-}
+})
