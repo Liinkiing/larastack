@@ -14,7 +14,7 @@ Operational guide for coding agents working in `larastack`.
 
 ## Workspace Snapshot
 - Monorepo manager: `pnpm` workspaces. Use the pnpm version pinned by the root `packageManager` field.
-- Node.js baseline: use `.nvmrc` (currently 22.22.1); `engines.node` defines the compatibility floor (currently >=22.22.1).
+- Node.js baseline: use `.nvmrc` (currently 26.13.1); `engines.node` defines the compatibility floor (currently >=26.13.1).
 - pnpm workspace/package-manager settings live in `pnpm-workspace.yaml`; use `.npmrc` only for registry and authentication settings.
 - Type checking intentionally uses the native TypeScript 7 compiler while TypeScript 6 remains catalogued for ecosystem compatibility; do not collapse the pair without validating every workspace toolchain.
 - Optional packages in this template:

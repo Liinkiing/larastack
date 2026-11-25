@@ -31,13 +31,14 @@ Welcome to Larastack, a fullstack starter template that combines Laravel for the
 
 ## Installation ⚙️
 
-1. Clone the repository and install shared JavaScript dependencies:
+1. Clone the repository and install shared JavaScript dependencies. Use the Node.js version from `.nvmrc` and install
+   pnpm with its [standalone installer](https://pnpm.io/installation); pnpm then switches to the version pinned in
+   `packageManager` on its own:
 
    ```shell
+   curl -fsSL https://get.pnpm.io/install.sh | sh -
    git clone https://github.com/Liinkiing/larastack.git
    cd larastack
-   corepack enable
-   corepack install
    pnpm install
    ```
 
