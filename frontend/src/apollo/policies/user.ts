@@ -14,9 +14,7 @@ export const User: NonNullable<TypedTypePolicies['User']> = {
       },
     },
     abilities: {
-      merge(existing, incoming, { mergeObjects }) {
-        return mergeObjects(existing, incoming)
-      },
+      merge: true,
     },
   },
 }

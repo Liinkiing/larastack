@@ -2,7 +2,8 @@ import type { ConfigContext, ExpoConfig } from 'expo/config'
 
 export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
   const isDevelopment = process.env.APP_VARIANT === 'development'
-  const projectId = config.extra?.eas?.projectId
+  const easConfig = config.extra?.eas as { projectId?: string } | undefined
+  const projectId = easConfig?.projectId
   const googleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID
   const googleIosUrlScheme = googleIosClientId?.endsWith('.apps.googleusercontent.com')
     ? googleIosClientId.split('.').reverse().join('.')
@@ -30,11 +31,13 @@ export default ({ config }: ConfigContext): Partial<ExpoConfig> => {
           return [plugin]
         }
 
+        const options = plugin[1] as { iosUrlScheme?: string } | undefined
+
         if (googleIosUrlScheme) {
-          return [[plugin[0], { ...plugin[1], iosUrlScheme: googleIosUrlScheme }]]
+          return [[plugin[0], { ...options, iosUrlScheme: googleIosUrlScheme }]]
         }
 
-        return plugin[1]?.iosUrlScheme === '<YOUR_IOS_URL_SCHEME>' ? [] : [plugin]
+        return options?.iosUrlScheme === '<YOUR_IOS_URL_SCHEME>' ? [] : [plugin]
       }),
       ['expo-dev-client', { addGeneratedScheme: isDevelopment }],
     ],

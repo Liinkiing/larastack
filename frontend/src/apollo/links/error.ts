@@ -49,7 +49,7 @@ export default new ErrorLink(({ error }) => {
       }
 
       if (compilerEnv.__DEV__ && typeof extensions.debugMessage === 'string' && Array.isArray(extensions.trace)) {
-        const relevantMessages = extensions.trace.filter(traceItem => {
+        const relevantMessages = extensions.trace.filter((traceItem: unknown) => {
           if (typeof traceItem !== 'object' || traceItem === null || !('call' in traceItem)) {
             return false
           }
